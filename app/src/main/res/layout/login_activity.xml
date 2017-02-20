@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-
+            android:id="@+id/signIn"
             android:text="@string/signIn"
             android:background="@color/colorAlphaNULL"
             android:textColor="@color/whiteColor"
