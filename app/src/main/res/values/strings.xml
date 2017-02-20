@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ProjectTest</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="registration">Регистрация</string>
+    <string name="registration_in">Зарегистрироваться</string>
+    <string name="signIn">Вход</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="password_confirm">Подтверждение пароля</string>
+    <string name="number_kid">Номер детского сада</string>
+    <string name="mail">Электронная почта</string>
+    <string name="login_label">ВХОД</string>
+</resources>

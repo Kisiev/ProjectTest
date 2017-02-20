@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+    <LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/nastol">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/start_end_margin"
+        android:layout_marginEnd="@dimen/start_end_margin"
+        android:layout_marginStart="@dimen/start_end_margin"
+        android:layout_marginBottom="@dimen/start_end_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_rect"
+        android:id="@+id/imageView3"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Регистрация"
+            android:textSize="12pt"
+            android:textColor="@color/whiteColor"
+            android:layout_gravity="center"/>
+
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:textColorHint="@color/whiteColor"
+            android:hint="@string/login"
+            android:id="@+id/login_edit_reg"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:hint="@string/password"
+            android:textColorHint="@color/whiteColor"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:id="@+id/pass_edit_reg"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:hint="@string/password_confirm"
+            android:textColorHint="@color/whiteColor"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:id="@+id/pass_confirm_edit_reg"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:hint="@string/mail"
+            android:textColorHint="@color/whiteColor"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:id="@+id/mail_edit"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/start_end_margin"
+            android:text="Личные данные"
+            android:textSize="12pt"
+            android:textColor="@color/whiteColor"
+            android:layout_gravity="center"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:textColorHint="@color/whiteColor"
+            android:hint="Имя"
+            android:id="@+id/name_user_edit"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:textColorHint="@color/whiteColor"
+            android:hint="Фамилия"
+            android:id="@+id/surname_user_edit"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:textColorHint="@color/whiteColor"
+            android:hint="Отчество"
+            android:id="@+id/lastname_user_edit"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/registration_in"
+            android:background="@color/colorAlphaNULL"
+            android:textColor="@color/whiteColor"
+            android:textStyle="italic"
+            android:layout_gravity="end"
+            android:textSize="5pt"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>    </ScrollView>
