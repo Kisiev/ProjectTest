@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="match_parent"
@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
                 android:textColorHint="@color/whiteColor"
+                android:theme="@style/Theme.App.Base"
                 android:hint="@string/login"
                 android:id="@+id/login_edit"/>
             <EditText
@@ -41,23 +42,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
                 android:hint="@string/password"
+                android:theme="@style/Theme.App.Base"
                 android:textColorHint="@color/whiteColor"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:id="@+id/pass_edit"/>
+
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/registrationBT"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="@string/registration"
-                android:background="@color/colorAlphaNULL"
-                android:textColor="@color/whiteColor"
-                android:textStyle="italic"
-                android:layout_gravity="end"
-                android:textSize="5pt"
-                />
-            <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:id="@+id/signIn"
@@ -67,6 +58,18 @@
                 android:textStyle="italic"
                 android:layout_gravity="end"
                 android:textSize="5pt" />
+            <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/registrationBT"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/registration"
+            android:background="@color/colorAlphaNULL"
+            android:textColor="@color/whiteColor"
+            android:textStyle="italic"
+            android:layout_gravity="end"
+            android:textSize="5pt"
+            />
         </LinearLayout>
 </LinearLayout>
 </RelativeLayout>

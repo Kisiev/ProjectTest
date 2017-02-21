@@ -3,11 +3,14 @@ package com.example.a1.projecttest;
 import android.app.Activity;
 import android.bluetooth.BluetoothClass;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 public class LoginActivity extends Activity {
@@ -19,6 +22,7 @@ public class LoginActivity extends Activity {
         onButtonClick();
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
         createImage(R.id.log_imageView, R.mipmap.logo, imageView);
+
     }
     private void onButtonClick (){
         Button registrationBT = (Button) findViewById(R.id.registrationBT);
