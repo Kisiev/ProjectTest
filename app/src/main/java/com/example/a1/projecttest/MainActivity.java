@@ -3,6 +3,9 @@ package com.example.a1.projecttest;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +19,11 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.a1.projecttest.adapters.CustomDrawerMenuAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,18 +42,15 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
 
+        List<String> list = new ArrayList<>();
+        list.add("one");
+        list.add(("two"));
 
-        String[] sets = new String[] {
-                "one",
-                "two",
-                "three",
-                "four",
-                "five"
-        };
-        ListView listView = (ListView) findViewById(R.id.left_drawer);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, sets);
-        listView.setAdapter(arrayAdapter);
 
+        RecyclerView recyclerView;
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new CustomDrawerMenuAdapter(list));
 
     }
 

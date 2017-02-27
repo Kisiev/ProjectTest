@@ -8,8 +8,8 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <ListView
-        android:id="@+id/left_drawer"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -18,7 +18,7 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 
 </android.support.v4.widget.DrawerLayout>
