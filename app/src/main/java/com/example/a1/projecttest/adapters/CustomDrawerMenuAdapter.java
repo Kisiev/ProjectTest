@@ -1,7 +1,9 @@
 package com.example.a1.projecttest.adapters;
 
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,15 @@ import java.util.List;
 public class CustomDrawerMenuAdapter extends RecyclerView.Adapter<CustomDrawerMenuAdapter.CustomDrawerMenuHolder>{
 
     List<String> names;
+
+    private void clickListener(final CustomDrawerMenuHolder holder, final int pos){
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("43345345345345", "Нажата " + names.get(pos));
+            }
+        });
+    }
 
     public CustomDrawerMenuAdapter(List<String> names){
         this.names = names;
@@ -32,7 +43,7 @@ public class CustomDrawerMenuAdapter extends RecyclerView.Adapter<CustomDrawerMe
         String pos = names.get(position);
         holder.name.setText(pos);
         holder.role.setText("Сын");
-
+        clickListener(holder, position);
     }
 
     @Override
@@ -44,10 +55,12 @@ public class CustomDrawerMenuAdapter extends RecyclerView.Adapter<CustomDrawerMe
 
         TextView name;
         TextView role;
+        CardView cardView;
         public CustomDrawerMenuHolder(View item){
             super(item);
             name = (TextView) item.findViewById(R.id.name_child);
             role = (TextView) item.findViewById(R.id.role_child);
+            cardView = (CardView) item.findViewById(R.id.list_item);
         }
 
     }

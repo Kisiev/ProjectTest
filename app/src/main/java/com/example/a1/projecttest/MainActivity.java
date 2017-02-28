@@ -43,9 +43,10 @@ public class MainActivity extends AppCompatActivity
 
 
         List<String> list = new ArrayList<>();
-        list.add("one");
-        list.add(("two"));
-
+        list.add("Коля");
+        list.add(("Саня"));
+        list.add("Геор");
+        list.add(("Миша"));
 
         RecyclerView recyclerView;
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

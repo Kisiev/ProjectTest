@@ -7,18 +7,10 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#FFF"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp">
-
-    </android.support.v7.widget.RecyclerView>
-
+<include layout="@layout/drawer_menu"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_gravity="start"
+    android:choiceMode="singleChoice" />
 
 </android.support.v4.widget.DrawerLayout>
