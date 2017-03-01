@@ -27,16 +27,16 @@ import com.example.a1.projecttest.fragments.VospitannikFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.fragment;
+import static android.R.attr.thickness;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    String backStackName;
-    FragmentManager fragmentManager;
-    boolean fragmentPopped;
+        DrawerLayout drawer;
+        FragmentManager fragmentManager;
     FragmentTransaction ft;
-    public FragmentManager getFragment(){
-        return fragmentManager = getSupportFragmentManager();
-    }
+    List<String> list;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,57 +44,45 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
 
-        List<String> list = new ArrayList<>();
+        list = new ArrayList<>();
         list.add("Коля");
         list.add(("Саня"));
         list.add("Геор");
         list.add(("Миша"));
 
-        RecyclerView recyclerView;
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CustomDrawerMenuAdapter(list));
-        VospitannikFragment vospitannikFragment = new VospitannikFragment();
-
-        replaceFragment(vospitannikFragment, R.id.content_vospit);
+        replaceFragment(new VospitannikFragment());
 
     }
 
-    public void clickListener(final CustomDrawerMenuAdapter.CustomDrawerMenuHolder holder, final int pos){
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VospitannikFragment vospitannikFragment = new VospitannikFragment();
-                replaceFragment(vospitannikFragment, R.id.content_vospit);
-            }
-        });
+    public MainActivity () {}
+
+    public MainActivity (DrawerLayout drawer, RecyclerView recyclerView, List<String> list, FragmentManager fragmentManager, FragmentTransaction ft) {
+        this.drawer = drawer;
+        this.recyclerView = recyclerView;
+        this.list = list;
+        this.fragmentManager = fragmentManager;
+        this.ft = ft;
     }
 
-    public MainActivity (boolean fragmentPopped){
-        this.fragmentPopped = fragmentPopped;
+    public void replaceFragment (Fragment fragment){
+        fragmentManager = getSupportFragmentManager();
+        ft = fragmentManager.beginTransaction();
+       // ft.replace(R.id.content_main, new VospitannikFragment());
+        ft.replace(R.id.content_main, new VospitannikFragment());
+        ft.commit();
     }
 
-    public void replaceFragment(Fragment fragment, int id) {
-        String backStackName = fragment.getClass().getName();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
-
-        if (!fragmentPopped && fragmentManager.findFragmentByTag(backStackName) == null) {
-
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.content_vospit, fragment);
-            ft.addToBackStack(backStackName);
-            ft.commit();
-        }
-    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
