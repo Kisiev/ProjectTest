@@ -1,6 +1,9 @@
 package com.example.a1.projecttest.adapters;
 
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.fragments.VospitannikFragment;
 
 import java.util.List;
 
@@ -18,14 +23,6 @@ public class CustomDrawerMenuAdapter extends RecyclerView.Adapter<CustomDrawerMe
 
     List<String> names;
 
-    private void clickListener(final CustomDrawerMenuHolder holder, final int pos){
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("43345345345345", "Нажата " + names.get(pos));
-            }
-        });
-    }
 
     public CustomDrawerMenuAdapter(List<String> names){
         this.names = names;
@@ -43,7 +40,9 @@ public class CustomDrawerMenuAdapter extends RecyclerView.Adapter<CustomDrawerMe
         String pos = names.get(position);
         holder.name.setText(pos);
         holder.role.setText("Сын");
-        clickListener(holder, position);
+        boolean b = Boolean.parseBoolean(null);
+        MainActivity mainActivity = new MainActivity(b);
+        mainActivity.clickListener(holder, position);
     }
 
     @Override
@@ -51,11 +50,12 @@ public class CustomDrawerMenuAdapter extends RecyclerView.Adapter<CustomDrawerMe
         return names.size();
     }
 
-    class CustomDrawerMenuHolder extends RecyclerView.ViewHolder{
+    public class CustomDrawerMenuHolder extends RecyclerView.ViewHolder{
 
-        TextView name;
-        TextView role;
-        CardView cardView;
+        public TextView name;
+        public TextView role;
+        public CardView cardView;
+
         public CustomDrawerMenuHolder(View item){
             super(item);
             name = (TextView) item.findViewById(R.id.name_child);
