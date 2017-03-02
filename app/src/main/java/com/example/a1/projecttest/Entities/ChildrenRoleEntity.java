@@ -1,4 +1,4 @@
-package com.example.a1.projecttest;
+package com.example.a1.projecttest.Entities;
 
 public class ChildrenRoleEntity {
     public int role;

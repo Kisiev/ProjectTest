@@ -1,7 +1,5 @@
 package com.example.a1.projecttest;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,16 +12,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Switch;
 
+import com.example.a1.projecttest.Entities.ChildrenRoleEntity;
+import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
@@ -111,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ChildrenRoleEntity childrenRoleEntity = new ChildrenRoleEntity();
 
             for (int i = 0; i < 10; i ++) {
-
                 childrenRoleEntity.setName(names.get((int) rnd(0, 4)));
                 childrenRoleEntity.setRole((int) rnd(1, 2));
                 menu.add(R.id.nave_menu, 123, childrenRoleEntity.getRole(), String.valueOf(childrenRoleEntity.getName()));
@@ -142,6 +138,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 1:
                 VospitannikFragment vs = new VospitannikFragment();
                 replaceFragment(vs, R.id.content_main);
+                break;
+            case 2:
+                ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
+                replaceFragment(shcolnilFragment, R.id.content_main);
                 break;
         }
 

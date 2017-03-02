@@ -32,7 +32,8 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     public void onBindViewHolder(VospitannikHolder holder, int position) {
         String pos = serviceName.get(position);
         holder.textView.setText(pos);
-        holder.progressBar.setProgress(70);
+        holder.progressBar.setMax(5);
+        holder.progressBar.setProgress(3);
     }
 
     @Override
