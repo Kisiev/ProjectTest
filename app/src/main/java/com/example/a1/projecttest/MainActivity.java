@@ -1,49 +1,41 @@
 package com.example.a1.projecttest;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 
-
-import com.example.a1.projecttest.adapters.CustomDrawerMenuAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import static android.R.attr.fragment;
-import static android.R.attr.thickness;
-
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-        DrawerLayout drawer;
-        FragmentManager fragmentManager;
-    FragmentTransaction ft;
-    List<String> list;
-    RecyclerView recyclerView;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    DrawerLayout drawer;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -51,37 +43,35 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
 
-        list = new ArrayList<>();
-        list.add("Коля");
-        list.add(("Саня"));
-        list.add("Геор");
-        list.add(("Миша"));
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new CustomDrawerMenuAdapter(list));
-        replaceFragment(new VospitannikFragment());
-
+    }
+    /*  private void updateToolbarTitle(Fragment fragment) {
+          String fragmentClassName = fragment.getClass().getName();
+          if (fragmentClassName.equals(ExpensesFragment.class.getName())) {
+              setTitle(getString(R.string.expenses_header_nav));
+              navigationView.setCheckedItem(R.id.spendItem);
+          } else if (fragmentClassName.equals(CategoryFragment.class.getName())) {
+              setTitle(getString(R.string.category_header_nav));
+              navigationView.setCheckedItem(R.id.categoryItem);
+          } else if (fragmentClassName.equals(StatisticFragment.class.getName())) {
+              setTitle(getString(R.string.statistic_header_nav));
+              navigationView.setCheckedItem(R.id.statItem);
+          } else if (fragmentClassName.equals(SettingFragment.class.getName())) {
+              setTitle(getString(R.string.setting_header_nav));
+              navigationView.setCheckedItem(R.id.settingItem);
+          }
+      }*/
+    private void replaceFragment(Fragment fragment, int id) {
+        String backStackName = fragment.getClass().getName();
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
+        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(id, fragment, backStackName);
+            ft.addToBackStack(backStackName);
+            ft.commit();
+        }
     }
 
-    public MainActivity () {}
-
-    public MainActivity (DrawerLayout drawer, RecyclerView recyclerView, List<String> list, FragmentManager fragmentManager, FragmentTransaction ft) {
-        this.drawer = drawer;
-        this.recyclerView = recyclerView;
-        this.list = list;
-        this.fragmentManager = fragmentManager;
-        this.ft = ft;
-    }
-
-    public void replaceFragment (Fragment fragment){
-        fragmentManager = getSupportFragmentManager();
-        ft = fragmentManager.beginTransaction();
-       // ft.replace(R.id.content_main, new VospitannikFragment());
-        ft.replace(R.id.content_main, new VospitannikFragment());
-        ft.commit();
-    }
 
     @Override
     public void onBackPressed() {
@@ -109,33 +99,52 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Menu menu = navigationView.getMenu();
+            menu.removeGroup(R.id.nave_menu);
+            List<ChildrenRoleEntity> list = new ArrayList<ChildrenRoleEntity>();
+            List<String> names = new ArrayList<>();
+            names.add("Настя");
+            names.add("Коля");
+            names.add("Петя");
+            names.add("Андрей");
+            names.add("Саня");
+            ChildrenRoleEntity childrenRoleEntity = new ChildrenRoleEntity();
+
+            for (int i = 0; i < 10; i ++) {
+
+                childrenRoleEntity.setName(names.get((int) rnd(0, 4)));
+                childrenRoleEntity.setRole((int) rnd(1, 2));
+                menu.add(R.id.nave_menu, 123, childrenRoleEntity.getRole(), String.valueOf(childrenRoleEntity.getName()));
+                menu.getItem(i).setIcon(R.drawable.ic_menu_camera);
+            }
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    public long rnd(long min, long max)
+    {
+        max -= min;
+        final double random = Math.random();
+        return Math.round((random * max) + min);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        int id = item.getOrder();
+        switch (id){
+            case 1:
+                VospitannikFragment vs = new VospitannikFragment();
+                replaceFragment(vs, R.id.content_main);
+                break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
