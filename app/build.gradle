@@ -9,6 +9,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,6 +28,8 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:4.1.0"
     apt "org.androidannotations:androidannotations:4.1.0"
     compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:animated-vector-drawable:25.0.0'
+    compile 'com.android.support:mediarouter-v7:25.0.0'
     testCompile 'junit:junit:4.12'
 
     compile 'com.android.support:design:25.0.0'
@@ -47,4 +50,6 @@ dependencies {
 
     compile 'com.android.support:preference-v7:25.0.0'
     compile 'com.facebook.stetho:stetho:1.4.1'
+
+    compile 'com.google.android.gms:play-services:7.5.0'
 }

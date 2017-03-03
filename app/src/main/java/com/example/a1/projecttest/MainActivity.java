@@ -1,5 +1,6 @@
 package com.example.a1.projecttest;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import com.example.a1.projecttest.Entities.ChildrenRoleEntity;
 import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -140,8 +141,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(vs, R.id.content_main);
                 break;
             case 2:
-                ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
-                replaceFragment(shcolnilFragment, R.id.content_main);
+              //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
+              //  replaceFragment(shcolnilFragment, R.id.content_main);
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                startActivity(intent);
                 break;
         }
 
