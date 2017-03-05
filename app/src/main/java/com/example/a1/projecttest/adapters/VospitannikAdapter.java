@@ -29,11 +29,19 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     }
 
     @Override
-    public void onBindViewHolder(VospitannikHolder holder, int position) {
+    public void onBindViewHolder(final VospitannikHolder holder, int position) {
         String pos = serviceName.get(position);
         holder.textView.setText(pos);
         holder.progressBar.setMax(5);
         holder.progressBar.setProgress(3);
+        holder.progressPitanie.setMax(5);
+        holder.progressPitanie.setProgress(3);
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.progressPitanie.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -44,11 +52,13 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     class VospitannikHolder extends RecyclerView.ViewHolder{
         TextView textView;
         ProgressBar progressBar;
+        ProgressBar progressPitanie;
 
         public VospitannikHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.name_service);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+            progressPitanie = (ProgressBar) itemView.findViewById(R.id.progres_pitanie);
         }
     }
 }

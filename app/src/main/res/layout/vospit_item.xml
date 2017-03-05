@@ -40,6 +40,17 @@
                 android:src="@drawable/ic_menu_camera"/>
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progres_pitanie"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="9dp"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:max="100"  />
     <ProgressBar
         android:id="@+id/progressBar"
         style="@android:style/Widget.ProgressBar.Horizontal"
