@@ -12,8 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.utils.CircleTransform;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -36,6 +40,14 @@ public class VospitannikFragment extends Fragment {
         return view;
     }
 
+    private void saveGlideParam(ImageView imageView) {
+
+        Glide.with(getActivity())
+                .load(R.drawable.common_ic_googleplayservices).asBitmap().into(imageView);
+              //  .bitmapTransform(new CircleTransform(getActivity()))
+               // .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+               // .into(new BitmapImageViewTarget(imageView).getView());
+    }
     @Override
     public void onDetach() {
         super.onDetach();

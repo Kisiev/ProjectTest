@@ -1,5 +1,6 @@
 package com.example.a1.projecttest;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,10 +16,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.Entities.ChildrenRoleEntity;
 import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.utils.CircleTransform;
 import com.google.android.gms.maps.MapFragment;
 
 import java.util.ArrayList;
@@ -41,7 +51,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.liner_names_child);
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ScrollView scrollView = new ScrollView(this);
+
+        for(int x = 0; x < 9; x ++) {
+            LinearLayout layout = new LinearLayout(this);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout childLiner = new LinearLayout(this);
+            childLiner.setGravity(params.gravity);
+            ImageView image = new ImageView(this);
+            TextView textView = new TextView(this);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            layout.setPadding(16, 16, 16, 16);
+            childLiner.setOrientation(LinearLayout.VERTICAL);
+            image.setPadding(5, 0, 0, 0);
+            textView.setPadding(5, 0, 0, 0);
+            saveGlideParam(image);
+            textView.setLayoutParams(params);
+            textView.setText("ИВАНОВ");
+            childLiner.addView(image);
+            childLiner.addView(textView);
+           // scrollView.addView(childLiner, params);
+            layout.addView(childLiner);
+           // scrollView.addView(linearLayout);
+            linearLayout.addView(layout);
+          //  scrollView.addView(layout);
+
+        }
+
+    }
+    private void saveGlideParam(ImageView imageView) {
+
+        Glide.with(this)
+                .load(R.mipmap.nastol)
+                .bitmapTransform(new CircleTransform(this))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(new BitmapImageViewTarget(imageView).getView());
     }
     /*  private void updateToolbarTitle(Fragment fragment) {
           String fragmentClassName = fragment.getClass().getName();
