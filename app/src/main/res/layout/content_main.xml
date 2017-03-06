@@ -10,14 +10,23 @@
     tools:context="com.example.a1.projecttest.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:id="@+id/liner_names_child">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/liner_names_child">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_circle_item">
+            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
+    </ScrollView>
 
 
     <ScrollView

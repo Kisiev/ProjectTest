@@ -25,9 +25,9 @@ public class CircleTransform extends BitmapTransformation{
     private static Bitmap circleCrop(BitmapPool pool, Bitmap source) {
         if (source == null) return null;
 
-        int size = 200;//Math.min(source.getWidth()-3, source.getHeight()-3);
-        int x = 100;//(source.getWidth() - size) / 2;
-        int y = 100;//(source.getHeight() - size) / 2;
+        int size = Math.min(source.getWidth()-3, source.getHeight()-3);
+        int x = (source.getWidth() - size) / 2;
+        int y = (source.getHeight() - size) / 2;
 
         // TODO this could be acquired from the pool too
         Bitmap squared = Bitmap.createBitmap(source, x, y, size, size);
