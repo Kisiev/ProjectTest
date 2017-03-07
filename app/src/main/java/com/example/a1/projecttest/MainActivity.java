@@ -31,6 +31,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.Entities.ChildrenRoleEntity;
 import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.CircleTransform;
@@ -56,14 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        List<String> listService = new ArrayList<>();
-        listService.add("Иванов П.В");
-        listService.add("Иванов В.П");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_circle_item);
-        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManagaer);
-        recyclerView.setAdapter(new CircleImageAdapter(listService, this));
-
+        replaceFragment(new FeedFragment(), R.id.content_main);
     }
     public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
 

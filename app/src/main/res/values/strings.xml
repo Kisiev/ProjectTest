@@ -14,4 +14,7 @@
     <string name="number_kid">Номер детского сада</string>
     <string name="mail">Электронная почта</string>
     <string name="login_label">ВХОД</string>
+    <string name="provider_gps">GPS</string>
+    <string name="provider_network">Network</string>
+    <string name="location_settings">Location settings</string>
 </resources>
