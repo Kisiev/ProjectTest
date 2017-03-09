@@ -43,7 +43,7 @@ public class VospitannikFragment extends Fragment {
     private void saveGlideParam(ImageView imageView) {
 
         Glide.with(getActivity())
-                .load(R.drawable.common_ic_googleplayservices).asBitmap().into(imageView);
+                .load(R.mipmap.image_human).asBitmap().into(imageView);
               //  .bitmapTransform(new CircleTransform(getActivity()))
                // .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                // .into(new BitmapImageViewTarget(imageView).getView());

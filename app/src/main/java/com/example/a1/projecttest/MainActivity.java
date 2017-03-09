@@ -3,6 +3,8 @@ package com.example.a1.projecttest;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -167,8 +169,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 2:
               //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
               //  replaceFragment(shcolnilFragment, R.id.content_main);
-                Intent intent = new Intent(MainActivity.this, MapActivity.class);
-                startActivity(intent);
+                LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+                boolean enabled = service
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if (enabled) {
+                    Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
         }
 
