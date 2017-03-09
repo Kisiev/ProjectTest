@@ -125,18 +125,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             Menu menu = navigationView.getMenu();
             menu.removeGroup(R.id.nave_menu);
-            List<ChildrenRoleEntity> list = new ArrayList<ChildrenRoleEntity>();
-            List<String> names = new ArrayList<>();
-            names.add("Настя");
-            names.add("Коля");
-            names.add("Петя");
-            names.add("Андрей");
-            names.add("Саня");
             ChildrenRoleEntity childrenRoleEntity = new ChildrenRoleEntity();
 
-            for (int i = 0; i < 10; i ++) {
-                childrenRoleEntity.setName(names.get((int) rnd(0, 4)));
-                childrenRoleEntity.setRole((int) rnd(1, 2));
+            for (int i = 0; i < 2; i ++) {
+                if (i == 0) {
+                    childrenRoleEntity.setName("Настя");
+                    childrenRoleEntity.setRole(1);
+                }
+                if (i == 1) {
+                    childrenRoleEntity.setName("Миша");
+                    childrenRoleEntity.setRole(2);
+                }
                 menu.add(R.id.nave_menu, 123, childrenRoleEntity.getRole(), String.valueOf(childrenRoleEntity.getName()));
                 menu.getItem(i).setIcon(R.drawable.ic_menu_camera);
             }
