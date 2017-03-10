@@ -42,9 +42,9 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
-    apt "com.github.Raizlabs.DBFlow:dbflow-processor:3.1.1"
-    compile "com.github.Raizlabs.DBFlow:dbflow-core:3.1.1"
-    compile "com.github.Raizlabs.DBFlow:dbflow:3.1.1"
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:4.0.0-beta5"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:4.0.0-beta5"
+    compile "com.github.Raizlabs.DBFlow:dbflow:4.0.0-beta5"
 
     compile 'com.evernote:android-job:1.1.3'
 
