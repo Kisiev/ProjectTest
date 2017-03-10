@@ -19,4 +19,6 @@
     <string name="location_settings">Location settings</string>
     <string name="life_feed">Живая лента</string>
     <string name="status_child">Статус ребенка</string>
+    <string name="child_title">Дети</string>
+    <string name="parent_item">Родители</string>
 </resources>

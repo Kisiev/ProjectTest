@@ -26,11 +26,6 @@ public class FeedFragment extends Fragment{
         List<String> listService = new ArrayList<>();
         listService.add("Иванов П.В");
         listService.add("Иванов В.П");
-        listService.add("Иванов В.П");
-        listService.add("Иванов В.П");
-        listService.add("Иванов В.П");
-        listService.add("Иванов В.П");
-        listService.add("Иванов В.П");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);

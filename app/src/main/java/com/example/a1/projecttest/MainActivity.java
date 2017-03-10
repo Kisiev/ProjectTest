@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -73,14 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
-    }
-    public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
-
-        Glide.with(context)
-                .load(imagePath)
-                .bitmapTransform(new CircleTransform(context))
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(new BitmapImageViewTarget(imageView).getView());
+        setMenu();
     }
 
 
@@ -100,6 +94,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.addToBackStack(backStackName);
             ft.commit();
         }
+    }
+
+    private void setMenu(){
+        Menu menu = navigationView.getMenu();
+        menu = menu.addSubMenu("Дети");
+        menu.add(Menu.NONE, 223, 1, "Андрей");
+        menu.add(Menu.NONE, 223, 2, "Виктор");
+        Menu menu1 = navigationView.getMenu();
+        menu1 = menu1.addSubMenu("Родители");
+        menu1.add(Menu.NONE, 123, 3, "Валерий Павлович");
+    }
+
+    public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
+
+        Glide.with(context)
+                .load(imagePath)
+                .bitmapTransform(new CircleTransform(context))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(new BitmapImageViewTarget(imageView).getView());
     }
 
     @Override
@@ -128,23 +141,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Menu menu = navigationView.getMenu();
-            menu.removeGroup(R.id.nave_menu);
-            ChildrenRoleEntity childrenRoleEntity = new ChildrenRoleEntity();
-
-            for (int i = 0; i < 2; i ++) {
-                if (i == 0) {
-                    childrenRoleEntity.setName("Настя");
-                    childrenRoleEntity.setRole(1);
-                }
-                if (i == 1) {
-                    childrenRoleEntity.setName("Миша");
-                    childrenRoleEntity.setRole(2);
-                }
-                menu.add(R.id.nave_menu, 123, childrenRoleEntity.getRole(), String.valueOf(childrenRoleEntity.getName()));
-                menu.getItem(i).setIcon(R.drawable.ic_menu_camera);
-            }
-
             return true;
         }
 
