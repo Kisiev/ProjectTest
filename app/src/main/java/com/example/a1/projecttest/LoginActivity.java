@@ -30,7 +30,7 @@ public class LoginActivity extends Activity {
         loginBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivity_.class);
                 startActivity(intent);
             }
         });

@@ -17,4 +17,6 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Network</string>
     <string name="location_settings">Location settings</string>
+    <string name="life_feed">Живая лента</string>
+    <string name="status_child">Статус ребенка</string>
 </resources>

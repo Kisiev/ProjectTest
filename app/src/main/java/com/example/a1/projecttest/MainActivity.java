@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,19 +38,27 @@ import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.CircleTransform;
 import com.google.android.gms.maps.MapFragment;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@EActivity (R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
     NavigationView navigationView;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    List<GetListUsers> getListUsers;
+    ImageView imageView;
+    @AfterViews
+    protected void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -58,8 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         replaceFragment(new FeedFragment(), R.id.content_main);
+        setTitle(getString(R.string.life_feed));
+        View headerView = navigationView.getHeaderView(0);
+        imageView = (ImageView) headerView.findViewById(R.id.imageView);
+        saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
     }
     public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
 
@@ -69,22 +82,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new BitmapImageViewTarget(imageView).getView());
     }
-    /*  private void updateToolbarTitle(Fragment fragment) {
+
+
+      private void updateToolbarTitle(Fragment fragment) {
           String fragmentClassName = fragment.getClass().getName();
-          if (fragmentClassName.equals(ExpensesFragment.class.getName())) {
-              setTitle(getString(R.string.expenses_header_nav));
-              navigationView.setCheckedItem(R.id.spendItem);
-          } else if (fragmentClassName.equals(CategoryFragment.class.getName())) {
-              setTitle(getString(R.string.category_header_nav));
-              navigationView.setCheckedItem(R.id.categoryItem);
-          } else if (fragmentClassName.equals(StatisticFragment.class.getName())) {
-              setTitle(getString(R.string.statistic_header_nav));
-              navigationView.setCheckedItem(R.id.statItem);
-          } else if (fragmentClassName.equals(SettingFragment.class.getName())) {
-              setTitle(getString(R.string.setting_header_nav));
-              navigationView.setCheckedItem(R.id.settingItem);
+          if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
+              setTitle(getString(R.string.status_child));
           }
-      }*/
+      }
     private void replaceFragment(Fragment fragment, int id) {
         String backStackName = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
@@ -153,6 +158,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return Math.round((random * max) + min);
     }
 
+    @Background
+    public void loadUsers (){
+        final RestService restService = new RestService();
+            try {
+                getListUsers = (restService.viewListInMainFragmenr());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -164,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 1:
                 VospitannikFragment vs = new VospitannikFragment();
                 replaceFragment(vs, R.id.content_main);
+                updateToolbarTitle(vs);
+              //  loadUsers();
                 break;
             case 2:
               //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
