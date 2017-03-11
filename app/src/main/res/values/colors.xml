@@ -8,4 +8,10 @@
     <color name="colorAlphaNULL">#76e4e4e4</color>
     <color name="whiteColor">#ffffff</color>
 
+    <color name="color1">#fa3030</color>
+    <color name="color2">#fa7330</color>
+    <color name="color3">#fab730</color>
+    <color name="color4">#73fa30</color>
+    <color name="color5">#30faad</color>
+    <color name="color6">#f330fa</color>
 </resources>

@@ -2,10 +2,7 @@
 <android.support.v7.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="2dp"
-    app:cardCornerRadius="2dp"
-    app:cardUseCompatPadding="true"
-
+    android:id="@+id/card_lay_vospit"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -19,47 +16,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/liner_con"
-            android:gravity="center"
-            android:layout_marginLeft="20dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/name_service"
-                android:layout_weight="1"
-                android:gravity="center|top"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:text="Отдых"
-                android:textSize="13pt"/>
+                android:textColor="@color/cardview_light_background"
+                android:layout_weight="1" />
+
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/imageView"
                 android:layout_weight="2"
                 android:layout_toRightOf="@id/name_service"
                 android:src="@drawable/ic_menu_camera"/>
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progres_pitanie"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="9dp"
-            android:layout_alignParentTop="true"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:max="100"  />
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+        <TextView
         android:layout_width="match_parent"
-        android:layout_height="9dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:max="100" />
+        android:layout_height="wrap_content"
+        android:id="@+id/timeTVinCard"
+        android:textColor="@color/cardview_light_background"
+        android:layout_weight="1"
+        android:gravity="center|top"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/false_tv"
+            android:textColor="@color/cardview_light_background"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:gravity="center|top" />
+
 </LinearLayout>
 
 </android.support.v7.widget.CardView>
