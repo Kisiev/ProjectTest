@@ -106,8 +106,18 @@
             android:theme="@style/Theme.App.Base"
             android:hint="Отчество"
             android:id="@+id/lastname_user_edit"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Ребенок"
+            android:textColor="@color/whiteColor"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Родитель"
+            android:textColor="@color/whiteColor"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:text="@string/registration_in"
