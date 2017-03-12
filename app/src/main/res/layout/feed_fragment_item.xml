@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="14pt"
         android:id="@+id/news_nameTV"/>
     <LinearLayout
@@ -26,14 +27,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/black"
             android:gravity="start"
             android:id="@+id/time_TV"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="end"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:id="@+id/date_TV"
             android:layout_weight="1"/>
@@ -42,16 +43,18 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:id="@+id/separatorV"
-        android:background="@color/colorGray"/>
+        android:background="@color/black"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20pt"
+        android:textSize="10pt"
+        android:textColor="@color/black"
         android:id="@+id/name_childTV"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="11pt"
+        android:textSize="7pt"
+        android:textColor="@color/black"
         android:id="@+id/service_nameTV"/>
 </LinearLayout>
 </android.support.v7.widget.CardView>

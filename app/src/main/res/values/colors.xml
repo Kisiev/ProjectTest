@@ -14,5 +14,6 @@
     <color name="color4">#73fa30</color>
     <color name="color5">#30faad</color>
     <color name="color6">#f330fa</color>
+    <color name="black">#000000</color>
     <color name="colorForApacityNull">#00f330fa</color>
 </resources>

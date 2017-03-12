@@ -29,16 +29,30 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     @Override
     public void onBindViewHolder(FeedHolder holder, int position) {
-        holder.newsNameTV.setText("Ребенок");
-        holder.timeTV.setText("20 минут назад");
-        holder.dateTV.setText("13.12.2017");
-        holder.nameChildTV.setText("Иванов В.П");
-        holder.serviceNameTV.setText("Завтрак в столовой");
+        if (position == 0) {
+            holder.newsNameTV.setText("Ребенок");
+            holder.timeTV.setText("20 минут назад");
+            holder.dateTV.setText("13.12.2017");
+            holder.nameChildTV.setText("Иванов В.В");
+            holder.serviceNameTV.setText("Завтрак в столовой");
+        } else if (position == 1) {
+            holder.newsNameTV.setText("Больные дети");
+            holder.timeTV.setText("25 минут назад");
+            holder.dateTV.setText("13.12.2017");
+            holder.nameChildTV.setText("В группе, вероятно, болеют:");
+            holder.serviceNameTV.setText("5 человек");
+        } else if (position == 2) {
+            holder.newsNameTV.setText("Ребенок");
+            holder.timeTV.setText("30 минут назад");
+            holder.dateTV.setText("13.12.2017");
+            holder.nameChildTV.setText("Иванов А.В");
+            holder.serviceNameTV.setText("Прибыл к точке: Музей искусств");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 3;
     }
 
     class FeedHolder extends RecyclerView.ViewHolder {
