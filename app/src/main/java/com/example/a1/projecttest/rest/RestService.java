@@ -7,6 +7,8 @@ import com.example.a1.projecttest.rest.Models.GetListUsers;
 import java.io.IOException;
 import java.util.List;
 
+import retrofit2.http.Query;
+
 
 public final class RestService {
 
@@ -15,10 +17,18 @@ public final class RestService {
         restClient = new RestClient();
     }
 
-    public List<GetListUsers> viewListInMainFragmenr () throws IOException{
+    public GetListUsers viewListInMainFragmenr (@NonNull String id) throws IOException{
 
         return  restClient.getProjectTestApi()
-                .getListModel()
+                .getListModel(id)
+                .execute().body();
+
+    }
+
+    public String setCoordinates (@NonNull String id, @NonNull String coordinateX, @NonNull String coordinateY) throws IOException{
+
+        return  restClient.getProjectTestApi()
+                .setCoordinates(id, coordinateX, coordinateY)
                 .execute().body();
 
     }

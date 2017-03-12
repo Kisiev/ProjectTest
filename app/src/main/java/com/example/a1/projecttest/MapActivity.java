@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 
+import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.RestService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,16 +26,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
 
+import java.io.IOException;
+
+@EActivity (R.layout.activity_maps)
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
     private LocationManager locationManager;
     LatLng latLng;
     GoogleMap googleMap;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+    GetListUsers getListUsers;
+    @AfterViews
+    protected void main() {
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapView);
         mapFragment.getFragmentManager().getFragments();
@@ -42,6 +49,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         markerOptions.draggable(true);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        getCoordinates();
 
     }
 
@@ -49,9 +57,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onResume() {
         super.onResume();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000 * 1, 1, locationListener);
+                1000 * 15, 10, locationListener);
         locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 1000 * 1, 1,
+                LocationManager.NETWORK_PROVIDER, 1000 * 15, 10,
                 locationListener);
     }
 
@@ -83,14 +91,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     };
 
-    private void showLocation(final Location location) {
+    @Background
+    public void getCoordinates () {
+        final RestService restService = new RestService();
+        try {
+            getListUsers = (restService.viewListInMainFragmenr(String.valueOf(12)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showLocation(final Location location) {
         if (location == null)
             return;
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
         } else if (location.getProvider().equals(
                 LocationManager.NETWORK_PROVIDER)) {
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
         }
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(location.getLatitude(), location.getLongitude()))

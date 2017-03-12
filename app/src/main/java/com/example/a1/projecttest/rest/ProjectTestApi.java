@@ -9,6 +9,11 @@ import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 public interface ProjectTestApi {
-    @GET("/api/GetAllUsers.php")
-    Call<List<GetListUsers>> getListModel ();
+    @GET("/api/GetUserById.php")
+    Call<GetListUsers> getListModel (@Query("id") String id);
+
+    @POST("/api/UpdateUserCoordinatesById.php")
+    Call<String> setCoordinates (@Query("id") String id,
+                               @Query("coordinateX") String coordinateX,
+                               @Query("coordinateY") String coordinateY);
 }

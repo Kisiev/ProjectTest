@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.rest.RestService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,7 +18,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
+
+import java.io.IOException;
 
 @EActivity (R.layout.child_activity)
 public class ChildActivity extends Activity {
@@ -76,12 +80,25 @@ public class ChildActivity extends Activity {
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             Log.d("!!!!!!!!", String.valueOf(location.getLatitude()));
             Log.d("!!!!!!!!", String.valueOf(location.getLongitude()));
+            postCoordinates(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
         } else if (location.getProvider().equals(
                 LocationManager.NETWORK_PROVIDER)) {
+            postCoordinates(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
             Log.d("!!!!!!!!", String.valueOf(location.getLatitude()));
             Log.d("!!!!!!!!", String.valueOf(location.getLongitude()));
         }
 
+    }
+
+    @Background
+    public void postCoordinates (String coordinateX, String coordinateY) {
+        RestService restService = new RestService();
+        String status;
+        try {
+            status = restService.setCoordinates(String.valueOf(12), coordinateX, coordinateY);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

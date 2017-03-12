@@ -42,6 +42,7 @@ import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.CircleTransform;
+import com.google.android.gms.fitness.data.Value;
 import com.google.android.gms.maps.MapFragment;
 
 import org.androidannotations.annotations.AfterViews;
@@ -56,7 +57,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
     NavigationView navigationView;
-    List<GetListUsers> getListUsers;
+    GetListUsers getListUsers;
     ImageView imageView;
     @AfterViews
     protected void main() {
@@ -169,15 +170,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return Math.round((random * max) + min);
     }
 
-    @Background
-    public void loadUsers (){
-        final RestService restService = new RestService();
-            try {
-                getListUsers = (restService.viewListInMainFragmenr());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -196,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 VospitannikFragment vs = new VospitannikFragment();
                 replaceFragment(vs, R.id.content_main);
                 updateToolbarTitle(vs, getString(R.string.status_child));
-              //  loadUsers();
                 break;
             case 2:
               //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
@@ -205,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 boolean enabled = service
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
                 if (enabled) {
-                    Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                    Intent intent = new Intent(MainActivity.this, MapActivity_.class);
                     startActivity(intent);
                 }
 

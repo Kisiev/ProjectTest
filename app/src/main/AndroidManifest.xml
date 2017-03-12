@@ -30,7 +30,7 @@
         <activity android:name=".MainActivity_"
             android:theme="@style/AppTheme.NoActionBar"
             />
-        <activity android:name=".MapActivity" android:parentActivityName=".MainActivity"
+        <activity android:name=".MapActivity_"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".ChildActivity_"

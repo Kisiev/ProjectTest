@@ -12,10 +12,10 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 public class UsersEntity extends BaseModel{
     @PrimaryKey()
     private int id;
-    @Column(name = "login")
-    private String login;
-    @Column (name = "password")
-    private String pass;
+    @Column(name = "coordinateX")
+    private String coordinateX;
+    @Column (name = "coordinateY")
+    private String coordinateY;
 
     public int getId() {
         return id;
@@ -25,19 +25,19 @@ public class UsersEntity extends BaseModel{
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getCoordinateX() {
+        return coordinateX;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setCoordinateX(String coordinateX) {
+        this.coordinateX = coordinateX;
     }
 
-    public String getPass() {
-        return pass;
+    public String getCoordinateY() {
+        return coordinateY;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setCoordinateY(String coordinateY) {
+        this.coordinateY = coordinateY;
     }
 }
