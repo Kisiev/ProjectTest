@@ -75,13 +75,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
         setMenu();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                if (f != null) {
+
+                } else finish();
+
+            }
+
+        });
     }
 
 
-      private void updateToolbarTitle(Fragment fragment) {
+      private void updateToolbarTitle(Fragment fragment, String title) {
           String fragmentClassName = fragment.getClass().getName();
-          if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
-              setTitle(getString(R.string.status_child));
+          if (fragmentClassName.equals(fragment.getClass().getName())) {
+              setTitle(title);
           }
       }
     private void replaceFragment(Fragment fragment, int id) {
@@ -96,8 +108,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
+
     private void setMenu(){
         Menu menu = navigationView.getMenu();
+        menu.add(Menu.NONE, 223, 0, "Живая лента");
         menu = menu.addSubMenu("Дети");
         menu.add(Menu.NONE, 223, 1, "Андрей");
         menu.add(Menu.NONE, 223, 2, "Виктор");
@@ -172,10 +187,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         int id = item.getOrder();
         switch (id){
+            case 0:
+               FeedFragment feedFragment = new FeedFragment();
+                replaceFragment(feedFragment, R.id.content_main);
+                updateToolbarTitle(feedFragment, "Живая лента");
+                break;
             case 1:
                 VospitannikFragment vs = new VospitannikFragment();
                 replaceFragment(vs, R.id.content_main);
-                updateToolbarTitle(vs);
+                updateToolbarTitle(vs, getString(R.string.status_child));
               //  loadUsers();
                 break;
             case 2:
