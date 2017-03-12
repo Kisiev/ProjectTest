@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder>{
@@ -36,17 +39,12 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final VospitannikHolder holder, int position) {
+    public void onBindViewHolder(final VospitannikHolder holder, final int position) {
         String pos = serviceName.get(position);
         holder.textView.setText(pos);
         holder.timeTv.setText(time.get(position));
         holder.cardView.setCardBackgroundColor(colors.get(position));
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               holder.false_tv.setVisibility(View.VISIBLE);
-            }
-        });
+
     }
 
     @Override
@@ -54,7 +52,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         return serviceName.size();
     }
 
-    class VospitannikHolder extends RecyclerView.ViewHolder{
+    public class VospitannikHolder extends RecyclerView.ViewHolder{
         TextView textView;
         TextView timeTv;
         CardView cardView;
@@ -66,6 +64,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             cardView = (CardView) itemView.findViewById(R.id.card_lay_vospit);
             timeTv = (TextView) itemView.findViewById(R.id.timeTVinCard);
             false_tv = (TextView) itemView.findViewById(R.id.false_tv);
+
 
         }
     }

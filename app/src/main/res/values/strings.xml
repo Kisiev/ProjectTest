@@ -22,4 +22,5 @@
     <string name="child_title">Дети</string>
     <string name="parent_item">Родители</string>
     <string name="registration">Регистрация</string>
+    <string name="not_arrive">Сегодня не придет</string>
 </resources>

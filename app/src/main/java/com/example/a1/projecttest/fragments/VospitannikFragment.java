@@ -1,13 +1,18 @@
 package com.example.a1.projecttest.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +25,10 @@ import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.utils.CircleTransform;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class VospitannikFragment extends Fragment {
@@ -28,7 +36,7 @@ public class VospitannikFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
+        final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
         List<String> time = new ArrayList<>();
         time.add("7:00 - 8:00");
         time.add("8:00 - 8:15");
@@ -72,9 +80,27 @@ public class VospitannikFragment extends Fragment {
         colors.add(getResources().getColor(R.color.color4));
         colors.add(getResources().getColor(R.color.color5));
         colors.add(getResources().getColor(R.color.color6));
+
+        Calendar calendar = Calendar.getInstance();
+        TextView date = (TextView) view.findViewById(R.id.date_in_childTV);
+        TextView times = (TextView) view.findViewById(R.id.time_in_child);
+        SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy");
+        SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
+
+        date.setText(dfDate_day.format(calendar.getTime()));
+        times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
+
         recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new VospitannikAdapter(listService, colors, time));
+
+        Button button = (Button) view.findViewById(R.id.child_not_arriveBT);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
 
         return view;
     }
@@ -92,5 +118,33 @@ public class VospitannikFragment extends Fragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void showDialog() {
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.reson_child_not_arrive);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        final EditText editText = (EditText) dialog.findViewById(R.id.reson_text_ed);
+        Button okButton = (Button) dialog.findViewById(R.id.send_bt);
+        final Button cancelButton = (Button) dialog.findViewById(R.id.cancel_bt);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Editable text = editText.getText();
+
+                if (!TextUtils.isEmpty(text)){
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }
