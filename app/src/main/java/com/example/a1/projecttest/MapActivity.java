@@ -8,8 +8,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
@@ -31,6 +38,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @EActivity (R.layout.activity_maps)
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -39,6 +48,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     LatLng latLng;
     GoogleMap googleMap;
     GetListUsers getListUsers;
+    public Handler handler;
+    Runnable runnable;
+    int calbacks = 0;
+    LinearLayout view;
     @AfterViews
     protected void main() {
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -49,7 +62,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         markerOptions.draggable(true);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        getCoordinates();
 
     }
 
@@ -61,11 +73,42 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 1000 * 15, 1,
                 locationListener);
+
+        handler = new Handler();
+        setPeriodicTime();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                getCoordinates();
+                setPeriodicTime();
+            }
+        };
+        handler.postDelayed(runnable, 5000);
+    }
+
+    private void setPeriodicTime () {
+        calbacks ++;
+
+        if (getListUsers!= null) {
+            view.setVisibility(View.GONE);
+            googleMap.clear();
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(
+                    getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
+                    .zoom(15)
+                    .build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+            googleMap.animateCamera(cameraUpdate);
+        }
+
+        handler.postDelayed(runnable, 5000);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        handler.removeCallbacks(runnable);
         locationManager.removeUpdates(locationListener);
     }
 
@@ -101,18 +144,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        view = (LinearLayout) findViewById(R.id.view_loading);
+    }
+
     public void showLocation(final Location location) {
         if (location == null)
             return;
-        Thread trThread = new Thread();
-        trThread.start();
-        getCoordinates();
-        try {
-            trThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+       /* if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             googleMap.clear();
             googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
 
@@ -124,10 +165,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
-                .zoom(400)
+                .zoom(15)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-        googleMap.animateCamera(cameraUpdate);
+        googleMap.animateCamera(cameraUpdate);*/
     }
 
 

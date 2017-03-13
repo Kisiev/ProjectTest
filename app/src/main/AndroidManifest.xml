@@ -27,6 +27,9 @@
         <activity android:name=".RegistrationActivity"
             android:theme="@style/AppTheme"
             />
+        <service android:name=".utils.ChildService_">
+
+        </service>
         <activity android:name=".MainActivity_"
             android:theme="@style/AppTheme.NoActionBar"
             />
