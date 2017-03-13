@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Touch;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -94,12 +95,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             googleMap.clear();
             googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(
                     getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
-                    .zoom(15)
-                    .build();
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-            googleMap.animateCamera(cameraUpdate);
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
+                        .zoom(18)
+                        .build();
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                googleMap.animateCamera(cameraUpdate);
         }
 
         handler.postDelayed(runnable, 5000);
