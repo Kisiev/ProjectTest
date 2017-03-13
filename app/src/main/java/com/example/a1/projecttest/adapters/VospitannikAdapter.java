@@ -5,16 +5,23 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -44,7 +51,11 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         holder.textView.setText(pos);
         holder.timeTv.setText(time.get(position));
         holder.cardView.setCardBackgroundColor(colors.get(position));
-
+        if (position < 1)
+        holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
+        else if (position == 1)
+            holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
+        else if (position > 1)  holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
     }
 
     @Override
@@ -57,6 +68,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         TextView timeTv;
         CardView cardView;
         TextView false_tv;
+        ImageView imageTime;
 
         public VospitannikHolder(View itemView) {
             super(itemView);
@@ -64,7 +76,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             cardView = (CardView) itemView.findViewById(R.id.card_lay_vospit);
             timeTv = (TextView) itemView.findViewById(R.id.timeTVinCard);
             false_tv = (TextView) itemView.findViewById(R.id.false_tv);
-
+            imageTime = (ImageView) itemView.findViewById(R.id.image_time);
 
         }
     }

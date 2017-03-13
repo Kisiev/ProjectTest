@@ -88,8 +88,8 @@ public class VospitannikFragment extends Fragment {
         SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
         date.setText(dfDate_day.format(calendar.getTime()));
-        times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
-
+        //times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
+        times.setText("Время: 08:03");
         recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new VospitannikAdapter(listService, colors, time));

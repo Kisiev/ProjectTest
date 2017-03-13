@@ -57,9 +57,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onResume() {
         super.onResume();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000 * 15, 10, locationListener);
+                1000 * 15, 1, locationListener);
         locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 1000 * 15, 10,
+                LocationManager.NETWORK_PROVIDER, 1000 * 15, 1,
                 locationListener);
     }
 
@@ -104,17 +104,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void showLocation(final Location location) {
         if (location == null)
             return;
+        Thread trThread = new Thread();
+        trThread.start();
+        getCoordinates();
+        try {
+            trThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+            googleMap.clear();
             googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
+
         } else if (location.getProvider().equals(
                 LocationManager.NETWORK_PROVIDER)) {
+            googleMap.clear();
             googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
+
         }
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(900)
-                .bearing(45)
-                .tilt(20)
+                .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
+                .zoom(400)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         googleMap.animateCamera(cameraUpdate);
