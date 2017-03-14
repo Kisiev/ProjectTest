@@ -51,8 +51,10 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         holder.textView.setText(pos);
         holder.timeTv.setText(time.get(position));
         holder.cardView.setCardBackgroundColor(colors.get(position));
-        if (position < 1)
-        holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
+        if (position < 1) {
+            holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
+            holder.imageView.setImageResource(R.mipmap.green_smile);
+        }
         else if (position == 1)
             holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
         else if (position > 1)  holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
@@ -69,6 +71,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         CardView cardView;
         TextView false_tv;
         ImageView imageTime;
+        ImageView imageView;
 
         public VospitannikHolder(View itemView) {
             super(itemView);
@@ -77,6 +80,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             timeTv = (TextView) itemView.findViewById(R.id.timeTVinCard);
             false_tv = (TextView) itemView.findViewById(R.id.false_tv);
             imageTime = (ImageView) itemView.findViewById(R.id.image_time);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
         }
     }

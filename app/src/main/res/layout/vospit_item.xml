@@ -18,26 +18,31 @@
             android:id="@+id/liner_con"
             android:orientation="horizontal">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/image_time"
             android:layout_weight="1"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             app:srcCompat="@drawable/ic_check_black_24dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="2">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/name_service"
                 android:textColor="@color/cardview_light_background"
-                android:layout_weight="2" />
+                 />
+        </LinearLayout>
+
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:id="@+id/imageView"
                 android:layout_weight="1"
-                android:layout_toRightOf="@id/name_service"
-                android:src="@drawable/ic_menu_camera"/>
+                android:layout_toRightOf="@id/name_service" />
         </LinearLayout>
         <TextView
         android:layout_width="match_parent"

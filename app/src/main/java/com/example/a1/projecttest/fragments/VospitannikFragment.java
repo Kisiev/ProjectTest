@@ -62,23 +62,16 @@ public class VospitannikFragment extends Fragment {
         listService.add("Подъем, закаливающие процедуры");
         listService.add("Подготовка к полднику, полдник");
         List<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.color1));
         colors.add(getResources().getColor(R.color.color2));
         colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
         colors.add(getResources().getColor(R.color.color5));
         colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color1));
         colors.add(getResources().getColor(R.color.color2));
         colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
         colors.add(getResources().getColor(R.color.color5));
         colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color1));
         colors.add(getResources().getColor(R.color.color2));
         colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
         colors.add(getResources().getColor(R.color.color6));
 
         Calendar calendar = Calendar.getInstance();
