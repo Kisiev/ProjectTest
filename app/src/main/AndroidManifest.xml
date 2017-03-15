@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginActivity_"
             android:label="@string/myChild"
             android:theme="@style/AppTheme">
             <intent-filter>

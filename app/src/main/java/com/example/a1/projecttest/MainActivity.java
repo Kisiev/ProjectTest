@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu menu1 = navigationView.getMenu();
         menu1 = menu1.addSubMenu("Родители");
         menu1.add(Menu.NONE, 123, 3, "Валерий Павлович");
+        Menu menu2 = navigationView.getMenu();
+        menu2.add(Menu.NONE, 123, 4, "Выход");
     }
 
     public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
@@ -201,6 +203,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 break;
+            case 4:
+                UserLoginSession session = new UserLoginSession(this);
+                session.clear();
+                startActivity(new Intent(this, LoginActivity_.class));
+                finish();
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -12,6 +12,10 @@ public interface ProjectTestApi {
     @GET("/api/GetUserById.php")
     Call<GetListUsers> getListModel (@Query("id") String id);
 
+    @GET("/api/Authentication.php")
+    Call<GetListUsers> validUser (@Query("login") String login,
+                                  @Query("password") String password);
+
     @POST("/api/UpdateUserCoordinatesById.php")
     Call<String> setCoordinates (@Query("id") String id,
                                @Query("coordinateX") String coordinateX,

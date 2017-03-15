@@ -23,4 +23,5 @@
     <string name="parent_item">Родители</string>
     <string name="registration">Регистрация</string>
     <string name="not_arrive">Сегодня не придет</string>
+    <string name="invalid_login">Неверный логин или пароль</string>
 </resources>

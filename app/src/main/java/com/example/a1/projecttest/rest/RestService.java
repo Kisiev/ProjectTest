@@ -33,4 +33,11 @@ public final class RestService {
 
     }
 
+    public GetListUsers validUser ( @NonNull String login, @NonNull String password) throws IOException{
+        return  restClient.getProjectTestApi()
+                .validUser(login, password)
+                .execute().body();
+
+    }
+
 }
