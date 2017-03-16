@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,22 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
-import com.example.a1.projecttest.utils.CircleTransform;
+import com.google.android.gms.drive.events.ChangeEvent;
+import com.google.android.gms.drive.events.ChangeListener;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class VospitannikFragment extends Fragment {
@@ -74,7 +70,7 @@ public class VospitannikFragment extends Fragment {
         colors.add(getResources().getColor(R.color.color3));
         colors.add(getResources().getColor(R.color.color6));
 
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         TextView date = (TextView) view.findViewById(R.id.date_in_childTV);
         TextView times = (TextView) view.findViewById(R.id.time_in_child);
         SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy");
@@ -85,7 +81,8 @@ public class VospitannikFragment extends Fragment {
         times.setText("Время: 08:03");
         recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new VospitannikAdapter(listService, colors, time));
+
+        reBuild();
 
         Button button = (Button) view.findViewById(R.id.child_not_arriveBT);
         button.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +93,46 @@ public class VospitannikFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void reBuild(){
+        List<String> time = new ArrayList<>();
+        time.add("7:00 - 8:00");
+        time.add("8:00 - 8:15");
+        time.add("8:15 - 8:30");
+        time.add("8:30 - 9:10");
+        time.add("9:10 - 12:00");
+        time.add("9:10 - 12:00");
+        time.add("12:00 - 12:10");
+        time.add("12:10 - 13:10");
+        time.add("13:10 - 15:10");
+        time.add("15:10 - 15:30");
+        time.add("15:10 - 16:00");
+        List<String> listService = new ArrayList<>();
+        listService.add("Утренний прием детей на улице");
+        listService.add("Утреняя гимнастика");
+        listService.add("Свободная деятельность");
+        listService.add("Завтрак");
+        listService.add("Подготовка к завтраку, завтрак");
+        listService.add("Подготовка к прогулке, прогулка");
+        listService.add("Гигиенические процедуры");
+        listService.add("Подготовка к обеду, обед");
+        listService.add("Подготовка ко сну, дневной сон");
+        listService.add("Подъем, закаливающие процедуры");
+        listService.add("Подготовка к полднику, полдник");
+        List<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.color2));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color5));
+        colors.add(getResources().getColor(R.color.color6));
+        colors.add(getResources().getColor(R.color.color2));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color5));
+        colors.add(getResources().getColor(R.color.color6));
+        colors.add(getResources().getColor(R.color.color2));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color6));
+        recyclerView.setAdapter(new VospitannikAdapter(listService, colors, time));
     }
 
     @Override
@@ -140,4 +177,6 @@ public class VospitannikFragment extends Fragment {
         });
         dialog.show();
     }
+
 }
+

@@ -32,7 +32,8 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     List<String> serviceName;
     List<Integer> colors;
     List<String> time;
-    public VospitannikAdapter (List<String> serviceName, List<Integer> colors, List<String> time) {
+
+    public VospitannikAdapter (List<String> serviceName, List<Integer> colors, List<String> time ) {
         this.time = time;
         this.serviceName = serviceName;
         this.colors = colors;
@@ -47,10 +48,21 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
-        String pos = serviceName.get(position);
+        final String pos = serviceName.get(position);
         holder.textView.setText(pos);
         holder.timeTv.setText(time.get(position));
+        holder.cardView.setTag(position);
         holder.cardView.setCardBackgroundColor(colors.get(position));
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < serviceName.size(); i ++){
+                    if (i != position)
+                        notifyItemChanged(i);
+                }
+                holder.false_tv.setVisibility(View.VISIBLE);
+            }
+        });
         if (position < 1) {
             holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
             holder.imageView.setImageResource(R.mipmap.green_smile);
@@ -58,6 +70,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         else if (position == 1)
             holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
         else if (position > 1)  holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
+
     }
 
     @Override
@@ -65,8 +78,9 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         return serviceName.size();
     }
 
-    public class VospitannikHolder extends RecyclerView.ViewHolder{
+    public class VospitannikHolder extends RecyclerView.ViewHolder {
         TextView textView;
+        RecyclerView recyclerView;
         TextView timeTv;
         CardView cardView;
         TextView false_tv;
@@ -81,7 +95,9 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             false_tv = (TextView) itemView.findViewById(R.id.false_tv);
             imageTime = (ImageView) itemView.findViewById(R.id.image_time);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.vospit_recycler);
 
         }
+
     }
 }
