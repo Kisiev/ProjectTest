@@ -36,6 +36,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.Entities.ChildrenRoleEntity;
 import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.fragments.ChatFragment;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
@@ -202,6 +203,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(intent);
                 }
 
+            case 3:
+                ChatFragment chatFragment = new ChatFragment();
+                replaceFragment(chatFragment, R.id.content_main);
+                updateToolbarTitle(chatFragment, "Чат");
                 break;
             case 4:
                 UserLoginSession session = new UserLoginSession(this);
