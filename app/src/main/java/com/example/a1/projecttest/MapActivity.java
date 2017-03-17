@@ -10,7 +10,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -39,11 +42,13 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Touch;
 
 import java.io.IOException;
+import java.security.Permission;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@EActivity (R.layout.activity_maps)
+@EActivity(R.layout.activity_maps)
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final int PERMISSION_REQUEST_CODE = 1;
     SupportMapFragment mapFragment;
     private LocationManager locationManager;
     LatLng latLng;
@@ -52,7 +57,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public Handler handler;
     Runnable runnable;
     int calbacks = 0;
+    int calls = 0;
     LinearLayout view;
+    boolean grandedOrDinid = false;
+
     @AfterViews
     protected void main() {
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -62,45 +70,58 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.draggable(true);
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                1000 * 15, 1, locationListener);
-        locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 1000 * 15, 1,
-                locationListener);
 
-        handler = new Handler();
-        setPeriodicTime();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                getCoordinates();
-                setPeriodicTime();
-            }
-        };
-        handler.postDelayed(runnable, 5000);
+        if (calls > 1) finish();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    1000 * 15, 1, locationListener);
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 1000 * 15, 1,
+                    locationListener);
+
+            handler = new Handler();
+            setPeriodicTime();
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    getCoordinates();
+                    setPeriodicTime();
+                }
+            };
+            handler.postDelayed(runnable, 5000);
+        } else {
+            calls++;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+            return;
+        }
+
     }
 
-    private void setPeriodicTime () {
-        calbacks ++;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
-        if (getListUsers!= null) {
+    private void setPeriodicTime() {
+        calbacks++;
+
+        if (getListUsers != null) {
             view.setVisibility(View.GONE);
             googleMap.clear();
             googleMap.addMarker(new MarkerOptions().position(new LatLng(Double.valueOf(
                     getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY()))));
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
-                        .zoom(18)
-                        .build();
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
-                googleMap.animateCamera(cameraUpdate);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())))
+                    .zoom(18)
+                    .build();
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+            googleMap.animateCamera(cameraUpdate);
         }
 
         handler.postDelayed(runnable, 5000);
@@ -109,9 +130,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onPause() {
         super.onPause();
-        handler.removeCallbacks(runnable);
-        locationManager.removeUpdates(locationListener);
+
     }
+
 
     private LocationListener locationListener = new LocationListener() {
         @Override
@@ -126,7 +147,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
         @Override
         public void onProviderEnabled(String provider) {
-            showLocation(locationManager.getLastKnownLocation(provider));
+            if (calls > 1) onBackPressed();
+            if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                showLocation(locationManager.getLastKnownLocation(provider));
+            } else {
+                calls++;
+                ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+                return;
+            }
         }
 
         @Override
@@ -149,6 +177,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     protected void onStart() {
         super.onStart();
         view = (LinearLayout) findViewById(R.id.view_loading);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            handler.removeCallbacks(runnable);
+            locationManager.removeUpdates(locationListener);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void showLocation(final Location location) {

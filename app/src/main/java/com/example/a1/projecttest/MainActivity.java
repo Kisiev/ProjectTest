@@ -1,58 +1,35 @@
 package com.example.a1.projecttest;
 
-import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.example.a1.projecttest.Entities.ChildrenRoleEntity;
-import com.example.a1.projecttest.adapters.CircleImageAdapter;
-import com.example.a1.projecttest.adapters.VospitannikAdapter;
-import com.example.a1.projecttest.fragments.ChatFragment;
 import com.example.a1.projecttest.fragments.FeedFragment;
-import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
-import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.CircleTransform;
-import com.google.android.gms.fitness.data.Value;
-import com.google.android.gms.maps.MapFragment;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @EActivity (R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -202,12 +179,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent = new Intent(MainActivity.this, MapActivity_.class);
                     startActivity(intent);
                 }
-
-            case 3:
-                ChatFragment chatFragment = new ChatFragment();
-                replaceFragment(chatFragment, R.id.content_main);
-                updateToolbarTitle(chatFragment, "Чат");
                 break;
+            case 3:
+                startActivity(new Intent(MainActivity.this, ChatActivity_.class));
+              break;
             case 4:
                 UserLoginSession session = new UserLoginSession(this);
                 session.clear();
