@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
+import com.example.a1.projecttest.vospitatel.VospitatelMainActivity;
+import com.example.a1.projecttest.vospitatel.VospitatelMainActivity_;
+import com.example.a1.projecttest.zavedushaia.MainZavDetSad;
+import com.example.a1.projecttest.zavedushaia.MainZavDetSad_;
+
 public class RegistrationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,25 @@ public class RegistrationActivity extends Activity {
                 if(radioButton.isChecked()){
                     startActivity(new Intent(RegistrationActivity.this, ChildActivity_.class));
                 }
+            }
+        });
+        final RadioButton zavDetSadBurron = (RadioButton) findViewById(R.id.zavDetSadRB);
+        radioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(zavDetSadBurron.isChecked()){
+                    startActivity(new Intent(RegistrationActivity.this, MainZavDetSad_.class));
+                }
+            }
+        });
+        final RadioButton vospitatel = (RadioButton) findViewById(R.id.vospitatel);
+        vospitatel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(vospitatel.isChecked()){
+                    startActivity(new Intent(RegistrationActivity.this, VospitatelMainActivity_.class));
+                }
+
             }
         });
     }

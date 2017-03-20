@@ -52,24 +52,22 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         holder.textView.setText(pos);
         holder.timeTv.setText(time.get(position));
         holder.cardView.setTag(position);
-        holder.cardView.setCardBackgroundColor(colors.get(position));
+        holder.cardView.setCardBackgroundColor(colors.get(holder.getAdapterPosition()));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < serviceName.size(); i ++){
-                    if (i != position)
-                        notifyItemChanged(i);
-                }
-                holder.false_tv.setVisibility(View.VISIBLE);
+                if (holder.false_tv.getVisibility() == View.VISIBLE)
+                    holder.false_tv.setVisibility(View.GONE);
+                else holder.false_tv.setVisibility(View.VISIBLE);
             }
         });
-        if (position < 1) {
+        if (holder.getAdapterPosition() < 1) {
             holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
             holder.imageView.setImageResource(R.mipmap.green_smile);
         }
-        else if (position == 1)
+        else if (holder.getAdapterPosition() == 1)
             holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
-        else if (position > 1)  holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
+        else if (holder.getAdapterPosition() > 1)  holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
 
     }
 

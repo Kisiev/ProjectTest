@@ -106,17 +106,34 @@
             android:theme="@style/Theme.App.Base"
             android:hint="Отчество"
             android:id="@+id/lastname_user_edit"/>
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/child_RB"
-            android:text="Ребенок"
-            android:textColor="@color/whiteColor"/>
-        <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Родитель"
-            android:textColor="@color/whiteColor"/>
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/child_RB"
+                android:text="Ребенок"
+                android:textColor="@color/whiteColor"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Родитель"
+                android:textColor="@color/whiteColor"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/zavDetSadRB"
+                android:text="Заведующая детским садом"
+                android:textColor="@color/whiteColor"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/vospitatel"
+                android:text="Воспитатель"
+                android:textColor="@color/whiteColor"/>
+        </RadioGroup>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

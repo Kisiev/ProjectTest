@@ -30,10 +30,20 @@
         <service android:name=".utils.ChildService_">
 
         </service>
+        <activity android:name=".YandexMapActivity_">
+
+        </activity>
+
         <activity android:name=".MainActivity_"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".MapActivity_"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".zavedushaia.MainZavDetSad_"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".vospitatel.VospitatelMainActivity_"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".ChildActivity_"
