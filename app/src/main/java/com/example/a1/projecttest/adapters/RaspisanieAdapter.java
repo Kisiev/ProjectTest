@@ -83,9 +83,13 @@ public class RaspisanieAdapter extends RecyclerView.Adapter<RaspisanieAdapter.Ra
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.recyclerView.setVisibility(View.VISIBLE);
-                holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                holder.recyclerView.setAdapter(new RaspisanieGroupItemAdapter(listNames, colorApNull));
+                if (holder.recyclerView.getVisibility() != View.VISIBLE) {
+                    holder.recyclerView.setVisibility(View.VISIBLE);
+                    holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    holder.recyclerView.setAdapter(new RaspisanieGroupItemAdapter(listNames, colorApNull));
+                } else {
+                    holder.recyclerView.setVisibility(View.GONE);
+                }
             }
         });
         if (holder.getAdapterPosition() < 1) {

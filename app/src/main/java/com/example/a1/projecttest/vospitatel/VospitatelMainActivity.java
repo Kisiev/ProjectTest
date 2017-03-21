@@ -23,6 +23,7 @@ import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.MapActivity_;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
+import com.example.a1.projecttest.fragments.ArrivingFragment;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
@@ -47,6 +48,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         setMenu();
+        ArrivingFragment arrivingFragment = new ArrivingFragment();
+        replaceFragment(arrivingFragment, R.id.content_main);
     }
 
     private void setMenu(){
@@ -82,7 +85,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         int id = item.getOrder();
         switch (id){
             case 0:
-
+                ArrivingFragment arrivingFragment = new ArrivingFragment();
+                replaceFragment(arrivingFragment, R.id.content_main);
                 break;
             case 1:
                 RaspisanieFragment raspisanieFragment = new RaspisanieFragment();

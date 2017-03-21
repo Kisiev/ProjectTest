@@ -35,6 +35,7 @@ public class RaspisanieGroupItemAdapter extends RecyclerView.Adapter<RaspisanieG
     @Override
     public void onBindViewHolder(RaspisanieGroupItemHolder holder, int position) {
         holder.name.setText(listNames.get(position));
+        holder.name.setTextColor(Color.WHITE);
         holder.cardView.setBackgroundColor(color);
     }
 
