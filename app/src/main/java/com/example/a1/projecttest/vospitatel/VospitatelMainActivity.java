@@ -1,9 +1,14 @@
 package com.example.a1.projecttest.vospitatel;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,6 +25,7 @@ import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -27,6 +33,7 @@ import org.androidannotations.annotations.EActivity;
 @EActivity(R.layout.vospitatel_activity)
 public class VospitatelMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
+    Application context;
     NavigationView navigationView;
     @AfterViews
     void main(){
@@ -51,6 +58,22 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         menu.add(Menu.NONE, 123, 4, "Выход");
     }
 
+    public VospitatelMainActivity () {
+
+    }
+
+    public void replaceFragment(Fragment fragment, int id) {
+        String backStackName = fragment.getClass().getName();
+        FragmentManager manager = this.getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
+        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(id, fragment, backStackName);
+            ft.addToBackStack(backStackName);
+            ft.commit();
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (drawer != null) {
@@ -62,7 +85,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
                 break;
             case 1:
-
+                RaspisanieFragment raspisanieFragment = new RaspisanieFragment();
+                replaceFragment(raspisanieFragment, R.id.content_main);
                 break;
             case 2:
 

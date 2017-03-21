@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
               setTitle(title);
           }
       }
-    private void replaceFragment(Fragment fragment, int id) {
+    public void replaceFragment(Fragment fragment, int id) {
         String backStackName = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
         boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
     }
-
 
 
     private void setMenu(){
