@@ -26,16 +26,19 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:id="@+id/green_smile_IV"
                 android:background="@color/colorForApacityNull"
                 android:src="@mipmap/green_smile"/>
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:id="@+id/yellow_smile_IV"
                 android:background="@color/colorForApacityNull"
                 android:src="@mipmap/yellow_smile"/>
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:id="@+id/red_smile_IV"
                 android:background="@color/colorForApacityNull"
                 android:src="@mipmap/red_smile"/>
         </LinearLayout>

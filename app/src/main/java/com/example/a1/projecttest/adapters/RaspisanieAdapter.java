@@ -86,7 +86,7 @@ public class RaspisanieAdapter extends RecyclerView.Adapter<RaspisanieAdapter.Ra
                 if (holder.recyclerView.getVisibility() != View.VISIBLE) {
                     holder.recyclerView.setVisibility(View.VISIBLE);
                     holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    holder.recyclerView.setAdapter(new RaspisanieGroupItemAdapter(listNames, colorApNull));
+                    holder.recyclerView.setAdapter(new RaspisanieGroupItemAdapter(listNames, colorApNull, holder.imageView));
                 } else {
                     holder.recyclerView.setVisibility(View.GONE);
                 }

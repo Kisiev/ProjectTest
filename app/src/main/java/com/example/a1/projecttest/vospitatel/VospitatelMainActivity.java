@@ -1,9 +1,6 @@
 package com.example.a1.projecttest.vospitatel;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,15 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.a1.projecttest.ChatActivity_;
-import com.example.a1.projecttest.LoginActivity_;
-import com.example.a1.projecttest.MainActivity;
-import com.example.a1.projecttest.MapActivity_;
 import com.example.a1.projecttest.R;
-import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.fragments.ArrivingFragment;
-import com.example.a1.projecttest.fragments.FeedFragment;
-import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 
 import org.androidannotations.annotations.AfterViews;

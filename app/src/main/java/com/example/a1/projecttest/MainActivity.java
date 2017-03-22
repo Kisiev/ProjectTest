@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
                 if (f != null) {
 
-                } else finish();
+                }
 
             }
 
