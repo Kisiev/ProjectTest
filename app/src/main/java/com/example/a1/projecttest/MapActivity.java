@@ -51,7 +51,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private static final int PERMISSION_REQUEST_CODE = 1;
     SupportMapFragment mapFragment;
     private LocationManager locationManager;
-    LatLng latLng;
     GoogleMap googleMap;
     GetListUsers getListUsers;
     public Handler handler;
@@ -59,7 +58,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     int calbacks = 0;
     int calls = 0;
     LinearLayout view;
-    boolean grandedOrDinid = false;
 
     @AfterViews
     protected void main() {

@@ -3,9 +3,11 @@ package com.example.a1.projecttest.adapters;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 
@@ -27,16 +30,14 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder>{
+import static android.os.Build.VERSION.SDK;
 
-    List<String> serviceName;
-    List<Integer> colors;
-    List<String> time;
+public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
-    public VospitannikAdapter (List<String> serviceName, List<Integer> colors, List<String> time ) {
-        this.time = time;
-        this.serviceName = serviceName;
-        this.colors = colors;
+    List<ChildStatusEntity> services;
+
+    public VospitannikAdapter (List<ChildStatusEntity> services ) {
+        this.services = services;
     }
 
     @Override
@@ -48,19 +49,11 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
-        final String pos = serviceName.get(position);
-        holder.textView.setText(pos);
-        holder.timeTv.setText(time.get(position));
-        holder.cardView.setTag(position);
-        holder.cardView.setCardBackgroundColor(colors.get(holder.getAdapterPosition()));
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.false_tv.getVisibility() == View.VISIBLE)
-                    holder.false_tv.setVisibility(View.GONE);
-                else holder.false_tv.setVisibility(View.VISIBLE);
-            }
-        });
+        holder.textView.setText(services.get(holder.getAdapterPosition()).getServiceName());
+        holder.timeTv.setText(services.get(holder.getAdapterPosition()).getTimeIn() + " - " + services.get(holder.getAdapterPosition()).getTimeOut());
+        holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
+        holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
+
         if (holder.getAdapterPosition() < 1) {
             holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
             holder.imageView.setImageResource(R.mipmap.green_smile);
@@ -73,10 +66,10 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     @Override
     public int getItemCount() {
-        return serviceName.size();
+        return services.size();
     }
 
-    public class VospitannikHolder extends RecyclerView.ViewHolder {
+    public class VospitannikHolder extends RecyclerView.ViewHolder{
         TextView textView;
         RecyclerView recyclerView;
         TextView timeTv;

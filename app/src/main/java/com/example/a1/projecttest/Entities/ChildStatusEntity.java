@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.Entities;
 
 import android.app.Application;
+import android.view.View;
 
 import com.example.a1.projecttest.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -14,9 +15,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.R.attr.name;
 
-@Table(database = AppDatabase.class, insertConflict = ConflictAction.REPLACE)
+
+@Table(database = AppDatabase.class)
 public class ChildStatusEntity extends BaseModel {
+
     public int getId() {
         return id;
     }
@@ -33,19 +37,19 @@ public class ChildStatusEntity extends BaseModel {
         this.serviceName = serviceName;
     }
 
-    public String getTimeIn() {
+    public Date getTimeIn() {
         return timeIn;
     }
 
-    public void setTimeIn(String timeIn) {
+    public void setTimeIn(Date timeIn) {
         this.timeIn = timeIn;
     }
 
-    public String getTimeOut() {
+    public Date getTimeOut() {
         return timeOut;
     }
 
-    public void setTimeOut(String timeOut) {
+    public void setTimeOut(Date timeOut) {
         this.timeOut = timeOut;
     }
 
@@ -65,30 +69,40 @@ public class ChildStatusEntity extends BaseModel {
         this.comments = comments;
     }
 
-    @PrimaryKey
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    @PrimaryKey()
     private int id;
 
-    @Column
+    @Column(name = "serviceName")
     private String serviceName;
 
-    @Column
-    private String timeIn;
+    @Column(name = "timeIn")
+    private Date timeIn;
 
-    @Column
-    private String timeOut;
+    @Column(name = "timeOut")
+    private Date timeOut;
 
-    @Column
+    @Column(name = "timeChecked")
     private int timeChecked;
 
-    @Column
+    @Column(name = "comments")
     private String comments;
 
-    public static void insert (String serviceName, String timeIn, String timeOut, int timeChecked, String comments) {
-        SQLite.insert(ChildStatusEntity.class)
-                .columns("serviceName", "timeIn", "timeOut", "timeChecked", "comments")
-                .values(serviceName, timeIn, timeOut, timeChecked, comments)
-                .execute();
+    @Column(name = "color")
+    private int color;
 
+    public static void insert (String serviceName, Date timeIn, Date timeOut, int timeChecked, String comments, int color) {
+        SQLite.insert(ChildStatusEntity.class)
+                .columns("serviceName", "timeIn", "timeOut", "timeChecked", "comments", "color")
+                .values(serviceName, timeIn, timeOut, timeChecked, comments, color)
+                .execute();
     }
 
     public static List<ChildStatusEntity> selectChilds(){
