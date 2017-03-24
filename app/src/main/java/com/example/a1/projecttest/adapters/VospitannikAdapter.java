@@ -21,6 +21,7 @@ import com.example.a1.projecttest.R;
 
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,8 +35,9 @@ import static android.os.Build.VERSION.SDK;
 
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
+    int i = 0;
     List<ChildStatusEntity> services;
-
+    DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     public VospitannikAdapter (List<ChildStatusEntity> services ) {
         this.services = services;
     }
@@ -49,19 +51,33 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
+        i ++;
         holder.textView.setText(services.get(holder.getAdapterPosition()).getServiceName());
-        holder.timeTv.setText(services.get(holder.getAdapterPosition()).getTimeIn() + " - " + services.get(holder.getAdapterPosition()).getTimeOut());
+
+        holder.timeTv.setText(dfDate_day_time.format(services.get(holder.getAdapterPosition()).getTimeIn())
+                + " - "
+                + dfDate_day_time.format(services.get(holder.getAdapterPosition()).getTimeOut()));
+
         holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
         holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
 
-        if (holder.getAdapterPosition() < 1) {
-            holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
-            holder.imageView.setImageResource(R.mipmap.green_smile);
-        }
-        else if (holder.getAdapterPosition() == 1)
-            holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
-        else if (holder.getAdapterPosition() > 1)  holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
+        Date date = new Date();
+        Calendar now = Calendar.getInstance();
 
+/*        if (services.get(position).getTimeOut().after(now.getTime()) ){
+            holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
+        }*/
+
+        if (i < 2)
+        if (services.get(position).getTimeOut().before(now.getTime())){
+            holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
+        }
+
+       /* if (services.get(position).getTimeIn().after(now.getTime())){
+            if (services.get(position).getTimeOut().before(now.getTime())){
+                holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
+            }
+        }*/
     }
 
     @Override

@@ -35,16 +35,11 @@ import org.androidannotations.annotations.EActivity;
 
 @EActivity (R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-   private DrawerLayout drawer;
-   private NavigationView navigationView;
-   private ImageView imageView;
+    DrawerLayout drawer;
+    NavigationView navigationView;
+    ImageView imageView;
     @AfterViews
-    protected void main() {
-        initDrawerLayout();
-        setMenu();
-    }
-
-    private void initDrawerLayout(){
+    public void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -54,12 +49,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        initDrawerLayout();
         replaceFragment(new FeedFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
+        setMenu();
     }
 
     private void updateToolbarTitle(Fragment fragment, String title) {
@@ -93,9 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
     }
-
-
-
 
     public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
 

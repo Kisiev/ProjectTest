@@ -66,6 +66,7 @@ public class VospitannikFragment extends Fragment {
             time.add(dfDate_day_time.parse("13:10"));
             time.add(dfDate_day_time.parse("15:10"));
             time.add(dfDate_day_time.parse("15:10"));
+            time.add(dfDate_day_time.parse("16:00"));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -86,6 +87,7 @@ public class VospitannikFragment extends Fragment {
             time1.add(dfDate_day_time.parse("15:10"));
             time1.add(dfDate_day_time.parse("15:30"));
             time1.add(dfDate_day_time.parse("16:00"));
+            time1.add(dfDate_day_time.parse("17:00"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -103,6 +105,7 @@ public class VospitannikFragment extends Fragment {
         listService.add("Подготовка ко сну, дневной сон");
         listService.add("Подъем, закаливающие процедуры");
         listService.add("Подготовка к полднику, полдник");
+        listService.add("Полдник и домой");
 
         List<String> coments = new ArrayList<>();
         coments.add("Ваш ребенок плакал после вашего ухода");
@@ -116,6 +119,7 @@ public class VospitannikFragment extends Fragment {
         coments.add("Уехал в сауну");
         coments.add("Прыгал на кропати вместе с охранником");
         coments.add("Шатал трубу");
+        coments.add("Шатал трубу второй раз");
 
         List<Integer> colors = new ArrayList<>();
         colors.add(getResources().getColor(R.color.color2));
@@ -129,6 +133,7 @@ public class VospitannikFragment extends Fragment {
         colors.add(getResources().getColor(R.color.color2));
         colors.add(getResources().getColor(R.color.color3));
         colors.add(getResources().getColor(R.color.color6));
+        colors.add(getResources().getColor(R.color.color1));
 
         TextView date = (TextView) view.findViewById(R.id.date_in_childTV);
         TextView times = (TextView) view.findViewById(R.id.time_in_child);
