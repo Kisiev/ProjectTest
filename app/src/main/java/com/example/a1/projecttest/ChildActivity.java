@@ -8,7 +8,6 @@ import android.widget.Button;
 
 import android.widget.Toast;
 
-import com.example.a1.projecttest.utils.ChildService;
 import com.example.a1.projecttest.utils.ChildService_;
 
 import org.androidannotations.annotations.EActivity;
@@ -30,9 +29,4 @@ public class ChildActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-       //
-    }
 }

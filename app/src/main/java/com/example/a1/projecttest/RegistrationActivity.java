@@ -19,7 +19,7 @@ import org.androidannotations.annotations.EActivity;
 public class RegistrationActivity extends Activity {
 
     @AfterViews
-    private void main () {
+    public void main () {
         initImageOnBackground();
         onClickButton();
     }

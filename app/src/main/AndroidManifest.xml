@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity"
+        <activity android:name=".RegistrationActivity_"
             android:theme="@style/AppTheme"
             />
         <service android:name=".utils.ChildService_">

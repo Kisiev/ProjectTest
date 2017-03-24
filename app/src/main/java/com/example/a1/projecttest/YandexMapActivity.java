@@ -57,7 +57,7 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 public class YandexMapActivity extends Activity{
 
     @ViewById(R.id.map_yandex)
-    private MapView webView;
+    public MapView webView;
     private LocationManager locationManager;
     private GetListUsers getListUsers;
     private Handler handler;
