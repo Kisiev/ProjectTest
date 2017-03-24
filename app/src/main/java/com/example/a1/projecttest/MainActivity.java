@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -33,12 +35,16 @@ import org.androidannotations.annotations.EActivity;
 
 @EActivity (R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    DrawerLayout drawer;
-    NavigationView navigationView;
-    GetListUsers getListUsers;
-    ImageView imageView;
+   private DrawerLayout drawer;
+   private NavigationView navigationView;
+   private ImageView imageView;
     @AfterViews
     protected void main() {
+        initDrawerLayout();
+        setMenu();
+    }
+
+    private void initDrawerLayout(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -48,45 +54,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        initDrawerLayout();
         replaceFragment(new FeedFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
-        setMenu();
-
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
-                if (f != null) {
-
-                }
-
-            }
-
-        });
     }
 
-
-      private void updateToolbarTitle(Fragment fragment, String title) {
+    private void updateToolbarTitle(Fragment fragment, String title) {
           String fragmentClassName = fragment.getClass().getName();
           if (fragmentClassName.equals(fragment.getClass().getName())) {
               setTitle(title);
           }
-      }
-    public void replaceFragment(Fragment fragment, int id) {
-        String backStackName = fragment.getClass().getName();
-        FragmentManager manager = getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
-        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.replace(id, fragment, backStackName);
-            ft.addToBackStack(backStackName);
-            ft.commit();
-        }
     }
-
 
     private void setMenu(){
         Menu menu = navigationView.getMenu();
@@ -100,6 +81,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu menu2 = navigationView.getMenu();
         menu2.add(Menu.NONE, 123, 4, "Выход");
     }
+
+    public void replaceFragment(Fragment fragment, int id) {
+        String backStackName = fragment.getClass().getName();
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
+        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(id, fragment, backStackName);
+            ft.addToBackStack(backStackName);
+            ft.commit();
+        }
+    }
+
+
+
 
     public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
 
@@ -141,13 +137,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public long rnd(long min, long max)
-    {
-        max -= min;
-        final double random = Math.random();
-        return Math.round((random * max) + min);
     }
 
 

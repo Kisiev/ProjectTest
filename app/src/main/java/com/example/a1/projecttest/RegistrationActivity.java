@@ -12,15 +12,24 @@ import com.example.a1.projecttest.vospitatel.VospitatelMainActivity_;
 import com.example.a1.projecttest.zavedushaia.MainZavDetSad;
 import com.example.a1.projecttest.zavedushaia.MainZavDetSad_;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+
+@EActivity(R.layout.registration_activity)
 public class RegistrationActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_activity);
+
+    @AfterViews
+    private void main () {
+        initImageOnBackground();
+        onClickButton();
+    }
+    private void initImageOnBackground(){
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
         LoginActivity loginActivity = new LoginActivity();
         loginActivity.createImage(R.id.reg_imageView, R.mipmap.logo, imageView);
+    }
 
+    private void onClickButton(){
         final RadioButton radioButton = (RadioButton) findViewById(R.id.child_RB);
         radioButton.setOnClickListener(new View.OnClickListener() {
             @Override

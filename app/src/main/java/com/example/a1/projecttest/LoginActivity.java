@@ -31,9 +31,9 @@ import java.util.List;
 @EActivity (R.layout.login_activity)
 public class LoginActivity extends Activity {
 
-    UserLoginSession userLoginSession;
-    TextView loginTV, passwordTV;
-    GetListUsers validUser;
+    private UserLoginSession userLoginSession;
+    private TextView loginTV, passwordTV;
+    private GetListUsers validUser;
     @AfterViews
     protected void main() {
         userLoginSession = new UserLoginSession(getApplicationContext());

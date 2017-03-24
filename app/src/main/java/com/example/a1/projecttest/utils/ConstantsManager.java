@@ -7,4 +7,5 @@ public class ConstantsManager {
     final public static String PASSWORD = "password";
     final public static String VALID_FALSE = "false";
     final public static String VALID_TRUE = "true";
+    final public static int PERMISSION_REQUEST_CODE = 1;
 }

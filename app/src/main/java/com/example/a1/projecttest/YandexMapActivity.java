@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.RestService;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,6 +49,7 @@ import ru.yandex.yandexmapkit.map.OnMapListener;
 import ru.yandex.yandexmapkit.overlay.Overlay;
 import ru.yandex.yandexmapkit.overlay.OverlayItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
+import ru.yandex.yandexmapkit.overlay.balloon.BalloonOverlay;
 import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
@@ -55,20 +57,16 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 public class YandexMapActivity extends Activity{
 
     @ViewById(R.id.map_yandex)
-    MapView webView;
-    MapController mMapController;
-    private static final int PERMISSION_REQUEST_CODE = 1;
-    SupportMapFragment mapFragment;
+    private MapView webView;
     private LocationManager locationManager;
-    GoogleMap googleMap;
-    GetListUsers getListUsers;
-    public Handler handler;
-    Runnable runnable;
-    int calbacks = 0;
-    int calls = 0;
-    LinearLayout view;
-    OverlayItem overlayItem;
-    Overlay overlay;
+    private GetListUsers getListUsers;
+    private Handler handler;
+    private Runnable runnable;
+    private int calbacks = 0;
+    private int calls = 0;
+    private LinearLayout view;
+    private OverlayItem overlayItem;
+    private Overlay overlay;
     @AfterViews
     void main () {
 
@@ -100,15 +98,28 @@ public class YandexMapActivity extends Activity{
             handler.postDelayed(runnable, 5000);
         } else {
             calls++;
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, ConstantsManager.PERMISSION_REQUEST_CODE);
             return;
         }
 
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    protected void onStart() {
+        super.onStart();
+        view = (LinearLayout) findViewById(R.id.view_loading);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            handler.removeCallbacks(runnable);
+            locationManager.removeUpdates(locationListener);
+        } catch (RuntimeException e){
+            e.printStackTrace();
+        }
+
     }
 
     private void setPeriodicTime() {
@@ -124,22 +135,22 @@ public class YandexMapActivity extends Activity{
             }
 
             OverlayManager overlayManager = mapController.getOverlayManager();
+            OverlayManager balloon = mapController.getOverlayManager();
             overlay = new Overlay(mapController);
+            Overlay overlay1 = new Overlay(mapController);
             Resources res = getResources();
+            BalloonOverlay balloonOverlay = new BalloonOverlay(mapController);
+            BalloonItem  balloonItem = new BalloonItem(this, new GeoPoint(44,44));
+            balloonOverlay.setBalloonItem(balloonItem);
             Drawable bitmap = getResources().getDrawable(R.drawable.ic_place_black_24dp);
             overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf( getListUsers.getCoordinateY())), bitmap);
+
 
             overlay.addOverlayItem(overlayItem);
             overlayManager.addOverlay(overlay);
         }
 
         handler.postDelayed(runnable, 5000);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
     }
 
 
@@ -158,10 +169,10 @@ public class YandexMapActivity extends Activity{
         public void onProviderEnabled(String provider) {
             if (calls > 1) onBackPressed();
             if (ContextCompat.checkSelfPermission(YandexMapActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                showLocation(locationManager.getLastKnownLocation(provider));
+
             } else {
                 calls++;
-                ActivityCompat.requestPermissions(YandexMapActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+                ActivityCompat.requestPermissions(YandexMapActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, ConstantsManager.PERMISSION_REQUEST_CODE);
                 return;
             }
         }
@@ -182,24 +193,4 @@ public class YandexMapActivity extends Activity{
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        view = (LinearLayout) findViewById(R.id.view_loading);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        try {
-            handler.removeCallbacks(runnable);
-            locationManager.removeUpdates(locationListener);
-        } catch (RuntimeException e){
-            e.printStackTrace();
-        }
-
-    }
-    private void showLocation(Location location){
-
-    }
 }
