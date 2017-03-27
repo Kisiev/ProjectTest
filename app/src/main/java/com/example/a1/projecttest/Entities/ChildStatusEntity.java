@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import static android.R.attr.name;
+import static android.R.attr.visible;
 
 
 @Table(database = AppDatabase.class)
@@ -77,6 +78,14 @@ public class ChildStatusEntity extends BaseModel {
         this.color = color;
     }
 
+    public int getVisible() {
+        return visible;
+    }
+
+    public void setVisible(int visible) {
+        this.visible = visible;
+    }
+
     @PrimaryKey()
     private int id;
 
@@ -98,10 +107,13 @@ public class ChildStatusEntity extends BaseModel {
     @Column(name = "color")
     private int color;
 
-    public static void insert (String serviceName, Date timeIn, Date timeOut, int timeChecked, String comments, int color) {
+    @Column(name = "visible")
+    private int visible;
+
+    public static void insert (String serviceName, Date timeIn, Date timeOut, int timeChecked, String comments, int color, int visible) {
         SQLite.insert(ChildStatusEntity.class)
-                .columns("serviceName", "timeIn", "timeOut", "timeChecked", "comments", "color")
-                .values(serviceName, timeIn, timeOut, timeChecked, comments, color)
+                .columns("serviceName", "timeIn", "timeOut", "timeChecked", "comments", "color", "visible")
+                .values(serviceName, timeIn, timeOut, timeChecked, comments, color, visible)
                 .execute();
     }
 

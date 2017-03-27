@@ -8,12 +8,12 @@
     <color name="colorAlphaNULL">#76e4e4e4</color>
     <color name="whiteColor">#ffffff</color>
 
-    <color name="color1">#fa3030</color>
-    <color name="color2">#fa7330</color>
-    <color name="color3">#fab730</color>
-    <color name="color4">#73fa30</color>
-    <color name="color5">#30faad</color>
-    <color name="color6">#f330fa</color>
+    <color name="color1">#ff0000</color>
+    <color name="color2">#fbff00</color>
+    <color name="color3">#6aff00</color>
+    <color name="color4">#01e6ff</color>
+    <color name="color5">#007bff</color>
+    <color name="color6">#ff00d0</color>
     <color name="black">#000000</color>
     <color name="colorForApacityNull">#00f330fa</color>
     <color name="color_for_table">#6530bafa</color>

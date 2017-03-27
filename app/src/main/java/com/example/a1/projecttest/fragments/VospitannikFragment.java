@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
+import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.utils.ClickListener;
@@ -44,56 +45,63 @@ import java.util.List;
 @EFragment(R.layout.vospitanik_fragment)
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
+
+    private Date getDateString(int hours, int mins, int sec){
+        Date time = new Date();
+        time.setHours(hours);
+        time.setMinutes(mins);
+        time.setSeconds(sec);
+        return time;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
 
-        SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy");
+        SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy, hh:mm");
         SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
         final Calendar calendar = Calendar.getInstance();
+        SQLite.update(ChildStatusEntity.class)
+                .set(ChildStatusEntity_Table.visible.eq(View.GONE))
+                .execute();
 
         List<Date> time = new ArrayList<>();
-        try {
-            time.add(dfDate_day_time.parse("7:00"));
-            time.add(dfDate_day_time.parse("8:00"));
-            time.add(dfDate_day_time.parse("8:15"));
-            time.add(dfDate_day_time.parse("8:30"));
-            time.add(dfDate_day_time.parse("9:10"));
-            time.add(dfDate_day_time.parse("9:10"));
-            time.add(dfDate_day_time.parse("12:00"));
-            time.add(dfDate_day_time.parse("12:10"));
-            time.add(dfDate_day_time.parse("13:10"));
-            time.add(dfDate_day_time.parse("15:10"));
-            time.add(dfDate_day_time.parse("15:10"));
-            time.add(dfDate_day_time.parse("16:00"));
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            time.add(getDateString(7, 0, 0));
+            time.add(getDateString(8, 0, 0));
+            time.add(getDateString(9, 0, 0));
+            time.add(getDateString(10, 0, 0));
+            time.add(getDateString(11, 0, 0));
+            time.add(getDateString(12, 0, 0));
+            time.add(getDateString(13, 0, 0));
+            time.add(getDateString(14, 0, 0));
+            time.add(getDateString(15, 0, 0));
+            time.add(getDateString(16, 0, 0));
+            time.add(getDateString(17, 0, 0));
+            time.add(getDateString(18, 0, 0));
+
+
 
 
         List<Date> time1 = new ArrayList<>();
 
-        try {
-            time1.add(dfDate_day_time.parse("8:00"));
-            time1.add(dfDate_day_time.parse("8:15"));
-            time1.add(dfDate_day_time.parse("8:30"));
-            time1.add(dfDate_day_time.parse("9:10"));
-            time1.add(dfDate_day_time.parse("12:00"));
-            time1.add(dfDate_day_time.parse("12:00"));
-            time1.add(dfDate_day_time.parse("12:10"));
-            time1.add(dfDate_day_time.parse("13:10"));
-            time1.add(dfDate_day_time.parse("15:10"));
-            time1.add(dfDate_day_time.parse("15:30"));
-            time1.add(dfDate_day_time.parse("16:00"));
-            time1.add(dfDate_day_time.parse("17:00"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            time1.add(getDateString(8, 0, 0));
+            time1.add(getDateString(9, 0, 0));
+            time1.add(getDateString(10, 0, 0));
+            time1.add(getDateString(11, 0, 0));
+            time1.add(getDateString(12, 0, 0));
+            time1.add(getDateString(13, 0, 0));
+            time1.add(getDateString(14, 0, 0));
+            time1.add(getDateString(15, 0, 0));
+            time1.add(getDateString(16, 0, 0));
+            time1.add(getDateString(17, 0, 0));
+            time1.add(getDateString(18, 0, 0));
+            time1.add(getDateString(19, 0, 0));
 
 
-        List<String> listService = new ArrayList<>();
+
+        final List<String> listService = new ArrayList<>();
         listService.add("Утренний прием детей на улице");
         listService.add("Утреняя гимнастика");
         listService.add("Свободная деятельность");
@@ -122,18 +130,18 @@ public class VospitannikFragment extends Fragment {
         coments.add("Шатал трубу второй раз");
 
         List<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.color2));
+        colors.add(getResources().getColor(R.color.color1));
         colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
         colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color2));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color2));
-        colors.add(getResources().getColor(R.color.color3));
         colors.add(getResources().getColor(R.color.color6));
         colors.add(getResources().getColor(R.color.color1));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
+        colors.add(getResources().getColor(R.color.color5));
+        colors.add(getResources().getColor(R.color.color1));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
 
         TextView date = (TextView) view.findViewById(R.id.date_in_childTV);
         TextView times = (TextView) view.findViewById(R.id.time_in_child);
@@ -141,7 +149,7 @@ public class VospitannikFragment extends Fragment {
 
         if (ChildStatusEntity.selectChilds().size() == 0) {
             for (int i = 0; i < listService.size(); i ++){
-                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, coments.get(i), colors.get(i));
+                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, coments.get(i), colors.get(i), View.GONE);
             }
         }
 
@@ -150,12 +158,13 @@ public class VospitannikFragment extends Fragment {
         date.setText(dfDate_day.format(calendar.getTime()));
         times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
         recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
         loadEntity();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(View view, final int position) {
 
             }
 

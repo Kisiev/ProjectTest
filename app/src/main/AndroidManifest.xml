@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistrationActivity_"
-            android:theme="@style/AppTheme"
+
             />
         <service android:name=".utils.ChildService_">
 

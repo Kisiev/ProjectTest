@@ -77,7 +77,7 @@ public class LoginActivity extends Activity {
         registrationBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity_.class);
                 startActivity(intent);
             }
         });

@@ -20,14 +20,12 @@ public class RegistrationActivity extends Activity {
 
     @AfterViews
     public void main () {
-        initImageOnBackground();
-        onClickButton();
-    }
-    private void initImageOnBackground(){
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
         LoginActivity loginActivity = new LoginActivity();
         loginActivity.createImage(R.id.reg_imageView, R.mipmap.logo, imageView);
+        onClickButton();
     }
+
 
     private void onClickButton(){
         final RadioButton radioButton = (RadioButton) findViewById(R.id.child_RB);
@@ -39,11 +37,11 @@ public class RegistrationActivity extends Activity {
                 }
             }
         });
-        final RadioButton zavDetSadBurron = (RadioButton) findViewById(R.id.zavDetSadRB);
-        radioButton.setOnClickListener(new View.OnClickListener() {
+        final RadioButton zavDetSadButton = (RadioButton) findViewById(R.id.zavDetSadRB);
+        zavDetSadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(zavDetSadBurron.isChecked()){
+                if(zavDetSadButton.isChecked()){
                     startActivity(new Intent(RegistrationActivity.this, MainZavDetSad_.class));
                 }
             }

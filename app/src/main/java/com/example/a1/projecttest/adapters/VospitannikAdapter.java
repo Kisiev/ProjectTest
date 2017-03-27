@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.adapters;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -16,8 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
+import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -32,13 +35,14 @@ import java.util.Observer;
 import java.util.Random;
 
 import static android.os.Build.VERSION.SDK;
+import static android.os.Build.VERSION.SDK_INT;
 
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
-    int i = 0;
     List<ChildStatusEntity> services;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
-    public VospitannikAdapter (List<ChildStatusEntity> services ) {
+
+    public VospitannikAdapter (List<ChildStatusEntity> services) {
         this.services = services;
     }
 
@@ -51,7 +55,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
-        i ++;
+
         holder.textView.setText(services.get(holder.getAdapterPosition()).getServiceName());
 
         holder.timeTv.setText(dfDate_day_time.format(services.get(holder.getAdapterPosition()).getTimeIn())
@@ -60,24 +64,41 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
         holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
         holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
+        if (services.get(position).getVisible() == View.GONE) {
+            holder.false_tv.setVisibility(View.GONE);
+        } else holder.false_tv.setVisibility(View.VISIBLE);
 
-        Date date = new Date();
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.false_tv.setVisibility(View.VISIBLE);
+                SQLite.update(ChildStatusEntity.class)
+                        .set(ChildStatusEntity_Table.visible.eq(View.VISIBLE))
+                        .where(ChildStatusEntity_Table.serviceName.eq(services.get(position).getServiceName()))
+                        .execute();
+                services.get(position).setVisible(View.VISIBLE);
+                //notifyDataSetChanged();
+                notifyItemChanged(position);
+            }
+        });
+
         Calendar now = Calendar.getInstance();
+        Date date = now.getTime();
+        date.setHours(date.getHours() + 1);
 
-/*        if (services.get(position).getTimeOut().after(now.getTime()) ){
+        if (services.get(position).getTimeOut().after(date)){
             holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
-        }*/
+        }
 
-        if (i < 2)
-        if (services.get(position).getTimeOut().before(now.getTime())){
+        if (services.get(position).getTimeOut().before(date)) {
             holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
         }
 
-       /* if (services.get(position).getTimeIn().after(now.getTime())){
-            if (services.get(position).getTimeOut().before(now.getTime())){
+        if (services.get(position).getTimeIn().before(date)){
+            if (services.get(position).getTimeOut().after(date)){
                 holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
             }
-        }*/
+        }
     }
 
     @Override
