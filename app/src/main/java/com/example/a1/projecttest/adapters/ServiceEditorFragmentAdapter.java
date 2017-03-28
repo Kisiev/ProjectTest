@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.ServicesEntity;
 import com.example.a1.projecttest.R;
 
@@ -18,9 +19,9 @@ import java.util.List;
 
 public class ServiceEditorFragmentAdapter extends RecyclerView.Adapter<ServiceEditorFragmentAdapter.ServiceEditorHolder>{
 
-    private List<ServicesEntity> servicesEntityList;
+    private List<ChildStatusEntity> servicesEntityList;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
-    public ServiceEditorFragmentAdapter(List<ServicesEntity> servicesEntityList) {
+    public ServiceEditorFragmentAdapter(List<ChildStatusEntity> servicesEntityList) {
         this.servicesEntityList = servicesEntityList;
     }
 
@@ -33,9 +34,8 @@ public class ServiceEditorFragmentAdapter extends RecyclerView.Adapter<ServiceEd
 
     @Override
     public void onBindViewHolder(ServiceEditorHolder holder, int position) {
-        holder.nameService.setText(servicesEntityList.get(position).getNameService());
-        holder.typeService.setText(servicesEntityList.get(position).getTypeService());
-        holder.directService.setText(servicesEntityList.get(position).getDirectService());
+        holder.nameService.setText(servicesEntityList.get(position).getServiceName());
+        holder.typeService.setText(String.valueOf(servicesEntityList.get(position).getTypeService()));
         holder.timeIn.setText(dfDate_day_time.format(servicesEntityList.get(position).getTimeIn().getTime()));
         holder.timeOut.setText(dfDate_day_time.format(servicesEntityList.get(position).getTimeOut().getTime()));
     }

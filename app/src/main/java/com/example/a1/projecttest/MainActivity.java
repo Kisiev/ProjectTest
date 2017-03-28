@@ -1,11 +1,8 @@
 package com.example.a1.projecttest;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -27,7 +24,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
-import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.utils.CircleTransform;
 
 import org.androidannotations.annotations.AfterViews;
@@ -40,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView imageView;
     @AfterViews
     public void main() {
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -63,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
               setTitle(title);
           }
     }
+
 
     private void setMenu(){
         Menu menu = navigationView.getMenu();

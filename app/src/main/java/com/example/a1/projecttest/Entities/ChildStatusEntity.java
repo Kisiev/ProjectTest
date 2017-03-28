@@ -86,39 +86,55 @@ public class ChildStatusEntity extends BaseModel {
         this.visible = visible;
     }
 
+    public long getTypeService() {
+        return typeService;
+    }
+
+    public void setTypeService(long typeService) {
+        this.typeService = typeService;
+    }
+
     @PrimaryKey()
-    private int id;
+    public int id;
 
     @Column(name = "serviceName")
-    private String serviceName;
+    public String serviceName;
 
     @Column(name = "timeIn")
-    private Date timeIn;
+    public Date timeIn;
 
     @Column(name = "timeOut")
-    private Date timeOut;
+    public Date timeOut;
+
+    @Column (name = "typeService")
+    public long typeService;
 
     @Column(name = "timeChecked")
-    private int timeChecked;
+    public int timeChecked;
 
     @Column(name = "comments")
-    private String comments;
+    public String comments;
 
     @Column(name = "color")
-    private int color;
+    public int color;
 
     @Column(name = "visible")
-    private int visible;
+    public int visible;
 
-    public static void insert (String serviceName, Date timeIn, Date timeOut, int timeChecked, String comments, int color, int visible) {
+    public static void insert (String serviceName, Date timeIn, Date timeOut, long typeService, int timeChecked, String comments, int color, int visible) {
         SQLite.insert(ChildStatusEntity.class)
-                .columns("serviceName", "timeIn", "timeOut", "timeChecked", "comments", "color", "visible")
-                .values(serviceName, timeIn, timeOut, timeChecked, comments, color, visible)
+                .columns("serviceName", "timeIn", "timeOut", "typeService", "timeChecked", "comments", "color", "visible")
+                .values(serviceName, timeIn, timeOut, typeService, timeChecked, comments, color, visible)
                 .execute();
     }
 
     public static List<ChildStatusEntity> selectChilds(){
         return SQLite.select().from(ChildStatusEntity.class)
+                .queryList();
+    }
+
+    public static List<ChildStatusEntity> selectNameService(){
+        return SQLite.select(ChildStatusEntity_Table.serviceName).from(ChildStatusEntity.class)
                 .queryList();
     }
 

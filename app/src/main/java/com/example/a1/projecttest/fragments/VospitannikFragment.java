@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,13 @@ import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
+import com.example.a1.projecttest.Entities.ServicesEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.example.a1.projecttest.zavedushaia.ServicesFragment;
 import com.google.android.gms.drive.events.ChangeEvent;
 import com.google.android.gms.drive.events.ChangeListener;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -41,12 +44,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @EFragment(R.layout.vospitanik_fragment)
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
 
-    private Date getDateString(int hours, int mins, int sec){
+    public static Date getDateString(int hours, int mins, int sec){
         Date time = new Date();
         time.setHours(hours);
         time.setMinutes(mins);
@@ -130,26 +134,29 @@ public class VospitannikFragment extends Fragment {
         coments.add("Шатал трубу второй раз");
 
         List<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
+        colors.add(R.color.color1);
+        colors.add(R.color.color3);
+        colors.add(R.color.color4);
+        colors.add(R.color.color5);
+        colors.add(R.color.color6);
+        colors.add(R.color.color1);
+        colors.add(R.color.color3);
+        colors.add(R.color.color4);
+        colors.add(R.color.color5);
+        colors.add(R.color.color1);
+        colors.add(R.color.color3);
+        colors.add(R.color.color4);
 
+        for (int i = 0; i< 10; i ++) {
+            Log.d("COLOR", String.valueOf(generatedColor()));
+        }
         TextView date = (TextView) view.findViewById(R.id.date_in_childTV);
         TextView times = (TextView) view.findViewById(R.id.time_in_child);
 
 
         if (ChildStatusEntity.selectChilds().size() == 0) {
             for (int i = 0; i < listService.size(); i ++){
-                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, coments.get(i), colors.get(i), View.GONE);
+                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), colors.get(i), View.GONE);
             }
         }
 
@@ -183,6 +190,24 @@ public class VospitannikFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public int generatedColor(){
+        List<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.color1));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
+        colors.add(getResources().getColor(R.color.color5));
+        colors.add(getResources().getColor(R.color.color6));
+        colors.add(getResources().getColor(R.color.color1));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
+        colors.add(getResources().getColor(R.color.color5));
+        colors.add(getResources().getColor(R.color.color1));
+        colors.add(getResources().getColor(R.color.color3));
+        colors.add(getResources().getColor(R.color.color4));
+        Random random = new Random();
+        return colors.get(random.nextInt(colors.size()-1));
     }
 
     @Background

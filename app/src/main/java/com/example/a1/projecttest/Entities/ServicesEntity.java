@@ -18,20 +18,7 @@ public class ServicesEntity extends BaseModel {
     private int id;
 
     @Column
-    private String nameService;
-
-    @Column
     private String typeService;
-
-    @Column
-    private String directService;
-
-    @Column
-    private Date timeIn;
-
-    @Column
-    private Date timeOut;
-
 
     public int getId() {
         return id;
@@ -39,14 +26,6 @@ public class ServicesEntity extends BaseModel {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getNameService() {
-        return nameService;
-    }
-
-    public void setNameService(String nameService) {
-        this.nameService = nameService;
     }
 
     public String getTypeService() {
@@ -57,40 +36,15 @@ public class ServicesEntity extends BaseModel {
         this.typeService = typeService;
     }
 
-    public String getDirectService() {
-        return directService;
-    }
-
-    public void setDirectService(String directService) {
-        this.directService = directService;
-    }
-
-    public Date getTimeIn() {
-        return timeIn;
-    }
-
-    public void setTimeIn(Date timeIn) {
-        this.timeIn = timeIn;
-    }
-
-    public Date getTimeOut() {
-        return timeOut;
-    }
-
-    public void setTimeOut(Date timeOut) {
-        this.timeOut = timeOut;
-    }
-
-
-    public static void insertService (String name, String type, String direct, Date dateIn, Date dateOut) {
+    public static void insertService (String name) {
         SQLite.insert(ServicesEntity.class)
-                .columns("nameService", "typeService", "directService", "timeIn", "timeOut")
-                .values(name, type, direct, dateIn, dateOut)
+                .columns("typeService")
+                .values(name)
                 .execute();
     }
 
     public static List<ServicesEntity> select (){
-        return SQLite.select().from(ServicesEntity.class)
+        return SQLite.select(ServicesEntity_Table.typeService).from(ServicesEntity.class)
                 .queryList();
     }
 

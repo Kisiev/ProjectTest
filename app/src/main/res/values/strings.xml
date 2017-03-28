@@ -30,4 +30,6 @@
     <string name="s">c</string>
     <string name="po">по</string>
     <string name="add_service">Добавить</string>
+    <string name="save_service">Сохранить</string>
+    <string name="cancel">Отменить</string>
 </resources>
