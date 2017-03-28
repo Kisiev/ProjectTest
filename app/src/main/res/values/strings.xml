@@ -24,4 +24,10 @@
     <string name="registration">Регистрация</string>
     <string name="not_arrive">Сегодня не придет</string>
     <string name="invalid_login">Неверный логин или пароль</string>
+    <string name="namespace_service">Наименование:</string>
+    <string name="type_service">Вид</string>
+    <string name="directed_service">Направление</string>
+    <string name="s">c</string>
+    <string name="po">по</string>
+    <string name="add_service">Добавить</string>
 </resources>
