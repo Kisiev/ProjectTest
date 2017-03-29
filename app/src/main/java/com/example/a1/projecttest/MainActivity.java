@@ -25,6 +25,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.CircleTransform;
+import com.facebook.stetho.Stetho;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -52,8 +53,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
         setMenu();
+        initStetho();
     }
 
+    private void initStetho(){
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                .build());
+    }
     private void updateToolbarTitle(Fragment fragment, String title) {
           String fragmentClassName = fragment.getClass().getName();
           if (fragmentClassName.equals(fragment.getClass().getName())) {
