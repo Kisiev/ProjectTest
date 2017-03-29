@@ -43,21 +43,17 @@ import java.util.Random;
 public class ServicesFragment extends Fragment{
     RecyclerView recyclerView;
     Button addButton;
-    EditText nameServiceEditor;
-    EditText editDirect;
-    EditText timeIn;
-    EditText timeOut;
+
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.services_redaction_fragment, container, false);
 
-       // recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
-
-       // recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-      //  loadServices();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        loadServices();
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +73,7 @@ public class ServicesFragment extends Fragment{
                 final AsyncTaskLoader<List<ChildStatusEntity>> loader = new AsyncTaskLoader<List<ChildStatusEntity>>(getActivity()) {
                     @Override
                     public List<ChildStatusEntity> loadInBackground() {
-                        return ChildStatusEntity.selectNameService();
+                        return ChildStatusEntity.selectChilds();
                     }
                 };
                 loader.forceLoad();
@@ -86,7 +82,7 @@ public class ServicesFragment extends Fragment{
 
             @Override
             public void onLoadFinished(Loader<List<ChildStatusEntity>> loader, List<ChildStatusEntity> data) {
-                ServiceEditorFragmentAdapter adapter = new ServiceEditorFragmentAdapter(data);
+                VospitannikAdapter adapter = new VospitannikAdapter(data);
                 adapter.notifyDataSetChanged();
                 recyclerView.setAdapter(adapter);
             }
