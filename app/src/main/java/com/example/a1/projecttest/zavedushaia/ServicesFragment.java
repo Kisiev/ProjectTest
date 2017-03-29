@@ -127,7 +127,7 @@ public class ServicesFragment extends Fragment{
                             spinner.getSelectedItemId(),
                             1,
                             "",
-                            generatedColor(),
+                            VospitannikFragment.generatedColor(),
                             View.VISIBLE);
                     dialog.dismiss();
 
@@ -142,21 +142,5 @@ public class ServicesFragment extends Fragment{
         });
         dialog.show();
     }
-    public int generatedColor(){
-        List<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        Random random = new Random();
-        return colors.get(random.nextInt(colors.size()-1));
-    }
+
 }

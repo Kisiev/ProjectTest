@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.fragments;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ import com.example.a1.projecttest.utils.RecyclerTouchListener;
 import com.example.a1.projecttest.zavedushaia.ServicesFragment;
 import com.google.android.gms.drive.events.ChangeEvent;
 import com.google.android.gms.drive.events.ChangeListener;
+import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.Background;
@@ -49,7 +51,6 @@ import java.util.Random;
 @EFragment(R.layout.vospitanik_fragment)
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
-
     public static Date getDateString(int hours, int mins, int sec){
         Date time = new Date();
         time.setHours(hours);
@@ -133,20 +134,6 @@ public class VospitannikFragment extends Fragment {
         coments.add("Шатал трубу");
         coments.add("Шатал трубу второй раз");
 
-        List<Integer> colors = new ArrayList<>();
-        colors.add(R.color.color1);
-        colors.add(R.color.color3);
-        colors.add(R.color.color4);
-        colors.add(R.color.color5);
-        colors.add(R.color.color6);
-        colors.add(R.color.color1);
-        colors.add(R.color.color3);
-        colors.add(R.color.color4);
-        colors.add(R.color.color5);
-        colors.add(R.color.color1);
-        colors.add(R.color.color3);
-        colors.add(R.color.color4);
-
         for (int i = 0; i< 10; i ++) {
             Log.d("COLOR", String.valueOf(generatedColor()));
         }
@@ -156,7 +143,7 @@ public class VospitannikFragment extends Fragment {
 
         if (ChildStatusEntity.selectChilds().size() == 0) {
             for (int i = 0; i < listService.size(); i ++){
-                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), colors.get(i), View.GONE);
+                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), generatedColor(), View.GONE);
             }
         }
 
@@ -171,15 +158,22 @@ public class VospitannikFragment extends Fragment {
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, final int position) {
-
+            public void onClick(List<ChildStatusEntity> service, View view, final int position) {
+                view.findViewById(R.id.false_tv).setVisibility(View.VISIBLE);
+                SQLite.update(ChildStatusEntity.class)
+                        .set(ChildStatusEntity_Table.visible.eq(View.VISIBLE))
+                        .where(ChildStatusEntity_Table.serviceName.eq(service.get(position).getServiceName()))
+                        .execute();
+                service.get(position).setVisible(View.VISIBLE);
+                VospitannikAdapter vospitannikAdapter = new VospitannikAdapter(service);
+                vospitannikAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLongClick(View view, int position) {
 
             }
-        }));
+        }, ChildStatusEntity.selectChilds()));
 
         Button button = (Button) view.findViewById(R.id.child_not_arriveBT);
         button.setOnClickListener(new View.OnClickListener() {
@@ -192,22 +186,33 @@ public class VospitannikFragment extends Fragment {
         return view;
     }
 
-    public int generatedColor(){
-        List<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color6));
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
-        colors.add(getResources().getColor(R.color.color5));
-        colors.add(getResources().getColor(R.color.color1));
-        colors.add(getResources().getColor(R.color.color3));
-        colors.add(getResources().getColor(R.color.color4));
+    public static int generatedColor(){
         Random random = new Random();
-        return colors.get(random.nextInt(colors.size()-1));
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        while ((red <= 230) || (green <= 230) || (blue <= 230)) {
+            red = random.nextInt(254);
+            green = random.nextInt(254);
+            blue = random.nextInt(254);
+        }
+
+        if (red >= 230){
+            green = random.nextInt(230);
+            blue = random.nextInt(10);
+        }
+
+        if (green >= 230){
+            red = random.nextInt(230);
+            blue = random.nextInt(10);
+        }
+
+        if (blue >= 230){
+            red = random.nextInt(200);
+            green = random.nextInt(10);
+        }
+        Integer colors = Color.rgb(red, green, blue);
+        return colors;
     }
 
     @Background

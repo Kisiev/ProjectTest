@@ -6,7 +6,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.R;
+
+import java.util.List;
 
 /**
  * Created by 1 on 23.03.2017.
@@ -16,16 +19,17 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
     private ClickListener clickListener;
     private GestureDetector gestureDetector;
-    public RecyclerTouchListener (Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+    final List<ChildStatusEntity> service;
+    public RecyclerTouchListener (Context context, final RecyclerView recyclerView, final ClickListener clickListener, final List<ChildStatusEntity> service) {
+        this.service = service;
         this.clickListener = clickListener;
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
                 if (child != null && clickListener != null) {
-                    clickListener.onClick(child, recyclerView.getChildPosition(child));
+                    clickListener.onClick(service, child, recyclerView.getChildPosition(child));
                 }
-
                 return true;
             }
 
@@ -35,13 +39,14 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
             }
         });
+
     }
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
         View child = rv.findChildViewUnder(e.getX(), e.getY());
         if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)){
-            clickListener.onClick(child, rv.getChildPosition(child));
+            clickListener.onClick(service, child, rv.getChildPosition(child));
         }
         return false;
     }

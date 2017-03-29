@@ -1,5 +1,7 @@
 package com.example.a1.projecttest.Entities;
 
+import android.support.annotation.NonNull;
+
 import com.example.a1.projecttest.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -34,6 +36,7 @@ public class AgeCategoryEntity extends BaseModel {
         this.nameAgeCategory = nameAgeCategory;
     }
 
+    @NonNull
     public static List<AgeCategoryEntity> select(){
         return SQLite.select()
                 .from(AgeCategoryEntity.class)

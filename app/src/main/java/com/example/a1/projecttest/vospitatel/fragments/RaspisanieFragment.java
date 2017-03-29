@@ -91,7 +91,6 @@ public class RaspisanieFragment extends Fragment {
         RaspisanieFragment raspisanieFragment = new RaspisanieFragment();
         recyclerView.setAdapter(new RaspisanieAdapter(listService, colors, time, raspisanieFragment, listNames, getActivity(), colorApacity));
 
-
         return view;
     }
 }

@@ -68,20 +68,6 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             holder.false_tv.setVisibility(View.GONE);
         } else holder.false_tv.setVisibility(View.VISIBLE);
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.false_tv.setVisibility(View.VISIBLE);
-                SQLite.update(ChildStatusEntity.class)
-                        .set(ChildStatusEntity_Table.visible.eq(View.VISIBLE))
-                        .where(ChildStatusEntity_Table.serviceName.eq(services.get(position).getServiceName()))
-                        .execute();
-                services.get(position).setVisible(View.VISIBLE);
-                //notifyDataSetChanged();
-                notifyItemChanged(position);
-            }
-        });
-
         Calendar now = Calendar.getInstance();
         Date date = now.getTime();
         date.setHours(date.getHours() + 1);
