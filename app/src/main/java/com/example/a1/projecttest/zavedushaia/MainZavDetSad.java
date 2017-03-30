@@ -1,5 +1,6 @@
 package com.example.a1.projecttest.zavedushaia;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     DrawerLayout drawer;
     @AfterViews
     void main () {
+
     if (ServicesEntity.select().size() == 0) {
         ServicesEntity.insertService("Уход");
         ServicesEntity.insertService("Воспитание");

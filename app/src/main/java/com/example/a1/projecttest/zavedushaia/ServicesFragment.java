@@ -129,6 +129,7 @@ public class ServicesFragment extends Fragment{
                             "",
                             VospitannikFragment.generatedColor(),
                             View.VISIBLE);
+                    loadServices();
                     dialog.dismiss();
 
             }

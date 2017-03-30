@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -130,6 +131,7 @@ public class ChildStatusEntity extends BaseModel {
 
     public static List<ChildStatusEntity> selectChilds(){
         return SQLite.select().from(ChildStatusEntity.class)
+                .orderBy(OrderBy.fromString("timeIn"))
                 .queryList();
     }
 

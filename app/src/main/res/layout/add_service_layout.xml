@@ -1,81 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="250dp"
+<ScrollView
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent">
+    <LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="250dp"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/activity_horizontal_margin">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/namespace_service"
-            android:id="@+id/name_service_button_add"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/name_service_editorET"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            android:text="@string/type_service"/>
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/type_service_add_SP"
-        android:text="@string/type_service"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/direct_service_add_TV"
-        android:text="@string/directed_service"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/edit_directET"/>
-    </LinearLayout>
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textSize="15pt"
+        android:text="Добавить деятельность"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name_activity"
+        android:id="@+id/name_service_editorET"/>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/type_service_add_SP"
+        android:text="@string/type_service"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Направление"
+        android:id="@+id/edit_directET"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/s"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="Время начала"
             android:id="@+id/since_edit_ET"
             android:inputType="datetime"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/po"/>
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Время конца"
             android:layout_weight="1"
             android:id="@+id/till_edit_ET"
             android:inputType="datetime"/>
@@ -83,6 +55,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:orientation="horizontal">
         <Button
             android:layout_width="match_parent"
@@ -101,4 +74,6 @@
             android:id="@+id/save_serviceBT"/>
 
     </LinearLayout>
+
 </LinearLayout>
+    </ScrollView>
