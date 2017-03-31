@@ -36,7 +36,6 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
             @Override
             public void onLongPress(MotionEvent e) {
                 super.onLongPress(e);
-
             }
         });
 
