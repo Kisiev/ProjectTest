@@ -17,4 +17,6 @@
     <color name="black">#000000</color>
     <color name="colorForApacityNull">#00f330fa</color>
     <color name="color_for_table">#6530bafa</color>
+    <color name="colorText">#ffffff</color>
+    <color name="colorSecondaryText">#d4d4d4</color>
 </resources>

@@ -35,4 +35,9 @@
     <string name="name_activity">Название деятельности</string>
     <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
+    <string name="group_tab_header">Группы</string>
+    <string name="tutor_tab_header">Воспитатели</string>
+    <string name="services_tab_header">Услуги</string>
+    <string name="calendar_tab_header">Календари</string>
+
 </resources>

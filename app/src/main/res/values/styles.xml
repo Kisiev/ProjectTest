@@ -31,4 +31,10 @@
         <item name="android:windowEnterAnimation">@anim/enter_pull_in</item>
         <item name="android:windowExitAnimation">@anim/enter_out</item>
     </style>
+
+    <style name="TabWidgetTheme" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/colorText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:textSize">@dimen/textSize</item>
+    </style>
 </resources>
