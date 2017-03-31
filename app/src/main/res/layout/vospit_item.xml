@@ -3,18 +3,24 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_lay_vospit"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative_vospit_item">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:padding="@dimen/activity_horizontal_margin"
-        android:layout_height="match_parent">
+        android:id="@+id/liner_vospit_item"
+        android:layout_height="wrap_content">
 
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/liner_con"
             android:orientation="horizontal">
         <ImageView
@@ -24,7 +30,7 @@
             android:layout_weight="1" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="2">
             <TextView
@@ -58,5 +64,28 @@
             android:gravity="center|top" />
 
 </LinearLayout>
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:layout_below="@+id/liner_vospit_item">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_button_raspisanie"
+        android:textColor="@color/cardview_light_background"
+        android:background="@color/colorForApacityNull"
+        android:text="@string/edit"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorForApacityNull"
+        android:textColor="@color/cardview_light_background"
+        android:layout_toEndOf="@+id/edit_button_raspisanie"
+        android:id="@+id/delete_button_raspisanie"
+        android:text="@string/delete"/>
+</RelativeLayout>
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
+

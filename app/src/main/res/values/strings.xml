@@ -33,4 +33,6 @@
     <string name="save_service">Сохранить</string>
     <string name="cancel">Отменить</string>
     <string name="name_activity">Название деятельности</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
 </resources>
