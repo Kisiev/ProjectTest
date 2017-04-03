@@ -19,6 +19,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/Theme.App.Base_Dialog"
         android:hint="@string/name_activity"
         android:id="@+id/name_service_editorET"/>
     <Spinner
@@ -29,6 +30,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/Theme.App.Base_Dialog"
         android:hint="Направление"
         android:id="@+id/edit_directET"/>
     <LinearLayout
@@ -41,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Время начала"
+            android:theme="@style/Theme.App.Base_Dialog"
             android:id="@+id/since_edit_ET"
             android:inputType="datetime"/>
 
@@ -49,6 +52,7 @@
             android:layout_height="wrap_content"
             android:hint="Время конца"
             android:layout_weight="1"
+            android:theme="@style/Theme.App.Base_Dialog"
             android:id="@+id/till_edit_ET"
             android:inputType="datetime"/>
     </LinearLayout>

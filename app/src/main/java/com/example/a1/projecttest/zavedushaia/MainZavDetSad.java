@@ -41,52 +41,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(R.layout.zav_det_sada)
-public class MainZavDetSad extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener, TabHost.OnTabChangeListener{
+public class MainZavDetSad extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
     DrawerLayout drawer;
     TabHost tabHost;
     ViewPager viewPager;
 
-    public FragmentManager getFragmentMan() {
-        FragmentManager fragmentManager;
-        fragmentManager = getSupportFragmentManager();
-        return fragmentManager;
-    }
-
-    public MainZavDetSad () {
-
-    }
-
-    @AfterViews
-    void main () {
-
-    if (ServicesEntity.select().size() == 0) {
-        ServicesEntity.insertService("Уход");
-        ServicesEntity.insertService("Воспитание");
-    }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        setMenu();
-    }
-    public void replaceFragment(Fragment fragment, int id) {
-        String backStackName = fragment.getClass().getName();
-        FragmentManager manager = getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
-        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.replace(id, fragment, backStackName);
-            ft.addToBackStack(backStackName);
-            ft.commit();
+    private void updateToolbarTitle(Fragment fragment, String title) {
+        String fragmentClassName = fragment.getClass().getName();
+        if (fragmentClassName.equals(fragment.getClass().getName())) {
+            setTitle(title);
         }
     }
-
 
     private void setMenu(){
         Menu menu = navigationView.getMenu();
@@ -135,6 +101,37 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         Menu exitMenu = navigationView.getMenu();
         exitMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 13, R.string.exit);
     }
+    @AfterViews
+    void main () {
+
+    if (ServicesEntity.select().size() == 0) {
+        ServicesEntity.insertService("Уход");
+        ServicesEntity.insertService("Воспитание");
+    }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        setMenu();
+    }
+    public void replaceFragment(Fragment fragment, int id) {
+        String backStackName = fragment.getClass().getName();
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
+        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(id, fragment, backStackName);
+            ft.addToBackStack(backStackName);
+            ft.commit();
+        }
+    }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -143,78 +140,50 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         }
         int id = item.getOrder();
         switch (id){
-            case 0:
-                initTab();
-                initViewPager();
-                break;
             case 1:
+                ServicesFragment servicesFragment = new ServicesFragment();
+                replaceFragment(servicesFragment, R.id.content_main);
+                updateToolbarTitle(servicesFragment, getString(R.string.group_tab_header));
+                break;
+            case 0:
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 7:
+
+                break;
+            case 8:
+
+                break;
+            case 9:
+
+                break;
+            case 10:
+
+                break;
+            case 11:
+
+                break;
+            case 12:
 
                 break;
 
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-    public void initViewPager() {
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        NewPagerFragmentAdapter pagerFragmentAdapter;
-        viewPager.setOffscreenPageLimit(4);
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new ServicesFragment());
-        fragments.add(new ServicesFragment());
-        fragments.add(new ServicesFragment());
-        fragments.add(new ServicesFragment());
-        pagerFragmentAdapter = new NewPagerFragmentAdapter(getSupportFragmentManager(), fragments);
-        // pagerFragmentAdapter = new NewPagerFragmentAdapter(getFragmentManager(), fragments);
-        viewPager.setAdapter(pagerFragmentAdapter);
-
-        viewPager.setOnPageChangeListener(this);
-    }
-
-
-    private void initTab() {
-
-        tabHost = (TabHost) findViewById(R.id.tabHost);
-        tabHost.setup();
-
-        String[] tabName = {getString(R.string.group_tab_header),
-                getString(R.string.tutor_tab_header),
-                getString(R.string.services_tab_header),
-                getString(R.string.calendar_tab_header)};
-
-        for (int i = 0; i < tabName.length; i++) {
-            TabHost.TabSpec tabSpec;
-            tabSpec = tabHost.newTabSpec(tabName[i]);
-            tabSpec.setIndicator(tabName[i]);
-            tabSpec.setContent(new ContentFactory(getApplicationContext()));
-            tabHost.addTab(tabSpec);
-        }
-        tabHost.setOnTabChangedListener(this);
-
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        tabHost.setCurrentTab(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    @Override
-    public void onTabChanged(String s) {
-        int selectedItem = tabHost.getCurrentTab();
-        viewPager.setCurrentItem(selectedItem);
-
     }
 
 }
