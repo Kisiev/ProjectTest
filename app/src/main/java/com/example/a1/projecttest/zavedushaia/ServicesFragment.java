@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,16 +17,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TabHost;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
 import com.example.a1.projecttest.Entities.ServicesEntity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.adapters.NewPagerFragmentAdapter;
 import com.example.a1.projecttest.adapters.ServiceEditorFragmentAdapter;
 import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.utils.ContentFactory;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.Background;
@@ -43,7 +47,8 @@ import java.util.Random;
 public class ServicesFragment extends Fragment{
     RecyclerView recyclerView;
     Button addButton;
-
+    ViewPager viewPager;
+    TabHost tabHost;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     @Nullable
     @Override
@@ -143,5 +148,7 @@ public class ServicesFragment extends Fragment{
         });
         dialog.show();
     }
+
+
 
 }

@@ -2,12 +2,14 @@ package com.example.a1.projecttest.zavedushaia;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TabHost;
 
 import com.example.a1.projecttest.MainActivity;
@@ -29,37 +31,35 @@ import java.util.List;
 public class DirectoryFragment extends Fragment implements ViewPager.OnPageChangeListener, TabHost.OnTabChangeListener{
     ViewPager viewPager;
     TabHost tabHost;
-
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.directory_layout, container, false);
-        initViewPager(view);
-        initTab(view);
+        view = inflater.inflate(R.layout.directory_layout, container, false);
+        initViewPager();
+        initTab();
         return view;
     }
 
-    public void initViewPager(View view) {
+
+    public void initViewPager() {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         NewPagerFragmentAdapter pagerFragmentAdapter;
         viewPager.setOffscreenPageLimit(4);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new ServicesFragment());
-        fragments.add(new RaspisanieFragment());
-        fragments.add(new ShcolnilFragment());
-        fragments.add(new VospitannikFragment());
-        FragmentManager fragmentManager;
-        MainZavDetSad mainZavDetSad = new MainZavDetSad();
-        fragmentManager = mainZavDetSad.getFragmentMan();
-        pagerFragmentAdapter = new NewPagerFragmentAdapter(getFragmentManager(), fragments);
+        fragments.add(new ServicesFragment());
+        fragments.add(new ServicesFragment());
+        fragments.add(new ServicesFragment());
+        pagerFragmentAdapter = new NewPagerFragmentAdapter(getActivity().getSupportFragmentManager(), fragments);
        // pagerFragmentAdapter = new NewPagerFragmentAdapter(getFragmentManager(), fragments);
         viewPager.setAdapter(pagerFragmentAdapter);
 
-        viewPager.setOnPageChangeListener(DirectoryFragment.this);
+        viewPager.setOnPageChangeListener(this);
     }
 
 
-    private void initTab(View view) {
+    private void initTab() {
 
         tabHost = (TabHost) view.findViewById(R.id.tabHost);
         tabHost.setup();
@@ -73,10 +73,10 @@ public class DirectoryFragment extends Fragment implements ViewPager.OnPageChang
             TabHost.TabSpec tabSpec;
             tabSpec = tabHost.newTabSpec(tabName[i]);
             tabSpec.setIndicator(tabName[i]);
-            tabSpec.setContent(new ContentFactory(getActivity()));
+            tabSpec.setContent(new ContentFactory(getActivity().getApplicationContext()));
             tabHost.addTab(tabSpec);
         }
-        tabHost.setOnTabChangedListener(DirectoryFragment.this);
+        tabHost.setOnTabChangedListener(this);
 
     }
 

@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-    <include layout="@layout/app_bar_main"/>
+    <include layout="@layout/directory_layout"/>
+
 
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"

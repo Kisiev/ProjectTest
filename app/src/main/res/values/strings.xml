@@ -37,7 +37,21 @@
     <string name="delete">Удалить</string>
     <string name="group_tab_header">Группы</string>
     <string name="tutor_tab_header">Воспитатели</string>
-    <string name="services_tab_header">Услуги</string>
+    <string name="services_tab_header">Деятельность</string>
     <string name="calendar_tab_header">Календари</string>
+    <string name="directory_menu_group">Справочники</string>
+    <string name="registry_menu_group">Реестры</string>
+    <string name="registry_child_menu_item">Реестры детей</string>
+    <string name="registry_menu_item_tutor">Реестры представителей</string>
+    <string name="documents_menu_group">Документы</string>
+    <string name="list_services_menu_item">Расписание</string>
+    <string name="list_orders_time_menu_item">Табель учета времени воспитателей</string>
+    <string name="orders_menu_group">Отчеты</string>
+    <string name="payment_item_menu">Оплата</string>
+    <string name="list_child_arr_item_menu">Посещаемость детей</string>
+    <string name="list_enployee_item_menu">Учет сотрудников</string>
+    <string name="communication_menu_group">Коммуникация</string>
+    <string name="chats_item_menu">Чаты</string>
+    <string name="exit">Выйти</string>
 
 </resources>
