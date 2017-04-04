@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 
 import com.example.a1.projecttest.Entities.CareEntity;
+import com.example.a1.projecttest.Entities.CareEntity_Table;
 import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -88,16 +90,19 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     void main () {
 
     if (CareEntity.select().size() == 0) {
-        CareEntity.insertCare("Питание");
-        CareEntity.insertCare("Гигиена");
-        CareEntity.insertCare("Сон");
+        SQLite.insert(CareEntity.class).columns("id", "nameCare").values(-1, "Вид ухода..").execute();
+        CareEntity.insertCare(getString(R.string.food_care));
+        CareEntity.insertCare(getString(R.string.hygiene_care));
+        CareEntity.insertCare(getString(R.string.sleep_care));
+        CareEntity.insertCare(getString(R.string.creation_care));
     }
     if (UpbringingEntity.select().size() == 0){
-        UpbringingEntity.insertUpbring("Социально - коммуникативное развитие");
-        UpbringingEntity.insertUpbring("Познавательное развитие");
-        UpbringingEntity.insertUpbring("Речевое развитие");
-        UpbringingEntity.insertUpbring("Художественно - эстетическое развитие");
-        UpbringingEntity.insertUpbring("Физическое развитие");
+        SQLite.insert(UpbringingEntity.class).columns("id", "name").values(-1, "Направление..").execute();
+        UpbringingEntity.insertUpbring(getString(R.string.socially_development));
+        UpbringingEntity.insertUpbring(getString(R.string.cognitive_development));
+        UpbringingEntity.insertUpbring(getString(R.string.verbal_development));
+        UpbringingEntity.insertUpbring(getString(R.string.artistic_development));
+        UpbringingEntity.insertUpbring(getString(R.string.physical_development));
     }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

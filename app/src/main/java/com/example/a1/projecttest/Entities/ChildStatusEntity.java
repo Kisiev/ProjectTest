@@ -55,12 +55,20 @@ public class ChildStatusEntity extends BaseModel {
         this.timeOut = timeOut;
     }
 
-    public int getTimeChecked() {
-        return timeChecked;
+    public int getTypeService() {
+        return typeService;
     }
 
-    public void setTimeChecked(int timeChecked) {
-        this.timeChecked = timeChecked;
+    public void setTypeService(int typeService) {
+        this.typeService = typeService;
+    }
+
+    public int getTypeUpbringing() {
+        return typeUpbringing;
+    }
+
+    public void setTypeUpbringing(int typeUpbringing) {
+        this.typeUpbringing = typeUpbringing;
     }
 
     public String getComments() {
@@ -87,16 +95,9 @@ public class ChildStatusEntity extends BaseModel {
         this.visible = visible;
     }
 
-    public long getTypeService() {
-        return typeService;
-    }
-
-    public void setTypeService(long typeService) {
-        this.typeService = typeService;
-    }
-
     @PrimaryKey()
     public int id;
+
 
     @Column(name = "serviceName")
     public String serviceName;
@@ -108,10 +109,10 @@ public class ChildStatusEntity extends BaseModel {
     public Date timeOut;
 
     @Column (name = "typeService")
-    public long typeService;
+    public int typeService;
 
-    @Column(name = "timeChecked")
-    public int timeChecked;
+    @Column(name = "typeUpbringing")
+    public int typeUpbringing;
 
     @Column(name = "comments")
     public String comments;
@@ -122,10 +123,10 @@ public class ChildStatusEntity extends BaseModel {
     @Column(name = "visible")
     public int visible;
 
-    public static void insert (String serviceName, Date timeIn, Date timeOut, long typeService, int timeChecked, String comments, int color, int visible) {
+    public static void insert (String serviceName, Date timeIn, Date timeOut, int typeService, int typeUpbringing, String comments, int color, int visible) {
         SQLite.insert(ChildStatusEntity.class)
-                .columns("serviceName", "timeIn", "timeOut", "typeService", "timeChecked", "comments", "color", "visible")
-                .values(serviceName, timeIn, timeOut, typeService, timeChecked, comments, color, visible)
+                .columns("serviceName", "timeIn", "timeOut", "typeService", "typeUpbringing", "comments", "color", "visible")
+                .values(serviceName, timeIn, timeOut, typeService, typeUpbringing, comments, color, visible)
                 .execute();
     }
 
@@ -139,5 +140,7 @@ public class ChildStatusEntity extends BaseModel {
         return SQLite.select(ChildStatusEntity_Table.serviceName).from(ChildStatusEntity.class)
                 .queryList();
     }
+
+
 
 }

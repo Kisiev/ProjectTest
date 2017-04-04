@@ -54,5 +54,14 @@
     <string name="chats_item_menu">Чаты</string>
     <string name="exit">Выйти</string>
     <string name="addActivityTV">Добавить деятельность</string>
+    <string name="socially_development">Социально - коммуникативное развитие</string>
+    <string name="cognitive_development">Познавательное развитие</string>
+    <string name="verbal_development">Речевое развитие</string>
+    <string name="artistic_development">Художественно - эстетическое развитие</string>
+    <string name="physical_development">Физическое развитие</string>
+    <string name="food_care">Питание</string>
+    <string name="hygiene_care">Гигиена</string>
+    <string name="sleep_care">Сон</string>
+    <string name="creation_care">Творчество</string>
 
 </resources>
