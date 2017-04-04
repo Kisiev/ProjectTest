@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,28 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
-import com.example.a1.projecttest.Entities.ServicesEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
-import com.example.a1.projecttest.zavedushaia.ServicesFragment;
-import com.google.android.gms.drive.events.ChangeEvent;
-import com.google.android.gms.drive.events.ChangeListener;
-import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

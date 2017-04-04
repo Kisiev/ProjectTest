@@ -1,8 +1,5 @@
 package com.example.a1.projecttest.zavedushaia;
 
-import android.content.Intent;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,27 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
-import com.example.a1.projecttest.ChatActivity_;
-import com.example.a1.projecttest.Entities.ServicesEntity;
-import com.example.a1.projecttest.LoginActivity_;
-import com.example.a1.projecttest.MainActivity;
-import com.example.a1.projecttest.MapActivity_;
+import com.example.a1.projecttest.Entities.CareEntity;
+import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
-import com.example.a1.projecttest.UserLoginSession;
-import com.example.a1.projecttest.adapters.NewPagerFragmentAdapter;
-import com.example.a1.projecttest.fragments.FeedFragment;
-import com.example.a1.projecttest.fragments.ShcolnilFragment;
-import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.ConstantsManager;
-import com.example.a1.projecttest.utils.ContentFactory;
-import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EActivity(R.layout.zav_det_sada)
 public class MainZavDetSad extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -104,9 +87,17 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     @AfterViews
     void main () {
 
-    if (ServicesEntity.select().size() == 0) {
-        ServicesEntity.insertService("Уход");
-        ServicesEntity.insertService("Воспитание");
+    if (CareEntity.select().size() == 0) {
+        CareEntity.insertCare("Питание");
+        CareEntity.insertCare("Гигиена");
+        CareEntity.insertCare("Сон");
+    }
+    if (UpbringingEntity.select().size() == 0){
+        UpbringingEntity.insertUpbring("Социально - коммуникативное развитие");
+        UpbringingEntity.insertUpbring("Познавательное развитие");
+        UpbringingEntity.insertUpbring("Речевое развитие");
+        UpbringingEntity.insertUpbring("Художественно - эстетическое развитие");
+        UpbringingEntity.insertUpbring("Физическое развитие");
     }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -10,30 +10,31 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.CareEntity;
+import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
 
 import java.util.List;
 
 
-public class SpinnerDialogAdapter extends ArrayAdapter<CareEntity> implements SpinnerAdapter {
+public class UpbringingAdapter extends ArrayAdapter<UpbringingEntity> implements SpinnerAdapter {
 
-    List<CareEntity> services;
-    public SpinnerDialogAdapter(@NonNull Context context, List<CareEntity> services) {
-        super(context, 0, services);
-        this.services = services;
+    List<UpbringingEntity> upbringingEntities;
+    public UpbringingAdapter(@NonNull Context context, List<UpbringingEntity> upbringingEntities) {
+        super(context, 0, upbringingEntities);
+        this.upbringingEntities = upbringingEntities;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        CareEntity servicesEntity = (CareEntity) getItem(position);
+        UpbringingEntity upbringingEntity = (UpbringingEntity) getItem(position);
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.name_serviceItemTV);
-        name.setText(servicesEntity.getNameCare());
+        name.setText(upbringingEntity.getName());
 
         return convertView;
     }
@@ -41,14 +42,14 @@ public class SpinnerDialogAdapter extends ArrayAdapter<CareEntity> implements Sp
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-        CareEntity servicesEntity = (CareEntity) getItem(position);
+        UpbringingEntity upbringingEntity = (UpbringingEntity) getItem(position);
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.name_serviceItemTV);
-        name.setText(servicesEntity.getNameCare());
+        name.setText(upbringingEntity.getName());
 
         return convertView;
     }

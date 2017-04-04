@@ -53,5 +53,6 @@
     <string name="communication_menu_group">Коммуникация</string>
     <string name="chats_item_menu">Чаты</string>
     <string name="exit">Выйти</string>
+    <string name="addActivityTV">Добавить деятельность</string>
 
 </resources>

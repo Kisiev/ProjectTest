@@ -10,7 +10,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +19,11 @@ import android.widget.Spinner;
 import android.widget.TabHost;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
-import com.example.a1.projecttest.Entities.ServicesEntity;
 import com.example.a1.projecttest.R;
-import com.example.a1.projecttest.adapters.NewPagerFragmentAdapter;
-import com.example.a1.projecttest.adapters.ServiceEditorFragmentAdapter;
 import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.ConstantsManager;
-import com.example.a1.projecttest.utils.ContentFactory;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -38,9 +31,7 @@ import org.androidannotations.annotations.EFragment;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 
 @EFragment(R.layout.services_redaction_fragment)
