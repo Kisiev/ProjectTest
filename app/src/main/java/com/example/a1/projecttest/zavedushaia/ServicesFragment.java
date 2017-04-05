@@ -57,6 +57,13 @@ public class ServicesFragment extends Fragment{
     ViewPager viewPager;
     TabHost tabHost;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
+
+    private List<ChildStatusEntity> updateServiceList(List<ChildStatusEntity> service){
+        service.clear();
+        service.addAll(ChildStatusEntity.selectChilds());
+        return service;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,7 +81,7 @@ public class ServicesFragment extends Fragment{
         });
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(List<ChildStatusEntity> service, View view, final int position) {
+            public void onClick(final List<ChildStatusEntity> service, View view, final int position) {
                 view.findViewById(R.id.edit_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -84,6 +91,11 @@ public class ServicesFragment extends Fragment{
                 view.findViewById(R.id.delete_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        service.addAll(updateServiceList(service));
+                        ChildStatusEntity.deleteItem(service.get(position).getId());
+                        service.addAll(updateServiceList(service));
+                        loadServices();
                         Toast.makeText(getActivity(), "Кнопка Удалить " + position, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -96,6 +108,7 @@ public class ServicesFragment extends Fragment{
         }, ChildStatusEntity.selectChilds()));
         return view;
     }
+
 
 
     @Background

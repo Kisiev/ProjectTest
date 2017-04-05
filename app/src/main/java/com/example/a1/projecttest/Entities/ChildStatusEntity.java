@@ -146,5 +146,10 @@ public class ChildStatusEntity extends BaseModel {
                 .set(ChildStatusEntity_Table.visible.eq(visible))
                 .execute();
     }
+    public static void deleteItem (int id){
+        SQLite.delete().from(ChildStatusEntity.class)
+                .where(ChildStatusEntity_Table.id.eq(id))
+                .execute();
+    }
 
 }
