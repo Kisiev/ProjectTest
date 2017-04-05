@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.sql.Time;
@@ -41,9 +43,12 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     List<ChildStatusEntity> services;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
-
-    public VospitannikAdapter (List<ChildStatusEntity> services) {
+    UserLoginSession userLoginSession;
+    Context context;
+    public VospitannikAdapter (List<ChildStatusEntity> services, Context context) {
         this.services = services;
+        this.context = context;
+        userLoginSession = new UserLoginSession(context);
     }
 
     @Override
@@ -67,6 +72,14 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         if (services.get(position).getVisible() == View.GONE) {
             holder.false_tv.setVisibility(View.GONE);
         } else holder.false_tv.setVisibility(View.VISIBLE);
+
+        if (userLoginSession.getLogin().equals("Nataly")){
+            holder.editButton.setVisibility(View.VISIBLE);
+            holder.deleteButton.setVisibility(View.VISIBLE);
+        } else {
+            holder.editButton.setVisibility(View.GONE);
+            holder.deleteButton.setVisibility(View.GONE);
+        }
 
         Calendar now = Calendar.getInstance();
         Date date = now.getTime();
@@ -100,7 +113,8 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         TextView false_tv;
         ImageView imageTime;
         ImageView imageView;
-
+        Button editButton;
+        Button deleteButton;
         public VospitannikHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.name_service);
@@ -110,6 +124,8 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             imageTime = (ImageView) itemView.findViewById(R.id.image_time);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.vospit_recycler);
+            editButton = (Button) itemView.findViewById(R.id.edit_button_raspisanie);
+            deleteButton = (Button) itemView.findViewById(R.id.delete_button_raspisanie);
 
         }
 

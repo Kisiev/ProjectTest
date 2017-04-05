@@ -19,6 +19,7 @@ import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.CareEntity_Table;
 import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -88,6 +89,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     }
     @AfterViews
     void main () {
+
+        UserLoginSession userLvlToken = new UserLoginSession(getApplicationContext());
+        userLvlToken.clear();
+        userLvlToken.setUseName("Nataly", "123", 44);
 
     if (CareEntity.select().size() == 0) {
         SQLite.insert(CareEntity.class).columns("id", "nameCare").values(-1, "Вид ухода..").execute();

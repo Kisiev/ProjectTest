@@ -59,9 +59,7 @@ public class VospitannikFragment extends Fragment {
         SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy, hh:mm");
         SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
         final Calendar calendar = Calendar.getInstance();
-        SQLite.update(ChildStatusEntity.class)
-                .set(ChildStatusEntity_Table.visible.eq(View.GONE))
-                .execute();
+        ChildStatusEntity.updateVisibility(View.GONE);
 
         List<Date> time = new ArrayList<>();
 
@@ -157,7 +155,7 @@ public class VospitannikFragment extends Fragment {
                         .where(ChildStatusEntity_Table.serviceName.eq(service.get(position).getServiceName()))
                         .execute();
                 service.get(position).setVisible(View.VISIBLE);
-                VospitannikAdapter vospitannikAdapter = new VospitannikAdapter(service);
+                VospitannikAdapter vospitannikAdapter = new VospitannikAdapter(service, getActivity());
                 vospitannikAdapter.notifyDataSetChanged();
             }
 
@@ -183,7 +181,7 @@ public class VospitannikFragment extends Fragment {
         int red = 0;
         int green = 0;
         int blue = 0;
-        while ((red <= 230) || (green <= 230) || (blue <= 230)) {
+        while ((red <= 230) && (green <= 230) && (blue <= 230)) {
             red = random.nextInt(254);
             green = random.nextInt(254);
             blue = random.nextInt(254);
@@ -225,7 +223,7 @@ public class VospitannikFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<ChildStatusEntity>> loader, List<ChildStatusEntity> data) {
-                VospitannikAdapter adapter = new VospitannikAdapter(data);
+                VospitannikAdapter adapter = new VospitannikAdapter(data, getActivity());
                 adapter.notifyDataSetChanged();
                 recyclerView.setAdapter(adapter);
             }

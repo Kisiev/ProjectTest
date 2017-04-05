@@ -141,6 +141,10 @@ public class ChildStatusEntity extends BaseModel {
                 .queryList();
     }
 
-
+    public static void updateVisibility(int visible){
+        SQLite.update(ChildStatusEntity.class)
+                .set(ChildStatusEntity_Table.visible.eq(visible))
+                .execute();
+    }
 
 }

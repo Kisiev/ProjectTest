@@ -37,6 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/name_service"
+                android:textSize="10pt"
+                android:textAlignment="center"
+                android:textStyle="bold"
                 android:textColor="@color/cardview_light_background"
                  />
         </LinearLayout>
@@ -53,6 +56,8 @@
         android:id="@+id/timeTVinCard"
         android:textColor="@color/cardview_light_background"
         android:layout_weight="1"
+            android:textSize="8pt"
+            android:textStyle="italic"
         android:gravity="center|top"/>
         <TextView
             android:layout_width="match_parent"
@@ -60,6 +65,8 @@
             android:id="@+id/false_tv"
             android:textColor="@color/cardview_light_background"
             android:layout_weight="1"
+            android:textSize="10pt"
+            android:textStyle="italic|bold"
             android:visibility="gone"
             android:gravity="center|top" />
 
@@ -68,7 +75,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="end"
-    android:layout_margin="@dimen/activity_horizontal_margin"
     android:layout_below="@+id/liner_vospit_item">
     <Button
         android:layout_width="wrap_content"

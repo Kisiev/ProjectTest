@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.CareEntity_Table;
@@ -32,7 +33,9 @@ import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.utils.RecyclerTouchListener;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.Background;
@@ -58,7 +61,7 @@ public class ServicesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.services_redaction_fragment, container, false);
-
+        ChildStatusEntity.updateVisibility(View.GONE);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,6 +72,28 @@ public class ServicesFragment extends Fragment{
                 showDialog();
             }
         });
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(List<ChildStatusEntity> service, View view, final int position) {
+                view.findViewById(R.id.edit_button_raspisanie).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Кнопка Реадактор " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                view.findViewById(R.id.delete_button_raspisanie).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Кнопка Удалить " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }, ChildStatusEntity.selectChilds()));
         return view;
     }
 
@@ -91,7 +116,7 @@ public class ServicesFragment extends Fragment{
 
             @Override
             public void onLoadFinished(Loader<List<ChildStatusEntity>> loader, List<ChildStatusEntity> data) {
-                VospitannikAdapter adapter = new VospitannikAdapter(data);
+                VospitannikAdapter adapter = new VospitannikAdapter(data, getActivity());
                 adapter.notifyDataSetChanged();
                 recyclerView.setAdapter(adapter);
             }
