@@ -1,8 +1,10 @@
 package com.example.a1.projecttest.Entities;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.AppDatabase;
+import com.example.a1.projecttest.R;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -46,5 +48,12 @@ public class CareEntity extends BaseModel {
                 .columns("nameCare")
                 .values(nameCare)
                 .execute();
+    }
+
+    public static CareEntity selectCreationCare(Context context){
+        return SQLite.select()
+                .from(CareEntity.class)
+                .where(CareEntity_Table.nameCare.eq(context.getString(R.string.creation_care)))
+                .querySingle();
     }
 }

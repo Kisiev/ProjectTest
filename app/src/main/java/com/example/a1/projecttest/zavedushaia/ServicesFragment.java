@@ -14,6 +14,7 @@ import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.Entities.CareEntity;
@@ -58,6 +60,10 @@ public class ServicesFragment extends Fragment{
     TabHost tabHost;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
+    private void notifyInputError(){
+        Toast.makeText(getActivity(), R.string.invalidateData, Toast.LENGTH_SHORT).show();
+    }
+
     private List<ChildStatusEntity> updateServiceList(List<ChildStatusEntity> service){
         service.clear();
         service.addAll(ChildStatusEntity.selectChilds());
@@ -76,7 +82,7 @@ public class ServicesFragment extends Fragment{
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showDialog(false, 0);
             }
         });
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
@@ -85,6 +91,7 @@ public class ServicesFragment extends Fragment{
                 view.findViewById(R.id.edit_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        showDialog(true, position);
                         Toast.makeText(getActivity(), "Кнопка Реадактор " + position, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -141,11 +148,14 @@ public class ServicesFragment extends Fragment{
         });
     }
 
-    public void showDialog() {
+    public void showDialog(final boolean isReduction, final int position) {
 
+        final List<ChildStatusEntity> allService = new ArrayList<>();
+        allService.addAll(ChildStatusEntity.selectChilds());
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_service_layout);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        final TextView headerDialog = (TextView) dialog.findViewById(R.id.header_dialog_menu);
         final Button saveServiceButton = (Button) dialog.findViewById(R.id.save_serviceBT);
         final Button cancelServiceButton = (Button) dialog.findViewById(R.id.cancel_serviceBT);
         final Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
@@ -161,15 +171,14 @@ public class ServicesFragment extends Fragment{
         List childStatusEntities  = new ArrayList<>();
         childStatusEntities.addAll(CareEntity.select());
 
-        List upBringingEntity = new ArrayList<>();
+        final List upBringingEntity = new ArrayList<>();
         upBringingEntity.addAll(UpbringingEntity.select());
 
         SpinnerDialogAdapter spinnerDialogAdapter = new SpinnerDialogAdapter(getActivity(),childStatusEntities);
-        UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
+        final UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
 
         spinnerDialogAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         upbringingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
         spinnerDialogAdapter.notifyDataSetChanged();
         upbringingAdapter.notifyDataSetChanged();
@@ -177,14 +186,33 @@ public class ServicesFragment extends Fragment{
         spinner.setAdapter(spinnerDialogAdapter);
         upbringingSp.setAdapter(upbringingAdapter);
 
+        if (isReduction) {
+            headerDialog.setText(R.string.edit_header);
+            nameServiceEditor.setText(allService.get(position).getServiceName());
+            timeIn.setText(String.valueOf(allService.get(position).getTimeIn().getHours()) + String.valueOf(allService.get(position).getTimeIn().getMinutes()));
+            timeOut.setText(String.valueOf(allService.get(position).getTimeOut().getHours()) + String.valueOf(allService.get(position).getTimeOut().getMinutes()));
+            spinner.setSelection(allService.get(position).getTypeService());
+            for (int i = 0; i < spinner.getCount(); i ++){
+                CareEntity selectionItem = (CareEntity) spinner.getItemAtPosition(i);
+                if (selectionItem.getId() == allService.get(position).getTypeService()) {
+                    spinner.setSelection(i);
+                    break;
+                }
+            }
+            for (int i = 0; i < upbringingSp.getCount(); i ++){
+                UpbringingEntity selectionUpbringing =  (UpbringingEntity) upbringingSp.getItemAtPosition(i);
+                if (selectionUpbringing.getId() == allService.get(position).getTypeUpbringing()) {
+                    upbringingSp.setSelection(i);
+                    break;
+                }
+            }
+
+        } else headerDialog.setText(R.string.addActivityTV);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CareEntity careEntity = (CareEntity) parent.getSelectedItem();
-                upbringingSp.setVisibility(careEntity.getId() == (SQLite.select()
-                        .from(CareEntity.class)
-                        .where(CareEntity_Table.nameCare.eq(getString(R.string.creation_care)))
-                        .querySingle().getId())
+                upbringingSp.setVisibility(careEntity.getId() == (CareEntity.selectCreationCare(getActivity()).getId())
                         ? View.VISIBLE
                         :View.GONE);
             }
@@ -200,27 +228,51 @@ public class ServicesFragment extends Fragment{
             public void onClick(View view) {
                 CareEntity typeCare = (CareEntity) spinner.getSelectedItem();
                 UpbringingEntity upbringingEntity = (UpbringingEntity) upbringingSp.getSelectedItem();
-                if (!nameServiceEditor.getText().toString().isEmpty()
-                        && !timeIn.getText().toString().isEmpty()
-                        && !timeOut.getText().toString().isEmpty()
-                        && !typeCare.getNameCare().isEmpty()
-                        && !upbringingEntity.getName().isEmpty()) {
-                                ChildStatusEntity.insert(nameServiceEditor.getText().toString(),
-                                        VospitannikFragment.getDateString(
-                                                Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
-                                                Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
-                                        VospitannikFragment.getDateString(
-                                                Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
-                                                Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
+                if (!isReduction) {
+                    if (!nameServiceEditor.getText().toString().isEmpty()
+                            && !timeIn.getText().toString().contains("ч")
+                            && !timeIn.getText().toString().contains("м")
+                            && !timeOut.getText().toString().contains("ч")
+                            && !timeOut.getText().toString().contains("м")
+                            && !typeCare.getNameCare().isEmpty()) {
+                        ChildStatusEntity.insert(nameServiceEditor.getText().toString(),
+                                VospitannikFragment.getDateString(
+                                        Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
+                                        Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
+                                VospitannikFragment.getDateString(
+                                        Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
+                                        Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
                                 typeCare.getId(),
-                                upbringingEntity.getId(),
+                                typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
                                 "",
                                 VospitannikFragment.generatedColor(),
                                 View.VISIBLE);
-                        loadServices();
-                    dialog.dismiss();
-                }
 
+                    } else notifyInputError();
+                } else {
+                    if (!nameServiceEditor.getText().toString().isEmpty()
+                            && !timeIn.getText().toString().contains("ч")
+                            && !timeIn.getText().toString().contains("м")
+                            && !timeOut.getText().toString().contains("ч")
+                            && !timeOut.getText().toString().contains("м")
+                            && !typeCare.getNameCare().isEmpty()) {
+                        ChildStatusEntity.updateItem(allService.get(position).getId(), nameServiceEditor.getText().toString(),
+                                VospitannikFragment.getDateString(
+                                        Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
+                                        Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
+                                VospitannikFragment.getDateString(
+                                        Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
+                                        Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
+                                typeCare.getId(),
+                                typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
+                                "",
+                                VospitannikFragment.generatedColor(),
+                                View.VISIBLE);
+
+                    } else notifyInputError();
+                }
+                loadServices();
+               // dialog.dismiss();
             }
         });
 
@@ -232,6 +284,8 @@ public class ServicesFragment extends Fragment{
         });
         dialog.show();
     }
+
+
 
     public void textChange(final EditText editText){
 

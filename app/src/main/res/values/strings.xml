@@ -63,5 +63,7 @@
     <string name="hygiene_care">Гигиена</string>
     <string name="sleep_care">Сон</string>
     <string name="creation_care">Творчество</string>
+    <string name="invalidateData">Некорректные данные</string>
+    <string name="edit_header">Редактировать</string>
 
 </resources>

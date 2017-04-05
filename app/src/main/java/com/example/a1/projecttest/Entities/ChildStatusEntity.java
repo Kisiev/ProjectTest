@@ -141,6 +141,7 @@ public class ChildStatusEntity extends BaseModel {
                 .queryList();
     }
 
+
     public static void updateVisibility(int visible){
         SQLite.update(ChildStatusEntity.class)
                 .set(ChildStatusEntity_Table.visible.eq(visible))
@@ -148,6 +149,27 @@ public class ChildStatusEntity extends BaseModel {
     }
     public static void deleteItem (int id){
         SQLite.delete().from(ChildStatusEntity.class)
+                .where(ChildStatusEntity_Table.id.eq(id))
+                .execute();
+    }
+
+    public static void updateItem(int id, String serviceName,
+                                  Date timeIn,
+                                  Date timeOut,
+                                  int typeService,
+                                  int typeUpbringing,
+                                  String comments,
+                                  int color,
+                                  int visible){
+        SQLite.update(ChildStatusEntity.class)
+                .set(ChildStatusEntity_Table.serviceName.eq(serviceName),
+                        ChildStatusEntity_Table.timeIn.eq(timeIn),
+                        ChildStatusEntity_Table.timeOut.eq(timeOut),
+                        ChildStatusEntity_Table.typeService.eq(typeService),
+                        ChildStatusEntity_Table.typeUpbringing.eq(typeUpbringing),
+                        ChildStatusEntity_Table.comments.eq(comments),
+                        ChildStatusEntity_Table.color.eq(color),
+                        ChildStatusEntity_Table.visible.eq(visible))
                 .where(ChildStatusEntity_Table.id.eq(id))
                 .execute();
     }
