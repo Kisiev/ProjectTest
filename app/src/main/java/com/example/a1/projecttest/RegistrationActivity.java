@@ -16,46 +16,35 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.registration_activity)
-public class RegistrationActivity extends Activity {
-
+public class RegistrationActivity extends Activity implements View.OnClickListener{
+    RadioButton childRb;
+    RadioButton zavRb;
+    RadioButton vospitRb;
     @AfterViews
     public void main () {
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
         LoginActivity loginActivity = new LoginActivity();
+        childRb = (RadioButton) findViewById(R.id.child_RB);
+        zavRb = (RadioButton) findViewById(R.id.zavDetSadRB);
+        vospitRb = (RadioButton) findViewById(R.id.vospitatel);
+        childRb.setOnClickListener(this);
+        zavRb.setOnClickListener(this);
+        vospitRb.setOnClickListener(this);
         loginActivity.createImage(R.id.reg_imageView, R.mipmap.logo, imageView);
-        onClickButton();
     }
 
-
-    private void onClickButton(){
-        final RadioButton radioButton = (RadioButton) findViewById(R.id.child_RB);
-        radioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(radioButton.isChecked()){
-                    startActivity(new Intent(RegistrationActivity.this, ChildActivity_.class));
-                }
-            }
-        });
-        final RadioButton zavDetSadButton = (RadioButton) findViewById(R.id.zavDetSadRB);
-        zavDetSadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(zavDetSadButton.isChecked()){
-                    startActivity(new Intent(RegistrationActivity.this, MainZavDetSad_.class));
-                }
-            }
-        });
-        final RadioButton vospitatel = (RadioButton) findViewById(R.id.vospitatel);
-        vospitatel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(vospitatel.isChecked()){
-                    startActivity(new Intent(RegistrationActivity.this, VospitatelMainActivity_.class));
-                }
-
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.child_RB:
+                startActivity(new Intent(RegistrationActivity.this, ChildActivity_.class));
+                break;
+            case R.id.zavDetSadRB:
+                startActivity(new Intent(RegistrationActivity.this, MainZavDetSad_.class));
+                break;
+            case R.id.vospitatel:
+                startActivity(new Intent(RegistrationActivity.this, VospitatelMainActivity_.class));
+                break;
+        }
     }
-
 }
