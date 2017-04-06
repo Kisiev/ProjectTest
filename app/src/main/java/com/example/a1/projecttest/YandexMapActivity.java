@@ -50,11 +50,14 @@ import ru.yandex.yandexmapkit.overlay.Overlay;
 import ru.yandex.yandexmapkit.overlay.OverlayItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonOverlay;
+import ru.yandex.yandexmapkit.overlay.balloon.OnBalloonListener;
+import ru.yandex.yandexmapkit.overlay.drag.DragAndDropItem;
+import ru.yandex.yandexmapkit.overlay.drag.DragAndDropOverlay;
 import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 @EActivity(R.layout.activity_map_yandex)
-public class YandexMapActivity extends Activity{
+public class YandexMapActivity extends Activity implements OnBalloonListener{
 
     @ViewById(R.id.map_yandex)
     public MapView webView;
@@ -129,7 +132,7 @@ public class YandexMapActivity extends Activity{
             if (overlay != null)
                 overlay.clearOverlayItems();
             MapController mapController = webView.getMapController();
-            if (calbacks <=1) {
+            if (calbacks <=3) {
                 mapController.setPositionAnimationTo(new GeoPoint(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())));
                 mapController.setZoomCurrent(17);
             }
@@ -137,15 +140,14 @@ public class YandexMapActivity extends Activity{
             OverlayManager overlayManager = mapController.getOverlayManager();
             OverlayManager balloon = mapController.getOverlayManager();
             overlay = new Overlay(mapController);
-            Overlay overlay1 = new Overlay(mapController);
+           // Overlay overlay1 = new Overlay(mapController);
             Resources res = getResources();
-            BalloonOverlay balloonOverlay = new BalloonOverlay(mapController);
-            BalloonItem  balloonItem = new BalloonItem(this, new GeoPoint(44,44));
-            balloonOverlay.setBalloonItem(balloonItem);
+
             Drawable bitmap = getResources().getDrawable(R.drawable.ic_place_black_24dp);
             overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf( getListUsers.getCoordinateY())), bitmap);
-
-
+            BalloonItem balloonItem = new BalloonItem(this, overlayItem.getGeoPoint());
+            balloonItem.setOnBalloonListener(this);
+            overlayItem.setBalloonItem(balloonItem);
             overlay.addOverlayItem(overlayItem);
             overlayManager.addOverlay(overlay);
         }
@@ -193,4 +195,28 @@ public class YandexMapActivity extends Activity{
         }
     }
 
+    @Override
+    public void onBalloonViewClick(BalloonItem balloonItem, View view) {
+
+    }
+
+    @Override
+    public void onBalloonShow(BalloonItem balloonItem) {
+        balloonItem.setText("Мой ребенок");
+    }
+
+    @Override
+    public void onBalloonHide(BalloonItem balloonItem) {
+
+    }
+
+    @Override
+    public void onBalloonAnimationStart(BalloonItem balloonItem) {
+
+    }
+
+    @Override
+    public void onBalloonAnimationEnd(BalloonItem balloonItem) {
+
+    }
 }
