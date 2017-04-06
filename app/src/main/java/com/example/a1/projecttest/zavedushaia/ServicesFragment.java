@@ -43,6 +43,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,8 +61,8 @@ public class ServicesFragment extends Fragment{
     TabHost tabHost;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
-    private void notifyInputError(){
-        Toast.makeText(getActivity(), R.string.invalidateData, Toast.LENGTH_SHORT).show();
+    private void notifyInputError(String error){
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
     private List<ChildStatusEntity> updateServiceList(List<ChildStatusEntity> service){
@@ -168,7 +169,7 @@ public class ServicesFragment extends Fragment{
         textChange(timeOut);
 
         final EditText nameServiceEditor = (EditText) dialog.findViewById(R.id.name_service_editorET);
-        List childStatusEntities  = new ArrayList<>();
+        final List childStatusEntities  = new ArrayList<>();
         childStatusEntities.addAll(CareEntity.select());
 
         final List upBringingEntity = new ArrayList<>();
@@ -189,8 +190,8 @@ public class ServicesFragment extends Fragment{
         if (isReduction) {
             headerDialog.setText(R.string.edit_header);
             nameServiceEditor.setText(allService.get(position).getServiceName());
-            timeIn.setText(String.valueOf(allService.get(position).getTimeIn().getHours()) + String.valueOf(allService.get(position).getTimeIn().getMinutes()));
-            timeOut.setText(String.valueOf(allService.get(position).getTimeOut().getHours()) + String.valueOf(allService.get(position).getTimeOut().getMinutes()));
+            timeIn.setText(String.valueOf(allService.get(position).getTimeIn() + String.valueOf(allService.get(position).getTimeIn())));
+            timeOut.setText(String.valueOf(allService.get(position).getTimeOut() + String.valueOf(allService.get(position).getTimeOut())));
             spinner.setSelection(allService.get(position).getTypeService());
             for (int i = 0; i < spinner.getCount(); i ++){
                 CareEntity selectionItem = (CareEntity) spinner.getItemAtPosition(i);
@@ -228,49 +229,50 @@ public class ServicesFragment extends Fragment{
             public void onClick(View view) {
                 CareEntity typeCare = (CareEntity) spinner.getSelectedItem();
                 UpbringingEntity upbringingEntity = (UpbringingEntity) upbringingSp.getSelectedItem();
-                if (!isReduction) {
                     if (!nameServiceEditor.getText().toString().isEmpty()
                             && !timeIn.getText().toString().contains("ч")
                             && !timeIn.getText().toString().contains("м")
                             && !timeOut.getText().toString().contains("ч")
                             && !timeOut.getText().toString().contains("м")
                             && !typeCare.getNameCare().isEmpty()) {
-                        ChildStatusEntity.insert(nameServiceEditor.getText().toString(),
-                                VospitannikFragment.getDateString(
-                                        Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
-                                        Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
-                                VospitannikFragment.getDateString(
-                                        Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
-                                        Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
-                                typeCare.getId(),
-                                typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
-                                "",
-                                VospitannikFragment.generatedColor(),
-                                View.VISIBLE);
+                            if (Time.valueOf(VospitannikFragment.getDateString(
+                                    Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
+                                    Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0)).before(
+                                            Time.valueOf(VospitannikFragment.getDateString(
+                                    Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
+                                    Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0)))) {
+                                if (!isReduction) {
+                                    if (ChildStatusEntity.selectIndividualItem(nameServiceEditor.getText().toString()).size() <= 0) {
+                                        ChildStatusEntity.insert(nameServiceEditor.getText().toString(),
+                                                VospitannikFragment.getDateString(
+                                                        Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
+                                                        Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
+                                                VospitannikFragment.getDateString(
+                                                        Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
+                                                        Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
+                                                typeCare.getId(),
+                                                typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
+                                                "",
+                                                VospitannikFragment.generatedColor(),
+                                                View.VISIBLE);
+                                    } else notifyInputError(getString(R.string.invalidateNameService));
+                                } else {
+                                    ChildStatusEntity.updateItem(allService.get(position).getId(), nameServiceEditor.getText().toString(),
+                                            VospitannikFragment.getDateString(
+                                                    Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
+                                                    Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
+                                            VospitannikFragment.getDateString(
+                                                    Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
+                                                    Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
+                                            typeCare.getId(),
+                                            typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
+                                            "",
+                                            VospitannikFragment.generatedColor(),
+                                            View.VISIBLE);
+                                }
+                            } else notifyInputError(getString(R.string.invalidateTime));
+                        } else notifyInputError(getString(R.string.invalidateNameService));
 
-                    } else notifyInputError();
-                } else {
-                    if (!nameServiceEditor.getText().toString().isEmpty()
-                            && !timeIn.getText().toString().contains("ч")
-                            && !timeIn.getText().toString().contains("м")
-                            && !timeOut.getText().toString().contains("ч")
-                            && !timeOut.getText().toString().contains("м")
-                            && !typeCare.getNameCare().isEmpty()) {
-                        ChildStatusEntity.updateItem(allService.get(position).getId(), nameServiceEditor.getText().toString(),
-                                VospitannikFragment.getDateString(
-                                        Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
-                                        Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
-                                VospitannikFragment.getDateString(
-                                        Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
-                                        Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
-                                typeCare.getId(),
-                                typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
-                                "",
-                                VospitannikFragment.generatedColor(),
-                                View.VISIBLE);
-
-                    } else notifyInputError();
-                }
                 loadServices();
                // dialog.dismiss();
             }

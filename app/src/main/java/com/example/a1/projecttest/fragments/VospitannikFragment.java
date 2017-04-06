@@ -33,6 +33,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 
 import java.lang.reflect.Field;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,12 +44,10 @@ import java.util.Random;
 @EFragment(R.layout.vospitanik_fragment)
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
-    public static Date getDateString(int hours, int mins, int sec){
-        Date time = new Date();
-        time.setHours(hours);
-        time.setMinutes(mins);
-        time.setSeconds(sec);
-        return time;
+    SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
+    public static String getDateString(int hours, int mins, int sec){
+        Time time = new Time(hours, mins, sec);
+        return String.valueOf(time);
     }
 
     @Nullable
@@ -57,11 +56,12 @@ public class VospitannikFragment extends Fragment {
         final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
 
         SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy, hh:mm");
-        SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
+
         final Calendar calendar = Calendar.getInstance();
         ChildStatusEntity.updateVisibility(View.GONE);
+/*
 
-        List<Date> time = new ArrayList<>();
+        List<Time> time = new ArrayList<>();
 
             time.add(getDateString(7, 0, 0));
             time.add(getDateString(8, 0, 0));
@@ -79,7 +79,7 @@ public class VospitannikFragment extends Fragment {
 
 
 
-        List<Date> time1 = new ArrayList<>();
+        List<Time> time1 = new ArrayList<>();
 
             time1.add(getDateString(8, 0, 0));
             time1.add(getDateString(9, 0, 0));
@@ -93,6 +93,7 @@ public class VospitannikFragment extends Fragment {
             time1.add(getDateString(17, 0, 0));
             time1.add(getDateString(18, 0, 0));
             time1.add(getDateString(19, 0, 0));
+*/
 
 
 
@@ -133,7 +134,7 @@ public class VospitannikFragment extends Fragment {
 
         if (ChildStatusEntity.selectChilds().size() == 0) {
             for (int i = 0; i < listService.size(); i ++){
-                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), generatedColor(), View.GONE);
+               // ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), generatedColor(), View.GONE);
             }
         }
 

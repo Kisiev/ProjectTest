@@ -65,5 +65,7 @@
     <string name="creation_care">Творчество</string>
     <string name="invalidateData">Некорректные данные</string>
     <string name="edit_header">Редактировать</string>
+    <string name="invalidateNameService">Деятельность с таким именем уже существует</string>
+    <string name="invalidateTime">Некорректно введено время</string>
 
 </resources>

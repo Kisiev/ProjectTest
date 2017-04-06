@@ -42,7 +42,7 @@ import static android.os.Build.VERSION.SDK_INT;
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
     List<ChildStatusEntity> services;
-    DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
+    DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm:ss");
     UserLoginSession userLoginSession;
     Context context;
     public VospitannikAdapter (List<ChildStatusEntity> services, Context context) {
@@ -63,9 +63,9 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
         holder.textView.setText(services.get(holder.getAdapterPosition()).getServiceName());
 
-        holder.timeTv.setText(dfDate_day_time.format(services.get(holder.getAdapterPosition()).getTimeIn())
+        holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeIn().substring(0, 5))
                 + " - "
-                + dfDate_day_time.format(services.get(holder.getAdapterPosition()).getTimeOut()));
+                + (services.get(holder.getAdapterPosition()).getTimeOut().substring(0, 5)));
 
         holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
         holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
@@ -82,19 +82,20 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         }
 
         Calendar now = Calendar.getInstance();
-        Date date = now.getTime();
-        date.setHours(date.getHours() + 1);
+        Time date = Time.valueOf(dfDate_day_time.format(now.getTime()));
 
-        if (services.get(position).getTimeOut().after(date)){
+        date.setHours(date.getHours());
+
+        if (Time.valueOf(services.get(position).getTimeOut()).after(date)){
             holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
         }
 
-        if (services.get(position).getTimeOut().before(date)) {
+        if (Time.valueOf(services.get(position).getTimeOut()).before(date)) {
             holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
         }
 
-        if (services.get(position).getTimeIn().before(date)){
-            if (services.get(position).getTimeOut().after(date)){
+        if (Time.valueOf(services.get(position).getTimeIn()).before(date)){
+            if (Time.valueOf(services.get(position).getTimeOut()).after(date)){
                 holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
             }
         }

@@ -12,6 +12,7 @@ import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,34 @@ import static android.R.attr.visible;
 
 @Table(database = AppDatabase.class)
 public class ChildStatusEntity extends BaseModel {
+
+
+    @PrimaryKey()
+    private int id;
+
+    @Column
+    private String serviceName;
+
+    @Column
+    private String timeIn;
+
+    @Column
+    private String timeOut;
+
+    @Column
+    private int typeService;
+
+    @Column
+    private int typeUpbringing;
+
+    @Column
+    private String comments;
+
+    @Column
+    private int color;
+
+    @Column
+    private int visible;
 
     public int getId() {
         return id;
@@ -39,19 +68,19 @@ public class ChildStatusEntity extends BaseModel {
         this.serviceName = serviceName;
     }
 
-    public Date getTimeIn() {
+    public String getTimeIn() {
         return timeIn;
     }
 
-    public void setTimeIn(Date timeIn) {
+    public void setTimeIn(String timeIn) {
         this.timeIn = timeIn;
     }
 
-    public Date getTimeOut() {
+    public String getTimeOut() {
         return timeOut;
     }
 
-    public void setTimeOut(Date timeOut) {
+    public void setTimeOut(String timeOut) {
         this.timeOut = timeOut;
     }
 
@@ -95,35 +124,7 @@ public class ChildStatusEntity extends BaseModel {
         this.visible = visible;
     }
 
-    @PrimaryKey()
-    public int id;
-
-
-    @Column(name = "serviceName")
-    public String serviceName;
-
-    @Column(name = "timeIn")
-    public Date timeIn;
-
-    @Column(name = "timeOut")
-    public Date timeOut;
-
-    @Column (name = "typeService")
-    public int typeService;
-
-    @Column(name = "typeUpbringing")
-    public int typeUpbringing;
-
-    @Column(name = "comments")
-    public String comments;
-
-    @Column(name = "color")
-    public int color;
-
-    @Column(name = "visible")
-    public int visible;
-
-    public static void insert (String serviceName, Date timeIn, Date timeOut, int typeService, int typeUpbringing, String comments, int color, int visible) {
+    public static void insert (String serviceName, String timeIn, String timeOut, int typeService, int typeUpbringing, String comments, int color, int visible) {
         SQLite.insert(ChildStatusEntity.class)
                 .columns("serviceName", "timeIn", "timeOut", "typeService", "typeUpbringing", "comments", "color", "visible")
                 .values(serviceName, timeIn, timeOut, typeService, typeUpbringing, comments, color, visible)
@@ -135,6 +136,14 @@ public class ChildStatusEntity extends BaseModel {
                 .orderBy(OrderBy.fromString("timeIn"))
                 .queryList();
     }
+
+    public static List<ChildStatusEntity> selectIndividualItem(String serviceName){
+        return SQLite.select().from(ChildStatusEntity.class)
+                .where(ChildStatusEntity_Table.serviceName.eq(serviceName))
+                .orderBy(OrderBy.fromString("timeIn"))
+                .queryList();
+    }
+
 
     public static List<ChildStatusEntity> selectNameService(){
         return SQLite.select(ChildStatusEntity_Table.serviceName).from(ChildStatusEntity.class)
@@ -153,9 +162,10 @@ public class ChildStatusEntity extends BaseModel {
                 .execute();
     }
 
-    public static void updateItem(int id, String serviceName,
-                                  Date timeIn,
-                                  Date timeOut,
+    public static void updateItem(int id,
+                                  String serviceName,
+                                  String timeIn,
+                                  String timeOut,
                                   int typeService,
                                   int typeUpbringing,
                                   String comments,

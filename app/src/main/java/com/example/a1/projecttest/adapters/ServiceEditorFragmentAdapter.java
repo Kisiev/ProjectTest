@@ -34,8 +34,8 @@ public class ServiceEditorFragmentAdapter extends RecyclerView.Adapter<ServiceEd
     public void onBindViewHolder(ServiceEditorHolder holder, int position) {
         holder.nameService.setText(servicesEntityList.get(position).getServiceName());
         holder.typeService.setText(String.valueOf(servicesEntityList.get(position).getTypeService()));
-        holder.timeIn.setText(dfDate_day_time.format(servicesEntityList.get(position).getTimeIn().getTime()));
-        holder.timeOut.setText(dfDate_day_time.format(servicesEntityList.get(position).getTimeOut().getTime()));
+        holder.timeIn.setText(dfDate_day_time.format(servicesEntityList.get(position).getTimeIn()));
+        holder.timeOut.setText(dfDate_day_time.format(servicesEntityList.get(position).getTimeOut()));
     }
 
     @Override
