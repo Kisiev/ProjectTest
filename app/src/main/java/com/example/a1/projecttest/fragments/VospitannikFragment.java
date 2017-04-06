@@ -59,9 +59,8 @@ public class VospitannikFragment extends Fragment {
 
         final Calendar calendar = Calendar.getInstance();
         ChildStatusEntity.updateVisibility(View.GONE);
-/*
 
-        List<Time> time = new ArrayList<>();
+        List<String> time = new ArrayList<>();
 
             time.add(getDateString(7, 0, 0));
             time.add(getDateString(8, 0, 0));
@@ -79,7 +78,7 @@ public class VospitannikFragment extends Fragment {
 
 
 
-        List<Time> time1 = new ArrayList<>();
+        List<String> time1 = new ArrayList<>();
 
             time1.add(getDateString(8, 0, 0));
             time1.add(getDateString(9, 0, 0));
@@ -93,7 +92,6 @@ public class VospitannikFragment extends Fragment {
             time1.add(getDateString(17, 0, 0));
             time1.add(getDateString(18, 0, 0));
             time1.add(getDateString(19, 0, 0));
-*/
 
 
 
@@ -134,7 +132,7 @@ public class VospitannikFragment extends Fragment {
 
         if (ChildStatusEntity.selectChilds().size() == 0) {
             for (int i = 0; i < listService.size(); i ++){
-               // ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), generatedColor(), View.GONE);
+                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, coments.get(i), generatedColor(), View.GONE);
             }
         }
 
@@ -202,7 +200,7 @@ public class VospitannikFragment extends Fragment {
             red = random.nextInt(200);
             green = random.nextInt(10);
         }
-        Integer colors = Color.rgb(red, green, blue);
+        Integer colors = Color.argb(40 ,red, green, blue);
         return colors;
     }
 

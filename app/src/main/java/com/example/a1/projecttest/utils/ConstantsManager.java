@@ -9,4 +9,7 @@ public class ConstantsManager {
     final public static String VALID_TRUE = "true";
     final public static int PERMISSION_REQUEST_CODE = 1;
     final public static int MENU_ID = 123;
+    final public static String DIALOG_INSTANCE_NAME = "dialog";
+    final public static String DIALOG_ISREDUCTION = "isReduction";
+    final public static String DIALOG_POSITION = "position";
 }

@@ -3,7 +3,10 @@ package com.example.a1.projecttest;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +28,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.CircleTransform;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.facebook.stetho.Stetho;
 
 import org.androidannotations.annotations.AfterViews;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     NavigationView navigationView;
     ImageView imageView;
+
     @AfterViews
     public void main() {
 
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        replaceFragment(new FeedFragment(), R.id.content_main);
+        //replaceFragment(new FeedFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);

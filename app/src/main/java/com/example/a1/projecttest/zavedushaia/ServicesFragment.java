@@ -2,6 +2,7 @@ package com.example.a1.projecttest.zavedushaia;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import com.example.a1.projecttest.Entities.CareEntity_Table;
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
@@ -117,7 +119,14 @@ public class ServicesFragment extends Fragment{
         return view;
     }
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UserLoginSession session = new UserLoginSession(getActivity());
+        if (session.getStateDialogScreen()){
+            showDialog(session.getIsReductionState(), session.getPositionState());
+        }
+    }
 
     @Background
     public void loadServices () {
@@ -156,6 +165,8 @@ public class ServicesFragment extends Fragment{
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_service_layout);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        final UserLoginSession session = new UserLoginSession(getActivity());
+        session.saveStateDialogScreen(true, isReduction, position);
         final TextView headerDialog = (TextView) dialog.findViewById(R.id.header_dialog_menu);
         final Button saveServiceButton = (Button) dialog.findViewById(R.id.save_serviceBT);
         final Button cancelServiceButton = (Button) dialog.findViewById(R.id.cancel_serviceBT);
@@ -282,6 +293,7 @@ public class ServicesFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                session.saveStateDialogScreen(false, false, 0);
             }
         });
         dialog.show();
