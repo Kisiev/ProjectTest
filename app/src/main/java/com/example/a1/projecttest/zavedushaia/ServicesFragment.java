@@ -1,11 +1,14 @@
 package com.example.a1.projecttest.zavedushaia;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -23,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +60,10 @@ import javax.annotation.Nonnull;
 
 
 @EFragment(R.layout.services_redaction_fragment)
-public class ServicesFragment extends Fragment{
+public class ServicesFragment extends Fragment implements Dialog.OnDismissListener, Spinner.OnItemSelectedListener{
     RecyclerView recyclerView;
     Button addButton;
-    ViewPager viewPager;
-    TabHost tabHost;
+    Dialog dialog;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
     private void notifyInputError(String error){
@@ -81,6 +84,7 @@ public class ServicesFragment extends Fragment{
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         loadServices();
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,15 +162,16 @@ public class ServicesFragment extends Fragment{
         });
     }
 
+
     public void showDialog(final boolean isReduction, final int position) {
 
         final List<ChildStatusEntity> allService = new ArrayList<>();
         allService.addAll(ChildStatusEntity.selectChilds());
-        final Dialog dialog = new Dialog(getActivity());
+        dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_service_layout);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         final UserLoginSession session = new UserLoginSession(getActivity());
-        session.saveStateDialogScreen(true, isReduction, position);
+        dialog.setOnDismissListener(this);
         final TextView headerDialog = (TextView) dialog.findViewById(R.id.header_dialog_menu);
         final Button saveServiceButton = (Button) dialog.findViewById(R.id.save_serviceBT);
         final Button cancelServiceButton = (Button) dialog.findViewById(R.id.cancel_serviceBT);
@@ -175,11 +180,9 @@ public class ServicesFragment extends Fragment{
         final Spinner upbringingSp = (Spinner) dialog.findViewById(R.id.upbringingSp);
         final EditText timeIn = (EditText) dialog.findViewById(R.id.since_edit_ET);
         final EditText timeOut = (EditText) dialog.findViewById(R.id.till_edit_ET);
-
-        textChange(timeIn);
-        textChange(timeOut);
-
         final EditText nameServiceEditor = (EditText) dialog.findViewById(R.id.name_service_editorET);
+
+
         final List childStatusEntities  = new ArrayList<>();
         childStatusEntities.addAll(CareEntity.select());
 
@@ -187,7 +190,7 @@ public class ServicesFragment extends Fragment{
         upBringingEntity.addAll(UpbringingEntity.select());
 
         SpinnerDialogAdapter spinnerDialogAdapter = new SpinnerDialogAdapter(getActivity(),childStatusEntities);
-        final UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
+        UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
 
         spinnerDialogAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         upbringingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -197,43 +200,40 @@ public class ServicesFragment extends Fragment{
 
         spinner.setAdapter(spinnerDialogAdapter);
         upbringingSp.setAdapter(upbringingAdapter);
-
+        if (session.getStateDialogScreen()){
+            nameServiceEditor.setText(session.getSaveEditText(ConstantsManager.EDIT_TEXT_STATE));
+            timeIn.setText(session.getSaveEditText(ConstantsManager.TIME_IN));
+            timeOut.setText(session.getSaveEditText(ConstantsManager.TIME_OUT));
+        }
+        textChange(timeIn);
+        textChange(timeOut);
+        textChange(nameServiceEditor);
+        session.saveStateDialogScreen(true, isReduction, position);
         if (isReduction) {
             headerDialog.setText(R.string.edit_header);
             nameServiceEditor.setText(allService.get(position).getServiceName());
             timeIn.setText(String.valueOf(allService.get(position).getTimeIn() + String.valueOf(allService.get(position).getTimeIn())));
             timeOut.setText(String.valueOf(allService.get(position).getTimeOut() + String.valueOf(allService.get(position).getTimeOut())));
             spinner.setSelection(allService.get(position).getTypeService());
-            for (int i = 0; i < spinner.getCount(); i ++){
-                CareEntity selectionItem = (CareEntity) spinner.getItemAtPosition(i);
-                if (selectionItem.getId() == allService.get(position).getTypeService()) {
-                    spinner.setSelection(i);
-                    break;
+                for (int i = 0; i < spinner.getCount(); i++) {
+                    CareEntity selectionItem = (CareEntity) spinner.getItemAtPosition(i);
+                    if (selectionItem.getId() == allService.get(position).getTypeService()) {
+                        spinner.setSelection(i);
+                        break;
+                    }
                 }
-            }
-            for (int i = 0; i < upbringingSp.getCount(); i ++){
-                UpbringingEntity selectionUpbringing =  (UpbringingEntity) upbringingSp.getItemAtPosition(i);
-                if (selectionUpbringing.getId() == allService.get(position).getTypeUpbringing()) {
-                    upbringingSp.setSelection(i);
-                    break;
+                for (int i = 0; i < upbringingSp.getCount(); i++) {
+                    UpbringingEntity selectionUpbringing = (UpbringingEntity) upbringingSp.getItemAtPosition(i);
+                    if (selectionUpbringing.getId() == allService.get(position).getTypeUpbringing()) {
+                        upbringingSp.setSelection(i);
+                        break;
+                    }
                 }
-            }
+
 
         } else headerDialog.setText(R.string.addActivityTV);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CareEntity careEntity = (CareEntity) parent.getSelectedItem();
-                upbringingSp.setVisibility(careEntity.getId() == (CareEntity.selectCreationCare(getActivity()).getId())
-                        ? View.VISIBLE
-                        :View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        spinner.setOnItemSelectedListener(this);
+        upbringingSp.setOnItemSelectedListener(this);
 
         saveServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,6 +286,7 @@ public class ServicesFragment extends Fragment{
 
                 loadServices();
                // dialog.dismiss();
+
             }
         });
 
@@ -293,12 +294,10 @@ public class ServicesFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                session.saveStateDialogScreen(false, false, 0);
             }
         });
         dialog.show();
     }
-
 
 
     public void textChange(final EditText editText){
@@ -314,50 +313,56 @@ public class ServicesFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(current)) {
-                    String clean = s.toString().replaceAll("[^\\d.]", "");
-                    String cleanC = current.replaceAll("[^\\d.]", "");
-                    int hour = 0;
-                    int mins = 0;
-                    int cl = clean.length();
-                    int sel = cl;
-                    for (int i = 2; i <= cl && i < 6; i += 2) {
-                        sel++;
-                    }
-                    //Fix for pressing delete next to a forward slash
-                    if (clean.equals(cleanC)) sel--;
-
-                    if (clean.length() < 4){
-                        clean = clean + hhmm.substring(clean.length());
-                    }else{
-                        //This part makes sure that when we finish entering numbers
-                        //the date is correct, fixing it otherwise
-                        hour  = Integer.parseInt(clean.substring(0,2));
-                        mins  = Integer.parseInt(clean.substring(2,4));
-                        if (hour > 23) {
-                            clean = clean.replace(clean.substring(0, 2), "23");
-                            hour = 23;
+                if (editText.getId() != R.id.name_service_editorET) {
+                    if (!s.toString().equals(current)) {
+                        String clean = s.toString().replaceAll("[^\\d.]", "");
+                        String cleanC = current.replaceAll("[^\\d.]", "");
+                        int hour = 0;
+                        int mins = 0;
+                        int cl = clean.length();
+                        int sel = cl;
+                        for (int i = 2; i <= cl && i < 6; i += 2) {
+                            sel++;
                         }
-                        if (mins > 59) {
-                            clean = clean.replace(clean.substring(2, 4), "59");
-                            mins = 59;
+                        //Fix for pressing delete next to a forward slash
+                        if (clean.equals(cleanC)) sel--;
+
+                        if (clean.length() < 4) {
+                            clean = clean + hhmm.substring(clean.length());
+                        } else {
+                            //This part makes sure that when we finish entering numbers
+                            //the date is correct, fixing it otherwise
+                            hour = Integer.parseInt(clean.substring(0, 2));
+                            mins = Integer.parseInt(clean.substring(2, 4));
+                            if (hour > 23) {
+                                clean = clean.replace(clean.substring(0, 2), "23");
+                                hour = 23;
+                            }
+                            if (mins > 59) {
+                                clean = clean.replace(clean.substring(2, 4), "59");
+                                mins = 59;
+                            }
+                            cal.set(Calendar.HOUR, hour);
+                            cal.set(Calendar.MINUTE, mins);
+                            // ^ first set year for the line below to work correctly
+                            //with leap years - otherwise, date e.g. 29/02/2012
+                            //would be automatically corrected to 28/02/2012
+
+                            clean = String.format("%02d%02d", hour, mins);
                         }
-                        cal.set(Calendar.HOUR, hour);
-                        cal.set(Calendar.MINUTE, mins);
-                        // ^ first set year for the line below to work correctly
-                        //with leap years - otherwise, date e.g. 29/02/2012
-                        //would be automatically corrected to 28/02/2012
 
-                        clean = String.format("%02d%02d",hour, mins);
+                        clean = String.format("%s:%s", clean.substring(0, 2),
+                                clean.substring(2, 4));
+
+                        sel = sel < 0 ? 0 : sel;
+                        current = clean;
+                        editText.setText(current);
+                        editText.setSelection(sel < current.length() ? sel : current.length());
+                        getIdEditText(editText);
                     }
-
-                    clean = String.format("%s:%s", clean.substring(0, 2),
-                            clean.substring(2, 4));
-
-                    sel = sel < 0 ? 0 : sel;
-                    current = clean;
-                    editText.setText(current);
-                    editText.setSelection(sel < current.length() ? sel : current.length());
+                } else {
+                    UserLoginSession session = new UserLoginSession(getActivity());
+                    session.saveStateEditText(ConstantsManager.EDIT_TEXT_STATE, editText.getText().toString());
                 }
             }
 
@@ -368,5 +373,44 @@ public class ServicesFragment extends Fragment{
         };
         editText.addTextChangedListener(textWatcher);
     }
+    public void getIdEditText(EditText editText){
+        UserLoginSession session = new UserLoginSession(getActivity());
+        switch (editText.getId()){
+            case R.id.since_edit_ET:
+                session.saveStateEditText(ConstantsManager.TIME_IN, editText.getText().toString());
+                break;
+            case R.id.till_edit_ET:
+                session.saveStateEditText(ConstantsManager.TIME_OUT, editText.getText().toString());
+                break;
+        }
+    }
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        UserLoginSession session = new UserLoginSession(getActivity());
+        session.saveStateDialogScreen(false, false, 0);
+        session.saveStateEditText(ConstantsManager.EDIT_TEXT_STATE, "");
+        session.saveStateEditText(ConstantsManager.TIME_IN, "");
+        session.saveStateEditText(ConstantsManager.TIME_OUT, "");
+    }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        UserLoginSession session = new UserLoginSession(getActivity());
+        Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
+        Spinner upBring = (Spinner) dialog.findViewById(R.id.upbringingSp);
+        CareEntity careEntity = (CareEntity) spinner.getSelectedItem();
+        switch (parent.getId()){
+            case R.id.careSp:
+                    session.saveStateSpinner(ConstantsManager.SPINNER_STATE, ((CareEntity) parent.getSelectedItem()).getId());
+                    if (careEntity.getId() == (CareEntity.selectCreationCare(getActivity()).getId()))
+                    upBring.setVisibility(View.VISIBLE);
+                    else upBring.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

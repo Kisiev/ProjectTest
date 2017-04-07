@@ -12,4 +12,9 @@ public class ConstantsManager {
     final public static String DIALOG_INSTANCE_NAME = "dialog";
     final public static String DIALOG_ISREDUCTION = "isReduction";
     final public static String DIALOG_POSITION = "position";
+    final public static String EDIT_TEXT_STATE = "text_edit";
+    final public static String SPINNER_STATE = "spinner_state";
+    final public static String UPBRINGING_STATE = "upbringing_state";
+    final public static String TIME_IN = "time_in";
+    final public static String TIME_OUT = "time_out";
 }

@@ -17,6 +17,22 @@ public class UserLoginSession {
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
     }
 
+    public void saveStateEditText(String key, String text){
+        prefs.edit().putString(key, text).apply();
+        prefs.edit().apply();
+    }
+
+    public String getSaveEditText(String key){
+        return prefs.getString(key, "");
+    }
+    public void saveStateSpinner(String key, int id){
+        prefs.edit().putInt(key, id).apply();
+        prefs.edit().apply();
+    }
+
+    public int getSaveSpinner(String key){
+        return prefs.getInt(key, -1);
+    }
     public void saveStateDialogScreen(boolean state, boolean isRediction, int position){
         prefs.edit().putBoolean(ConstantsManager.DIALOG_INSTANCE_NAME, state).apply();
         prefs.edit().putBoolean(ConstantsManager.DIALOG_ISREDUCTION, isRediction).apply();
