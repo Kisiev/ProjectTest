@@ -10,6 +10,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:layout_above="@id/liner_layout"
             android:layout_gravity="center"
             android:id="@+id/liner_names_child">
             <LinearLayout
@@ -25,7 +26,7 @@
                     android:layout_gravity="end|bottom"
                     android:clickable="true"
                     app:backgroundTint="@color/colorPrimaryDark"
-                    android:id="@+id/expensesActionButton"
+                    android:id="@+id/child_add_action_button"
                     android:layout_margin="16dp"
                     />
         </LinearLayout>
