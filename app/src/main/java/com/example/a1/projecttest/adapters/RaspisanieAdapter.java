@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,7 +49,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-public class RaspisanieAdapter extends RecyclerView.Adapter<RaspisanieAdapter.RaspisanieHolder>{
+import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder;
+
+public class RaspisanieAdapter extends RecyclerView.Adapter<RaspisanieAdapter.RaspisanieHolder> {
 
     List<String> serviceName;
     List<Integer> colors;
@@ -106,6 +110,7 @@ public class RaspisanieAdapter extends RecyclerView.Adapter<RaspisanieAdapter.Ra
     public int getItemCount() {
         return serviceName.size();
     }
+
 
     public class RaspisanieHolder extends RecyclerView.ViewHolder {
         TextView textView;

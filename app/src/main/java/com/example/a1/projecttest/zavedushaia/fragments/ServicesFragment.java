@@ -1,4 +1,4 @@
-package com.example.a1.projecttest.zavedushaia;
+package com.example.a1.projecttest.zavedushaia.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -37,6 +37,7 @@ import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
+import com.example.a1.projecttest.adapters.RaspisanieAdapter;
 import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
@@ -57,6 +58,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder;
 
 
 @EFragment(R.layout.services_redaction_fragment)

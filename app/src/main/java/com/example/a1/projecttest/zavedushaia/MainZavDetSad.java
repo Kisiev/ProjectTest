@@ -16,11 +16,11 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 
 import com.example.a1.projecttest.Entities.CareEntity;
-import com.example.a1.projecttest.Entities.CareEntity_Table;
 import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.AfterViews;

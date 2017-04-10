@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        //replaceFragment(new FeedFragment(), R.id.content_main);
+        replaceFragment(new FeedFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
@@ -78,14 +78,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setMenu(){
         Menu menu = navigationView.getMenu();
         menu.add(Menu.NONE, 223, 0, "Живая лента");
+        menu.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
         menu = menu.addSubMenu("Дети");
         menu.add(Menu.NONE, 223, 1, "Андрей");
+        menu.getItem(0).setIcon(R.drawable.ic_person_black_24dp);
         menu.add(Menu.NONE, 223, 2, "Виктор");
-        Menu menu1 = navigationView.getMenu();
-        menu1 = menu1.addSubMenu("Родители");
-        menu1.add(Menu.NONE, 123, 3, "Валерий Павлович");
-        Menu menu2 = navigationView.getMenu();
-        menu2.add(Menu.NONE, 123, 4, "Выход");
+        menu.getItem(1).setIcon(R.drawable.ic_person_black_24dp);
+        Menu chatParentsMenu = navigationView.getMenu();
+        chatParentsMenu = chatParentsMenu.addSubMenu("Родители");
+        chatParentsMenu.add(Menu.NONE, 123, 3, "Валерий Павлович");
+        chatParentsMenu.getItem(0).setIcon(R.drawable.ic_receipt_black_24dp);
+        Menu exitMenu = navigationView.getMenu();
+        exitMenu.add(Menu.NONE, 123, 4, "Выход");
     }
 
     public void replaceFragment(Fragment fragment, int id) {

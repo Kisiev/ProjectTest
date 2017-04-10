@@ -62,4 +62,7 @@ dependencies {
     compile 'ru.yandex:yandexmapkit:2.5.4'
 
     compile 'com.mindorks:placeholderview:0.6.1'
+
+    compile 'jp.wasabeef:recyclerview-animators:2.2.4'
+
 }

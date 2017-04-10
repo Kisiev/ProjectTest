@@ -143,7 +143,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
            // Overlay overlay1 = new Overlay(mapController);
             Resources res = getResources();
 
-            Drawable bitmap = getResources().getDrawable(R.drawable.ic_place_black_24dp);
+            Drawable bitmap = getResources().getDrawable(R.drawable.ic_person_pin_circle_black_24dp);
             overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf( getListUsers.getCoordinateY())), bitmap);
             BalloonItem balloonItem = new BalloonItem(this, overlayItem.getGeoPoint());
             balloonItem.setOnBalloonListener(this);
