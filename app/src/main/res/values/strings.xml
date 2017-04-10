@@ -67,5 +67,8 @@
     <string name="edit_header">Редактировать</string>
     <string name="invalidateNameService">Деятельность с таким именем уже существует</string>
     <string name="invalidateTime">Некорректно введено время</string>
+    <string name="title_add_child">Добавить ребенка</string>
+    <string name="FIO">ФИО</string>
+    <string name="choice_photo">Выбрать фото</string>
 
 </resources>

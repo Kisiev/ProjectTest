@@ -138,7 +138,6 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
             }
 
             OverlayManager overlayManager = mapController.getOverlayManager();
-            OverlayManager balloon = mapController.getOverlayManager();
             overlay = new Overlay(mapController);
            // Overlay overlay1 = new Overlay(mapController);
             Resources res = getResources();
