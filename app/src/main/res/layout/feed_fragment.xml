@@ -5,37 +5,27 @@
     android:id="@+id/liner_layout"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <android.support.design.widget.CoordinatorLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_above="@id/liner_layout"
-            android:layout_gravity="center"
             android:id="@+id/liner_names_child">
-            <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:gravity="center|end"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
                 <android.support.design.widget.FloatingActionButton
                     android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
                     android:layout_height="wrap_content"
                     app:srcCompat="@mipmap/plus48"
-                    android:layout_gravity="end|bottom"
                     android:clickable="true"
                     app:backgroundTint="@color/colorPrimaryDark"
                     android:id="@+id/child_add_action_button"
                     android:layout_margin="16dp"
                     />
-        </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/recycler_circle_item">
             </android.support.v7.widget.RecyclerView>
-        </android.support.design.widget.CoordinatorLayout>
+        </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,10 +35,15 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:id="@+id/liner_service_child">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/recycler_feed_item">
         </android.support.v7.widget.RecyclerView>
+        </ScrollView>
     </LinearLayout>
+
     </RelativeLayout>

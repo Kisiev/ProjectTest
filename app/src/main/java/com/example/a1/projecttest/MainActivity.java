@@ -3,6 +3,7 @@ package com.example.a1.projecttest;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitle(getString(R.string.life_feed));
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
-        saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
+      //  saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
         setMenu();
         initStetho();
     }
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public static void saveGlideParam(ImageView imageView, Context context, int imagePath) {
+    public static void saveGlideParam(ImageView imageView, Context context, Uri imagePath) {
 
         Glide.with(context)
                 .load(imagePath)
