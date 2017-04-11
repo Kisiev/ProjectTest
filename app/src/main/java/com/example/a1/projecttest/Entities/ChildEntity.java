@@ -2,6 +2,7 @@ package com.example.a1.projecttest.Entities;
 
 
 import android.net.Uri;
+import android.view.View;
 
 import com.example.a1.projecttest.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -22,6 +23,17 @@ public class ChildEntity extends BaseModel{
 
     @Column
     private String photo;
+
+    @Column
+    private int selected;
+
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
 
     public int getId() {
         return id;
@@ -52,8 +64,8 @@ public class ChildEntity extends BaseModel{
     }
 
     public static void insertChild(String name, String photo){
-        SQLite.insert(ChildEntity.class).columns("name", "photo")
-                .values(name, photo)
+        SQLite.insert(ChildEntity.class).columns("name", "photo", "selected")
+                .values(name, photo, View.GONE)
                 .execute();
     }
 
@@ -62,4 +74,12 @@ public class ChildEntity extends BaseModel{
                 .where(ChildStatusEntity_Table.id.eq(id))
                 .execute();
     }
+
+    public static void updateItem(int id, String name, String photo){
+        SQLite.update(ChildEntity.class)
+                .set(ChildEntity_Table.name.eq(name), ChildEntity_Table.photo.eq(photo))
+                .where(ChildEntity_Table.id.eq(id))
+                .execute();
+    }
+
 }

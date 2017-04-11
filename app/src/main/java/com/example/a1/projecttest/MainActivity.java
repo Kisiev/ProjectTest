@@ -2,6 +2,7 @@ package com.example.a1.projecttest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;

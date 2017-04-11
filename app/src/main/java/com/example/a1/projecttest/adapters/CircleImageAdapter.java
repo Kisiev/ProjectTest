@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.utils.CircleTransform;
 import com.google.android.gms.maps.model.Circle;
 
 import java.util.List;
@@ -46,7 +48,6 @@ public class CircleImageAdapter extends RecyclerView.Adapter<CircleImageAdapter.
     }
 
     public class CircleImageHolder extends RecyclerView.ViewHolder {
-
         ImageView imageView;
         TextView textView;
         public CircleImageHolder(View itemView) {

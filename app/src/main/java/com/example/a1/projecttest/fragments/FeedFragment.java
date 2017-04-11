@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.Entities.CareEntity;
@@ -34,6 +37,7 @@ import com.example.a1.projecttest.adapters.FeedAdapter;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.google.android.gms.common.api.Releasable;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -76,12 +80,12 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);
+
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(final View view, final int position) {
                 switch (view.getId()){
                     case R.id.liner_circle_item:
-                        Toast.makeText(getActivity(), "Нажата " + position, Toast.LENGTH_SHORT).show();
                         registerForContextMenu(view);
                         pos = position;
                         break;
@@ -116,6 +120,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 if (pos != -1) {
                     ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
                     loadChildList();
+                    pos = -1;
+                }
+                break;
+            case ConstantsManager.REDICTION_CONTEXT_ITEM:
+                if(pos != -1) {
+                    showDialog(true, pos);
+                    pos = -1;
                 }
                 break;
         }
@@ -145,21 +156,40 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public void showDialog() {
+    public void showDialog(final boolean isRediction, final int position) {
 
         dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_child_in_parent_dialog);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         final EditText nameEdit = (EditText) dialog.findViewById(R.id.name_childET);
+        final EditText path = (EditText) dialog.findViewById(R.id.path_to_photoET);
         Button addButton = (Button) dialog.findViewById(R.id.add_child_buttonBT);
         final Button photoButton = (Button) dialog.findViewById(R.id.add_photo_buttonBT);
         final Button cancelButton = (Button) dialog.findViewById(R.id.cancel_buttonBT);
+        if (isRediction){
+            List<ChildEntity> item = ChildEntity.selectChild();
+            nameEdit.setText(item.get(position).getName());
+            path.setText(item.get(position).getPhoto());
+        }
         photoButton.setOnClickListener(this);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChildEntity.insertChild(nameEdit.getText().toString(), selectedImage.toString());
-                loadChildList();
+                if (!isRediction) {
+                    ChildEntity.insertChild(nameEdit.getText().toString(), selectedImage.toString());
+                    loadChildList();
+                    dialog.dismiss();
+                } else {
+                    ChildEntity.updateItem(ChildEntity.selectChild().get(position).getId(), nameEdit.getText().toString(), selectedImage.toString());
+                    loadChildList();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
@@ -175,7 +205,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 startActivityForResult(i, ConstantsManager.TYPE_PHOTO);
                 break;
             case R.id.child_add_action_button:
-                showDialog();
+                showDialog(false, -1);
                 break;
         }
     }
