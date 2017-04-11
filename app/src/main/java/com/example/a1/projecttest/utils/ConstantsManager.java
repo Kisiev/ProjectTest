@@ -21,4 +21,6 @@ public class ConstantsManager {
     final public static int TYPE_VIDEO = 2;
     final public static int REQUEST_CODE_PHOTO = 1;
     final public static int REQUEST_CODE_VIDEO = 2;
+    final public static int REDICTION_CONTEXT_ITEM = 15;
+    final public static int DELETE_CONTEXT_ITEM = 20;
 }

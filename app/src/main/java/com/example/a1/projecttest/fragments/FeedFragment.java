@@ -1,15 +1,11 @@
 package com.example.a1.projecttest.fragments;
 
 import android.app.Dialog;
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -17,31 +13,27 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
-import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.FeedAdapter;
-import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.example.a1.projecttest.utils.RecyclerTouchListener;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -50,18 +42,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.data;
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.CONTEXT_IGNORE_SECURITY;
 
 @EFragment
-public class FeedFragment extends Fragment implements View.OnClickListener{
+public class FeedFragment extends Fragment implements View.OnClickListener {
     File directory;
     Dialog dialog;
     RecyclerView recyclerView;
     RecyclerView recyclerViewFeed;
     FloatingActionButton actionButton;
     Uri selectedImage;
+    int pos = -1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,14 +70,56 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
-        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
         recyclerViewFeed.setAdapter(new FeedAdapter(listService));
-
         Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                switch (view.getId()){
+                    case R.id.liner_circle_item:
+                        Toast.makeText(getActivity(), "Нажата " + position, Toast.LENGTH_SHORT).show();
+                        registerForContextMenu(view);
+                        pos = position;
+                        break;
+                }
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
         return view;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        switch (v.getId()){
+            case R.id.liner_circle_item:
+                menu.add(0, ConstantsManager.REDICTION_CONTEXT_ITEM, 0, R.string.edit_text);
+                menu.add(0, ConstantsManager.DELETE_CONTEXT_ITEM, 0, R.string.delete_item);
+                break;
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case ConstantsManager.DELETE_CONTEXT_ITEM:
+                if (pos != -1) {
+                    ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
+                    loadChildList();
+                }
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

@@ -147,7 +147,8 @@ public class VospitannikFragment extends Fragment {
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(List<ChildStatusEntity> service, View view, final int position) {
+            public void onClick( View view, final int position) {
+                List<ChildStatusEntity> service = ChildStatusEntity.selectChilds();
                 view.findViewById(R.id.false_tv).setVisibility(View.VISIBLE);
                 SQLite.update(ChildStatusEntity.class)
                         .set(ChildStatusEntity_Table.visible.eq(View.VISIBLE))
@@ -162,7 +163,7 @@ public class VospitannikFragment extends Fragment {
             public void onLongClick(View view, int position) {
 
             }
-        }, ChildStatusEntity.selectChilds()));
+        }));
 
         Button button = (Button) view.findViewById(R.id.child_not_arriveBT);
         button.setOnClickListener(new View.OnClickListener() {

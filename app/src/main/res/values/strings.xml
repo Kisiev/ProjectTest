@@ -70,5 +70,7 @@
     <string name="title_add_child">Добавить ребенка</string>
     <string name="FIO">ФИО</string>
     <string name="choice_photo">Выбрать фото</string>
+    <string name="edit_text">Редактировать</string>
+    <string name="delete_item">Удалить</string>
 
 </resources>

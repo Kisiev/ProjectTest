@@ -101,7 +101,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         });
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(final List<ChildStatusEntity> service, View view, final int position) {
+            public void onClick(View view, final int position) {
                 view.findViewById(R.id.edit_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -112,7 +112,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                 view.findViewById(R.id.delete_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        List<ChildStatusEntity> service = ChildStatusEntity.selectChilds();
                         service.addAll(updateServiceList(service));
                         ChildStatusEntity.deleteItem(service.get(position).getId());
                         service.addAll(updateServiceList(service));
@@ -126,7 +126,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
             public void onLongClick(View view, int position) {
 
             }
-        }, ChildStatusEntity.selectChilds()));
+        }));
         return view;
     }
 
