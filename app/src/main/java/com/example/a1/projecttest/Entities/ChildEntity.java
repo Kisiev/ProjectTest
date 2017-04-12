@@ -24,17 +24,6 @@ public class ChildEntity extends BaseModel{
     @Column
     private String photo;
 
-    @Column
-    private int selected;
-
-    public int getSelected() {
-        return selected;
-    }
-
-    public void setSelected(int selected) {
-        this.selected = selected;
-    }
-
     public int getId() {
         return id;
     }
@@ -64,8 +53,8 @@ public class ChildEntity extends BaseModel{
     }
 
     public static void insertChild(String name, String photo){
-        SQLite.insert(ChildEntity.class).columns("name", "photo", "selected")
-                .values(name, photo, View.GONE)
+        SQLite.insert(ChildEntity.class).columns("name", "photo")
+                .values(name, photo)
                 .execute();
     }
 

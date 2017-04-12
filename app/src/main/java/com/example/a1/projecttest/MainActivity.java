@@ -27,6 +27,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.a1.projecttest.Entities.CareEntity;
+import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.CircleTransform;
@@ -36,6 +38,8 @@ import com.facebook.stetho.Stetho;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
+import java.util.List;
+
 @EActivity (R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
@@ -44,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @AfterViews
     public void main() {
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
       //  saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
-        setMenu();
+        setMenu(navigationView);
         initStetho();
     }
 
@@ -77,15 +80,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void setMenu(){
+    public static void setMenu(NavigationView navigationView){
         Menu menu = navigationView.getMenu();
+        menu.clear();
         menu.add(Menu.NONE, 223, 0, "Живая лента");
         menu.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
         menu = menu.addSubMenu("Дети");
-        menu.add(Menu.NONE, 223, 1, "Андрей");
-        menu.getItem(0).setIcon(R.drawable.ic_person_black_24dp);
-        menu.add(Menu.NONE, 223, 2, "Виктор");
-        menu.getItem(1).setIcon(R.drawable.ic_person_black_24dp);
+        List<ChildEntity> list = ChildEntity.selectChild();
+        for (int i = 0; i < list.size(); i ++){
+            menu.add(Menu.NONE, 223, i + 1, list.get(i).getName());
+            menu.getItem(i).setIcon(R.drawable.ic_person_black_24dp);
+        }
         Menu chatParentsMenu = navigationView.getMenu();
         chatParentsMenu = chatParentsMenu.addSubMenu("Родители");
         chatParentsMenu.add(Menu.NONE, 123, 3, "Валерий Павлович");

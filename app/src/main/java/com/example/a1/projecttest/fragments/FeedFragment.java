@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,10 +13,12 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -31,6 +34,8 @@ import android.widget.Toast;
 import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
+import com.example.a1.projecttest.MainActivity;
+import com.example.a1.projecttest.MapActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.FeedAdapter;
@@ -57,6 +62,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     RecyclerView recyclerViewFeed;
     FloatingActionButton actionButton;
     Uri selectedImage;
+    NavigationView navigationView;
     int pos = -1;
     @Nullable
     @Override
@@ -65,7 +71,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         List<String> listService = new ArrayList<>();
         listService.add("Иванов А.В");
         listService.add("Иванов В.П");
-
+        navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
@@ -120,6 +126,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 if (pos != -1) {
                     ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
                     loadChildList();
+                    MainActivity.setMenu(navigationView);
                     pos = -1;
                 }
                 break;
@@ -159,6 +166,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     public void showDialog(final boolean isRediction, final int position) {
 
         dialog = new Dialog(getActivity());
+
         dialog.setContentView(R.layout.add_child_in_parent_dialog);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         final EditText nameEdit = (EditText) dialog.findViewById(R.id.name_childET);
@@ -177,13 +185,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 if (!isRediction) {
                     ChildEntity.insertChild(nameEdit.getText().toString(), selectedImage.toString());
-                    loadChildList();
                     dialog.dismiss();
                 } else {
-                    ChildEntity.updateItem(ChildEntity.selectChild().get(position).getId(), nameEdit.getText().toString(), selectedImage.toString());
-                    loadChildList();
+                    ChildEntity.updateItem(ChildEntity.selectChild().get(position).getId(), nameEdit.getText().toString(), selectedImage.toString() == null ? path.getText().toString():selectedImage.toString());
                     dialog.dismiss();
                 }
+                loadChildList();
+                MainActivity.setMenu(navigationView);
             }
         });
 
