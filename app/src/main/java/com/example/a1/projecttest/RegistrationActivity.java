@@ -30,7 +30,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         childRb.setOnClickListener(this);
         zavRb.setOnClickListener(this);
         vospitRb.setOnClickListener(this);
-        loginActivity.createImage(R.id.reg_imageView, R.mipmap.logo, imageView);
+        loginActivity.createImage(R.mipmap.fon, imageView);
     }
 
     @Override

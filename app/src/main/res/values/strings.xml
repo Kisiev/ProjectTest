@@ -72,5 +72,7 @@
     <string name="choice_photo">Выбрать фото</string>
     <string name="edit_text">Редактировать</string>
     <string name="delete_item">Удалить</string>
+    <string name="mail_text">Электронная почта</string>
+    <string name="send_message">Отправить</string>
 
 </resources>

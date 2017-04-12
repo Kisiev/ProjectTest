@@ -32,6 +32,9 @@
         <service android:name=".utils.ChildService_">
 
         </service>
+        <activity android:name=".SendMessageSignIn_">
+
+        </activity>
         <activity android:name=".YandexMapActivity_">
 
         </activity>

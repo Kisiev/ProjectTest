@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.List;
 
 @EActivity (R.layout.login_activity)
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements View.OnClickListener{
 
     public UserLoginSession userLoginSession;
     public TextView loginTV, passwordTV;
@@ -39,48 +39,17 @@ public class LoginActivity extends Activity {
         userLoginSession = new UserLoginSession(getApplicationContext());
         if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty()))
             startActivity();
-        onButtonClick();
+
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
-        createImage(R.id.log_imageView, R.mipmap.logo, imageView);
+        createImage(R.mipmap.fon, imageView);
+
+        Button registrationBT = (Button) findViewById(R.id.registrationBT);
+        Button loginBT = (Button) findViewById(R.id.signIn);
+        registrationBT.setOnClickListener(this);
+        loginBT.setOnClickListener(this);
 
         loginTV = (TextView) findViewById(R.id.login_edit);
         passwordTV = (TextView) findViewById(R.id.pass_edit);
-    }
-
-    private void onButtonClick (){
-        final Button registrationBT = (Button) findViewById(R.id.registrationBT);
-        Button loginBT = (Button) findViewById(R.id.signIn);
-        loginBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getValidToken();
-                    }
-                });
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (validUser == null){
-                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
-                } else {
-                    userLoginSession.setUseName(validUser.getLogin(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
-                    startActivity();
-                    validUser = null;
-                }
-            }
-        });
-        registrationBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity_.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void startActivity(){
@@ -89,7 +58,7 @@ public class LoginActivity extends Activity {
         finish();
     }
 
-    public void createImage(int imageId, int imageResource, ImageView imageView){
+    public void createImage(int imageResource, ImageView imageView){
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(imageResource);
     }
@@ -111,4 +80,34 @@ public class LoginActivity extends Activity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.signIn:
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getValidToken();
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (validUser == null){
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+                } else {
+                    userLoginSession.setUseName(validUser.getLogin(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
+                    startActivity();
+                    validUser = null;
+                }
+                break;
+            case R.id.registrationBT:
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity_.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }
