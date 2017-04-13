@@ -30,15 +30,27 @@ public class UserLoginSession {
         prefs.edit().apply();
     }
 
-    public int getSaveSpinner(String key){
-        return prefs.getInt(key, -1);
+    public String getSaveSpinner(String key){
+        return prefs.getString(key, "");
     }
+
+    public void saveTextBox(String key, String name){
+        prefs.edit().putString(key, name).apply();
+        prefs.edit().apply();
+    }
+
+    public String getSaveTextBox(String key){
+        return prefs.getString(key, "");
+    }
+
     public void saveStateDialogScreen(boolean state, boolean isRediction, int position){
         prefs.edit().putBoolean(ConstantsManager.DIALOG_INSTANCE_NAME, state).apply();
         prefs.edit().putBoolean(ConstantsManager.DIALOG_ISREDUCTION, isRediction).apply();
         prefs.edit().putInt(ConstantsManager.DIALOG_POSITION, position).apply();
         prefs.edit().apply();
     }
+
+
 
     public boolean getStateDialogScreen(){
         return prefs.getBoolean(ConstantsManager.DIALOG_INSTANCE_NAME, false);

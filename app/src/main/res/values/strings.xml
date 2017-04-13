@@ -74,5 +74,11 @@
     <string name="delete_item">Удалить</string>
     <string name="mail_text">Электронная почта</string>
     <string name="send_message">Отправить</string>
+    <string name="parent_and_child">Родители и дети</string>
+    <string name="id_parent_text">Идентификатор родителя</string>
+    <string name="surname_text">Фамилия</string>
+    <string name="name_text">Имя</string>
+    <string name="last_name_text">Отчество</string>
+    <string name="error_count_item_text">Нельзя добавить больше 10 записей</string>
 
 </resources>

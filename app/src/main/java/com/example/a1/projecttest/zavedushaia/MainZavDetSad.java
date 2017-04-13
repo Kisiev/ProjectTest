@@ -20,6 +20,7 @@ import com.example.a1.projecttest.Entities.UpbringingEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -62,6 +63,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         registryMenu.getItem(0).setIcon(R.drawable.ic_child_care_black_24dp);
         registryMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 6, R.string.registry_menu_item_tutor);
         registryMenu.getItem(1).setIcon(R.drawable.ic_supervisor_account_black_24dp);
+        registryMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 14, R.string.parent_and_child);
+        registryMenu.getItem(2).setIcon(R.drawable.ic_person_add_black_24dp);
 
         Menu documentsMenu = navigationView.getMenu();
         documentsMenu = documentsMenu.addSubMenu(R.string.documents_menu_group);
@@ -180,6 +183,12 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
                 break;
             case 12:
 
+                break;
+            case 13:
+                break;
+            case 14:
+                ChildAndParentFragment cP = new ChildAndParentFragment();
+                replaceFragment(cP, R.id.content_main);
                 break;
 
         }
