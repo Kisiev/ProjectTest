@@ -34,10 +34,13 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     TabHost tabHost;
     ViewPager viewPager;
 
-    private void updateToolbarTitle(Fragment fragment, String title) {
+    private void updateToolbarTitle(Fragment fragment) {
         String fragmentClassName = fragment.getClass().getName();
-        if (fragmentClassName.equals(fragment.getClass().getName())) {
-            setTitle(title);
+
+        if (fragmentClassName.equals(ChildAndParentFragment.class.getName())) {
+            setTitle(getString(R.string.parent_and_child));
+        } else if (fragmentClassName.equals(ServicesFragment.class.getName())) {
+            setTitle(getString(R.string.group_tab_header));
         }
     }
 
@@ -122,6 +125,17 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         setMenu();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                if (f != null) {
+                    updateToolbarTitle(f);
+                } else finish();
+            }
+        });
+
     }
     public void replaceFragment(Fragment fragment, int id) {
         String backStackName = fragment.getClass().getName();
@@ -147,7 +161,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             case 1:
                 ServicesFragment servicesFragment = new ServicesFragment();
                 replaceFragment(servicesFragment, R.id.content_main);
-                updateToolbarTitle(servicesFragment, getString(R.string.group_tab_header));
+                updateToolbarTitle(servicesFragment);
                 break;
             case 0:
                 break;
@@ -187,8 +201,9 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             case 13:
                 break;
             case 14:
-                ChildAndParentFragment cP = new ChildAndParentFragment();
-                replaceFragment(cP, R.id.content_main);
+                ChildAndParentFragment cp = new ChildAndParentFragment();
+                replaceFragment(cp, R.id.content_main);
+                updateToolbarTitle(cp);
                 break;
 
         }

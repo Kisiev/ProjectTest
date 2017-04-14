@@ -110,18 +110,18 @@ public class VospitannikFragment extends Fragment {
         listService.add("Полдник и домой");
 
         List<String> coments = new ArrayList<>();
-        coments.add("Ваш ребенок плакал после вашего ухода");
-        coments.add("Ребенок плохо себя вел");
-        coments.add("Ребенок прыгал с унитаза на унитаз");
-        coments.add("Он задушил воздушный шарик метомод дихотомии");
-        coments.add("Ездил на БМВ класса С");
-        coments.add("Дважды ограбил банк");
-        coments.add("Разбил стекло тети Пети");
-        coments.add("Раздражал всех кроме беременных всадников");
-        coments.add("Уехал в сауну");
-        coments.add("Прыгал на кропати вместе с охранником");
-        coments.add("Шатал трубу");
-        coments.add("Шатал трубу второй раз");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
+        coments.add("");
 
         for (int i = 0; i< 10; i ++) {
             Log.d("COLOR", String.valueOf(generatedColor()));

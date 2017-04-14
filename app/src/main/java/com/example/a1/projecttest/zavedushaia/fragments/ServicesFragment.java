@@ -42,6 +42,8 @@ import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
@@ -50,6 +52,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -71,6 +74,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     RecyclerView recyclerView;
     Button addButton;
     Dialog dialog;
+    List<GetServiceType> getServiceTypeCare;
+    List<GetServiceType> getServiceTypeUpbring;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
     private void notifyInputError(String error){
@@ -188,8 +193,20 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         final EditText timeIn = (EditText) dialog.findViewById(R.id.since_edit_ET);
         final EditText timeOut = (EditText) dialog.findViewById(R.id.till_edit_ET);
         final EditText nameServiceEditor = (EditText) dialog.findViewById(R.id.name_service_editorET);
-
-
+       /* RestService restService = new RestService();
+        try {
+            getServiceTypeCare.add(restService.serviceType(String.valueOf(1)));
+            getServiceTypeUpbring.add(restService.serviceType(String.valueOf(2)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (CareEntity.select().size() == 0)
+        for(int i = 0; i < getServiceTypeCare.size(); i ++){
+            CareEntity.insertCare(getServiceTypeCare.get(i).getName());
+        }
+        for(int i = 0; i < getServiceTypeUpbring.size(); i ++){
+            CareEntity.insertCare(getServiceTypeUpbring.get(i).getName());
+        }*/
         final List childStatusEntities  = new ArrayList<>();
         childStatusEntities.addAll(CareEntity.select());
 

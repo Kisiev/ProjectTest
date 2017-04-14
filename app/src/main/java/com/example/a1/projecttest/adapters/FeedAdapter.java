@@ -36,7 +36,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
             holder.nameChildTV.setText("Иванов В.В");
             holder.serviceNameTV.setText("Завтрак в столовой");
         } else if (position == 1) {
-            holder.newsNameTV.setText("Больные дети");
+            holder.newsNameTV.setText("Болеющие дети");
             holder.timeTV.setText("25 минут назад");
             holder.dateTV.setText("13.12.2017");
             holder.nameChildTV.setText("В группе, вероятно, болеют:");

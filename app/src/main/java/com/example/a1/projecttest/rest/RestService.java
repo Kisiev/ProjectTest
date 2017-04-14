@@ -3,6 +3,7 @@ package com.example.a1.projecttest.rest;
 import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetServiceType;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +20,7 @@ public final class RestService {
 
     public GetListUsers viewListInMainFragmenr (@NonNull String id) throws IOException{
 
-        return  restClient.getProjectTestApi()
+        return  restClient.getProjectTestApiEdu()
                 .getListModel(id)
                 .execute().body();
 
@@ -27,7 +28,7 @@ public final class RestService {
 
     public String setCoordinates (@NonNull String id, @NonNull String coordinateX, @NonNull String coordinateY) throws IOException{
 
-        return  restClient.getProjectTestApi()
+        return  restClient.getProjectTestApiEdu()
                 .setCoordinates(id, coordinateX, coordinateY)
                 .execute().body();
 
@@ -38,6 +39,12 @@ public final class RestService {
                 .validUser(login, password)
                 .execute().body();
 
+    }
+
+    public GetServiceType serviceType (@NonNull String id) throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getServiceTypeCall(id)
+                .execute().body();
     }
 
 }

@@ -99,7 +99,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 if (validUser == null){
                     Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
                 } else {
-                    userLoginSession.setUseName(validUser.getLogin(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
+                    userLoginSession.setUseName(validUser.getEmail(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
                     startActivity();
                     validUser = null;
                 }
