@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Table(database = AppDatabase.class)
-public class UpbringingEntity extends BaseModel {
+public class ServiceListEntity extends BaseModel {
     @PrimaryKey
     private int id;
 
@@ -34,13 +34,13 @@ public class UpbringingEntity extends BaseModel {
         this.name = name;
     }
 
-    public static List<UpbringingEntity> select(){
-        return SQLite.select().from(UpbringingEntity.class)
+    public static List<ServiceListEntity> select(){
+        return SQLite.select().from(ServiceListEntity.class)
                 .queryList();
     }
 
     public static void insertUpbring(String name){
-        SQLite.insert(UpbringingEntity.class)
+        SQLite.insert(ServiceListEntity.class)
                 .columns("name")
                 .values(name)
                 .execute();

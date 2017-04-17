@@ -19,6 +19,9 @@ public class CareEntity extends BaseModel {
     private int id;
 
     @Column
+    private String serviceListId;
+
+    @Column
     private String nameCare;
 
     public int getId() {
@@ -37,16 +40,24 @@ public class CareEntity extends BaseModel {
         this.nameCare = nameCare;
     }
 
+    public String getServiceListId() {
+        return serviceListId;
+    }
 
-    public static List<CareEntity> select (){
+    public void setServiceListId(String serviceListId) {
+        this.serviceListId = serviceListId;
+    }
+
+    public static List<CareEntity> select (String serviceListId){
         return SQLite.select().from(CareEntity.class)
+                .where(CareEntity_Table.serviceListId.eq(serviceListId))
                 .queryList();
     }
 
-    public static void insertCare(String nameCare){
+    public static void insertCare(String nameCare, String serviceListId){
         SQLite.insert(CareEntity.class)
-                .columns("nameCare")
-                .values(nameCare)
+                .columns("nameCare", "serviceListId")
+                .values(nameCare, serviceListId)
                 .execute();
     }
 
@@ -55,5 +66,9 @@ public class CareEntity extends BaseModel {
                 .from(CareEntity.class)
                 .where(CareEntity_Table.nameCare.eq(context.getString(R.string.creation_care)))
                 .querySingle();
+    }
+
+    public static void deleteAll(){
+        SQLite.delete().from(CareEntity.class).execute();
     }
 }

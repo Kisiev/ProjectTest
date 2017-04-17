@@ -9,17 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.example.a1.projecttest.Entities.CareEntity;
-import com.example.a1.projecttest.Entities.UpbringingEntity;
+import com.example.a1.projecttest.Entities.ServiceListEntity;
 import com.example.a1.projecttest.R;
 
 import java.util.List;
 
 
-public class UpbringingAdapter extends ArrayAdapter<UpbringingEntity> implements SpinnerAdapter {
+public class UpbringingAdapter extends ArrayAdapter<ServiceListEntity> implements SpinnerAdapter {
 
-    List<UpbringingEntity> upbringingEntities;
-    public UpbringingAdapter(@NonNull Context context, List<UpbringingEntity> upbringingEntities) {
+    List<ServiceListEntity> upbringingEntities;
+    public UpbringingAdapter(@NonNull Context context, List<ServiceListEntity> upbringingEntities) {
         super(context, 0, upbringingEntities);
         this.upbringingEntities = upbringingEntities;
     }
@@ -27,7 +26,7 @@ public class UpbringingAdapter extends ArrayAdapter<UpbringingEntity> implements
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        UpbringingEntity upbringingEntity = (UpbringingEntity) getItem(position);
+        ServiceListEntity upbringingEntity = (ServiceListEntity) getItem(position);
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
@@ -42,7 +41,7 @@ public class UpbringingAdapter extends ArrayAdapter<UpbringingEntity> implements
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-        UpbringingEntity upbringingEntity = (UpbringingEntity) getItem(position);
+        ServiceListEntity upbringingEntity = (ServiceListEntity) getItem(position);
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);

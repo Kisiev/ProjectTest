@@ -23,5 +23,9 @@ public interface ProjectTestApi {
                                @Query("coordinateY") String coordinateY);
 
     @GET("/api/getServiceTypesById.php")
-    Call<GetServiceType> getServiceTypeCall (@Query("id") String id);
+    Call<List<GetServiceType>> getServiceTypeCall (@Query("id") String id);
+
+    @GET("/api/emailRegistration.php")
+    Call<String> getPassByEmail (@Query("email") String email);
+
 }

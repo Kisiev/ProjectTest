@@ -4,12 +4,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class GetServiceType {
-
     @SerializedName("id")
+    @Expose
     private String id;
     @SerializedName("serviceListId")
+    @Expose
     private String serviceListId;
     @SerializedName("name")
+    @Expose
     private String name;
 
     public String getId() {
@@ -35,5 +37,4 @@ public class GetServiceType {
     public void setName(String name) {
         this.name = name;
     }
-
 }

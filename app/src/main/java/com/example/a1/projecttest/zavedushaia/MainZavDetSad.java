@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 
 import com.example.a1.projecttest.Entities.CareEntity;
-import com.example.a1.projecttest.Entities.UpbringingEntity;
+import com.example.a1.projecttest.Entities.ServiceListEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
@@ -100,21 +100,12 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         userLvlToken.clear();
         userLvlToken.setUseName("Nataly", "123", 44);
 
-    if (CareEntity.select().size() == 0) {
-        SQLite.insert(CareEntity.class).columns("id", "nameCare").values(-1, "Вид ухода..").execute();
-        CareEntity.insertCare(getString(R.string.food_care));
-        CareEntity.insertCare(getString(R.string.hygiene_care));
-        CareEntity.insertCare(getString(R.string.sleep_care));
-        CareEntity.insertCare(getString(R.string.creation_care));
+    if (ServiceListEntity.select().size() == 0) {
+        SQLite.insert(ServiceListEntity.class).columns("id", "name").values(-1, "Вид деятельности..").execute();
+        SQLite.insert(ServiceListEntity.class).columns("id", "name").values(1, "Уход").execute();
+        SQLite.insert(ServiceListEntity.class).columns("id", "name").values(2, "Развитие").execute();
     }
-    if (UpbringingEntity.select().size() == 0){
-        SQLite.insert(UpbringingEntity.class).columns("id", "name").values(-1, "Направление..").execute();
-        UpbringingEntity.insertUpbring(getString(R.string.socially_development));
-        UpbringingEntity.insertUpbring(getString(R.string.cognitive_development));
-        UpbringingEntity.insertUpbring(getString(R.string.verbal_development));
-        UpbringingEntity.insertUpbring(getString(R.string.artistic_development));
-        UpbringingEntity.insertUpbring(getString(R.string.physical_development));
-    }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);

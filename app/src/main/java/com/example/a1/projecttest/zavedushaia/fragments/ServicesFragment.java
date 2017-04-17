@@ -1,24 +1,17 @@
 package com.example.a1.projecttest.zavedushaia.fragments;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.preference.DialogPreference;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +19,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.Entities.CareEntity;
-import com.example.a1.projecttest.Entities.CareEntity_Table;
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.Entities.UpbringingEntity;
+import com.example.a1.projecttest.Entities.ServiceListEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
-import com.example.a1.projecttest.adapters.RaspisanieAdapter;
 import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
@@ -47,7 +36,6 @@ import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -59,14 +47,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.FadeInAnimator;
-import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
-import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder;
 
 
 @EFragment(R.layout.services_redaction_fragment)
@@ -87,6 +67,22 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         service.addAll(ChildStatusEntity.selectChilds());
         return service;
     }
+
+/*    public void getServiceList(){
+        RestService restService = new RestService();
+        try {
+           // CareEntity.deleteAll();
+            getServiceTypeCare = (restService.serviceType(String.valueOf(1)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            CareEntity.deleteAll();
+            getServiceTypeUpbring.addAll(restService.serviceType(String.valueOf(2)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     @Nullable
     @Override
@@ -193,37 +189,45 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         final EditText timeIn = (EditText) dialog.findViewById(R.id.since_edit_ET);
         final EditText timeOut = (EditText) dialog.findViewById(R.id.till_edit_ET);
         final EditText nameServiceEditor = (EditText) dialog.findViewById(R.id.name_service_editorET);
-       /* RestService restService = new RestService();
+
+/*        Thread getServiceListThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getServiceList();
+            }
+        });
+        getServiceListThread.start();
         try {
-            getServiceTypeCare.add(restService.serviceType(String.valueOf(1)));
-            getServiceTypeUpbring.add(restService.serviceType(String.valueOf(2)));
-        } catch (IOException e) {
+            getServiceListThread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        if (CareEntity.select().size() == 0)
-        for(int i = 0; i < getServiceTypeCare.size(); i ++){
-            CareEntity.insertCare(getServiceTypeCare.get(i).getName());
-        }
-        for(int i = 0; i < getServiceTypeUpbring.size(); i ++){
-            CareEntity.insertCare(getServiceTypeUpbring.get(i).getName());
+        }*/
+
+    /*    if (getServiceTypeCare != null && getServiceTypeUpbring != null) {
+            for (int i = 0; i < getServiceTypeCare.size(); i++) {
+                CareEntity.insertCare(getServiceTypeCare.get(i).getName(), getServiceTypeCare.get(i).getServiceListId());
+            }
+            for (int i = 0; i < getServiceTypeUpbring.size(); i++) {
+                CareEntity.insertCare(getServiceTypeUpbring.get(i).getName(), getServiceTypeUpbring.get(i).getServiceListId());
+            }
         }*/
         final List childStatusEntities  = new ArrayList<>();
-        childStatusEntities.addAll(CareEntity.select());
+        childStatusEntities.addAll(ServiceListEntity.select());
 
-        final List upBringingEntity = new ArrayList<>();
-        upBringingEntity.addAll(UpbringingEntity.select());
+      /*  final List upBringingEntity = new ArrayList<>();
+        upBringingEntity.addAll(CareEntity.select("2"));*/
 
         SpinnerDialogAdapter spinnerDialogAdapter = new SpinnerDialogAdapter(getActivity(),childStatusEntities);
-        UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
+      //  UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
 
-        spinnerDialogAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        upbringingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      /*  spinnerDialogAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        upbringingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
 
         spinnerDialogAdapter.notifyDataSetChanged();
-        upbringingAdapter.notifyDataSetChanged();
+        //upbringingAdapter.notifyDataSetChanged();
 
         spinner.setAdapter(spinnerDialogAdapter);
-        upbringingSp.setAdapter(upbringingAdapter);
+       // upbringingSp.setAdapter(upbringingAdapter);
         if (session.getStateDialogScreen()){
             nameServiceEditor.setText(session.getSaveEditText(ConstantsManager.EDIT_TEXT_STATE));
             timeIn.setText(session.getSaveEditText(ConstantsManager.TIME_IN));
@@ -247,7 +251,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                     }
                 }
                 for (int i = 0; i < upbringingSp.getCount(); i++) {
-                    UpbringingEntity selectionUpbringing = (UpbringingEntity) upbringingSp.getItemAtPosition(i);
+                    ServiceListEntity selectionUpbringing = (ServiceListEntity) upbringingSp.getItemAtPosition(i);
                     if (selectionUpbringing.getId() == allService.get(position).getTypeUpbringing()) {
                         upbringingSp.setSelection(i);
                         break;
@@ -262,14 +266,14 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         saveServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CareEntity typeCare = (CareEntity) spinner.getSelectedItem();
-                UpbringingEntity upbringingEntity = (UpbringingEntity) upbringingSp.getSelectedItem();
-                    if (!nameServiceEditor.getText().toString().isEmpty()
-                            && !timeIn.getText().toString().contains("ч")
-                            && !timeIn.getText().toString().contains("м")
-                            && !timeOut.getText().toString().contains("ч")
-                            && !timeOut.getText().toString().contains("м")
-                            && !typeCare.getNameCare().isEmpty()) {
+                ServiceListEntity typeCare = (ServiceListEntity) spinner.getSelectedItem();
+                CareEntity upbringingEntity = (CareEntity) upbringingSp.getSelectedItem();
+                    if (!nameServiceEditor.getText().toString().equals("")
+                            && (!timeIn.getText().toString().equals("")
+                            && (!timeIn.getText().toString().contains("м") || (!timeIn.getText().toString().contains("ч")))
+                            && !timeOut.getText().toString().equals("")
+                            && (!timeOut.getText().toString().contains("м"))||(!timeOut.getText().toString().contains("ч")))
+                            && !typeCare.getName().equals("")) {
                             if (Time.valueOf(VospitannikFragment.getDateString(
                                     Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
                                     Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0)).before(
@@ -286,7 +290,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                                                         Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
                                                         Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
                                                 typeCare.getId(),
-                                                typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
+                                                typeCare.getId() == 2 ? upbringingEntity.getId() : -1,
                                                 "",
                                                 VospitannikFragment.generatedColor(),
                                                 View.VISIBLE);
@@ -300,7 +304,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                                                     Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
                                                     Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
                                             typeCare.getId(),
-                                            typeCare.getId() == CareEntity.selectCreationCare(getActivity()).getId() ? upbringingEntity.getId() : -1,
+                                            typeCare.getId() == 2 ? upbringingEntity.getId() : -1,
                                             "",
                                             VospitannikFragment.generatedColor(),
                                             View.VISIBLE);
@@ -422,11 +426,11 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         UserLoginSession session = new UserLoginSession(getActivity());
         Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
         Spinner upBring = (Spinner) dialog.findViewById(R.id.upbringingSp);
-        CareEntity careEntity = (CareEntity) spinner.getSelectedItem();
+        ServiceListEntity serviceListEntity = (ServiceListEntity) spinner.getSelectedItem();
         switch (parent.getId()){
             case R.id.careSp:
-                    session.saveStateSpinner(ConstantsManager.SPINNER_STATE, ((CareEntity) parent.getSelectedItem()).getId());
-                    if (careEntity.getId() == (CareEntity.selectCreationCare(getActivity()).getId()))
+                    session.saveStateSpinner(ConstantsManager.SPINNER_STATE, ((ServiceListEntity) parent.getSelectedItem()).getId());
+                    if (serviceListEntity.getId() == 2)
                     upBring.setVisibility(View.VISIBLE);
                     else upBring.setVisibility(View.GONE);
                 break;

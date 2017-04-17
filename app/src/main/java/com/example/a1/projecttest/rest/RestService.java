@@ -8,8 +8,6 @@ import com.example.a1.projecttest.rest.Models.GetServiceType;
 import java.io.IOException;
 import java.util.List;
 
-import retrofit2.http.Query;
-
 
 public final class RestService {
 
@@ -41,10 +39,15 @@ public final class RestService {
 
     }
 
-    public GetServiceType serviceType (@NonNull String id) throws IOException{
+    public List<GetServiceType> serviceType (String id) throws IOException{
         return restClient.getProjectTestApiEdu()
                 .getServiceTypeCall(id)
                 .execute().body();
     }
 
+    public String getPasswordByEmail (String email) throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getPassByEmail(email)
+                .execute().body();
+    }
 }
