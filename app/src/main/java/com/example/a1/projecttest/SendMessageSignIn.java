@@ -19,8 +19,8 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
         EditText mailEdit = (EditText) findViewById(R.id.mail_editET);
         Button sendMessageButton = (Button) findViewById(R.id.send_message_button);
 
-        LoginActivity loginActivity = new LoginActivity();
-        loginActivity.createImage(R.mipmap.fon, imageView);
+     //   LoginActivity loginActivity = new LoginActivity();
+     //   loginActivity.createImage(R.mipmap.fon, imageView);
     }
 
     @Override

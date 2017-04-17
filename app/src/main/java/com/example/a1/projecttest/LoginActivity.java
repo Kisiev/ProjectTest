@@ -41,7 +41,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             startActivity();
 
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
-        createImage(R.mipmap.fon, imageView);
+       // createImage(R.mipmap.fon, imageView);
 
         Button registrationBT = (Button) findViewById(R.id.registrationBT);
         Button loginBT = (Button) findViewById(R.id.signIn);

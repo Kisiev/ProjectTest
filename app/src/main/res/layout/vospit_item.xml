@@ -3,6 +3,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_lay_vospit"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >

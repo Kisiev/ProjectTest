@@ -23,14 +23,14 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     @AfterViews
     public void main () {
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
-        LoginActivity loginActivity = new LoginActivity();
+       // LoginActivity loginActivity = new LoginActivity();
         childRb = (RadioButton) findViewById(R.id.child_RB);
         zavRb = (RadioButton) findViewById(R.id.zavDetSadRB);
         vospitRb = (RadioButton) findViewById(R.id.vospitatel);
         childRb.setOnClickListener(this);
         zavRb.setOnClickListener(this);
         vospitRb.setOnClickListener(this);
-        loginActivity.createImage(R.mipmap.fon, imageView);
+      //  loginActivity.createImage(R.mipmap.fon, imageView);
     }
 
     @Override
