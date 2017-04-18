@@ -19,13 +19,21 @@ public class CareEntity extends BaseModel {
     private int id;
 
     @Column
-    private String serviceListId;
+    private int serviceListId;
 
     @Column
     private String nameCare;
 
     public int getId() {
         return id;
+    }
+
+    public int getServiceListId() {
+        return serviceListId;
+    }
+
+    public void setServiceListId(int serviceListId) {
+        this.serviceListId = serviceListId;
     }
 
     public void setId(int id) {
@@ -40,21 +48,12 @@ public class CareEntity extends BaseModel {
         this.nameCare = nameCare;
     }
 
-    public String getServiceListId() {
-        return serviceListId;
-    }
-
-    public void setServiceListId(String serviceListId) {
-        this.serviceListId = serviceListId;
-    }
-
-    public static List<CareEntity> select (String serviceListId){
+    public static List<CareEntity> select (){
         return SQLite.select().from(CareEntity.class)
-                .where(CareEntity_Table.serviceListId.eq(serviceListId))
                 .queryList();
     }
 
-    public static void insertCare(String nameCare, String serviceListId){
+    public static void insertCare(String nameCare, int serviceListId){
         SQLite.insert(CareEntity.class)
                 .columns("nameCare", "serviceListId")
                 .values(nameCare, serviceListId)

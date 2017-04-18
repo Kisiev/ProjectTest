@@ -67,7 +67,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
                 + " - "
                 + (services.get(holder.getAdapterPosition()).getTimeOut().substring(0, 5)));
 
-      //  holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
+       // holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
         holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
         if (services.get(position).getVisible() == View.GONE) {
             holder.false_tv.setVisibility(View.GONE);

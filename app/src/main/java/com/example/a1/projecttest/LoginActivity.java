@@ -97,6 +97,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     e.printStackTrace();
                 }
                 if (validUser == null){
+                    startActivity();
                     Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
                 } else {
                     userLoginSession.setUseName(validUser.getEmail(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
