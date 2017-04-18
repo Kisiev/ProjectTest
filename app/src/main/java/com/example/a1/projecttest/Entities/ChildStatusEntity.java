@@ -44,6 +44,9 @@ public class ChildStatusEntity extends BaseModel {
     private int typeUpbringing;
 
     @Column
+    private int selectedSpinnerPosition;
+
+    @Column
     private String comments;
 
     @Column
@@ -51,6 +54,14 @@ public class ChildStatusEntity extends BaseModel {
 
     @Column
     private int visible;
+
+    public int getSelectedSpinnerPosition() {
+        return selectedSpinnerPosition;
+    }
+
+    public void setSelectedSpinnerPosition(int selectedSpinnerPosition) {
+        this.selectedSpinnerPosition = selectedSpinnerPosition;
+    }
 
     public int getId() {
         return id;
@@ -124,10 +135,10 @@ public class ChildStatusEntity extends BaseModel {
         this.visible = visible;
     }
 
-    public static void insert (String serviceName, String timeIn, String timeOut, int typeService, int typeUpbringing, String comments, int color, int visible) {
+    public static void insert (String serviceName, String timeIn, String timeOut, int typeService, int typeUpbringing, int selectedSpinnerPosition, String comments, int color, int visible) {
         SQLite.insert(ChildStatusEntity.class)
-                .columns("serviceName", "timeIn", "timeOut", "typeService", "typeUpbringing", "comments", "color", "visible")
-                .values(serviceName, timeIn, timeOut, typeService, typeUpbringing, comments, color, visible)
+                .columns("serviceName", "timeIn", "timeOut", "typeService", "typeUpbringing", "selectedSpinnerPosition", "comments", "color", "visible")
+                .values(serviceName, timeIn, timeOut, typeService, typeUpbringing, selectedSpinnerPosition, comments, color, visible)
                 .execute();
     }
 
@@ -168,6 +179,7 @@ public class ChildStatusEntity extends BaseModel {
                                   String timeOut,
                                   int typeService,
                                   int typeUpbringing,
+                                  int selectedSpinnerPosition,
                                   String comments,
                                   int color,
                                   int visible){
@@ -177,6 +189,7 @@ public class ChildStatusEntity extends BaseModel {
                         ChildStatusEntity_Table.timeOut.eq(timeOut),
                         ChildStatusEntity_Table.typeService.eq(typeService),
                         ChildStatusEntity_Table.typeUpbringing.eq(typeUpbringing),
+                        ChildStatusEntity_Table.selectedSpinnerPosition.eq(selectedSpinnerPosition),
                         ChildStatusEntity_Table.comments.eq(comments),
                         ChildStatusEntity_Table.color.eq(color),
                         ChildStatusEntity_Table.visible.eq(visible))
