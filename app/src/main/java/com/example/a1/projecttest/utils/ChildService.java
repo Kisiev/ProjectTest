@@ -117,7 +117,7 @@ public class ChildService extends Service {
         String status;
         try {
             RestService restService = new RestService();
-            status = restService.setCoordinates(12, coordinateX, coordinateY);
+            status = restService.setCoordinates(1, coordinateX, coordinateY);
         } catch (IOException e) {
             e.printStackTrace();
         }
