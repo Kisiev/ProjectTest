@@ -3,6 +3,7 @@ package com.example.a1.projecttest.rest;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.util.List;
 import retrofit2.Call;
@@ -18,7 +19,7 @@ public interface ProjectTestApi {
                                   @Query("password") String password);
 
     @POST("/api/updateUserCoordinatesById.php")
-    Call<String> setCoordinates (@Query("id") String id,
+    Call<String> setCoordinates (@Query("id") int id,
                                @Query("coordinateX") String coordinateX,
                                @Query("coordinateY") String coordinateY);
 
@@ -27,5 +28,10 @@ public interface ProjectTestApi {
 
     @GET("/api/emailRegistration.php")
     Call<String> getPassByEmail (@Query("email") String email);
+
+    @GET("/api/signing_in.php")
+    Call<GetUserData> getUserData (@Query("email") String email,
+                                   @Query("password") String password);
+
 
 }

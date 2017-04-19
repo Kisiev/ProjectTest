@@ -73,8 +73,6 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
 
     public void getServiceList(){
         RestService restService = new RestService();
-        CareEntity.deleteAll();
-        UpbringingEntity.deleteAll();
         try {
             getServiceTypeCare = (restService.serviceType(String.valueOf(1)));
         } catch (IOException e) {
@@ -230,6 +228,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         final EditText nameServiceEditor = (EditText) dialog.findViewById(R.id.name_service_editorET);
 
         if (getServiceTypeCare != null && getServiceTypeUpbring != null) {
+            CareEntity.deleteAll();
+            UpbringingEntity.deleteAll();
             for (GetServiceType i: getServiceTypeCare) {
                 CareEntity.insertCare(i.getName(), Integer.valueOf(i.getServiceListId()));
             }
@@ -469,7 +469,9 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                         case 1:
                             List careList;
                             careList = (CareEntity.select());
-                            upBring.setAdapter(new CareSpinnerAdapter(getActivity(), careList));
+                            CareSpinnerAdapter careSpinnerAdapter = new CareSpinnerAdapter(getActivity(), careList);
+                            careSpinnerAdapter.notifyDataSetChanged();
+                            upBring.setAdapter(careSpinnerAdapter);
                             if (session.getIsReductionState())
                                 upBring.setSelection(allService.get(session.getPositionState()).getSelectedSpinnerPosition());
                             upBring.setVisibility(View.VISIBLE);
@@ -477,7 +479,9 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                         case 2:
                             List upbringingList;
                             upbringingList = (UpbringingEntity.selectAll());
-                            upBring.setAdapter(new UpbringingAdapter(getActivity(), upbringingList));
+                            UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upbringingList);
+                            upbringingAdapter.notifyDataSetChanged();
+                            upBring.setAdapter(upbringingAdapter);
                             if (session.getIsReductionState())
                                 upBring.setSelection(allService.get(session.getPositionState()).getSelectedSpinnerPosition());
                             upBring.setVisibility(View.VISIBLE);

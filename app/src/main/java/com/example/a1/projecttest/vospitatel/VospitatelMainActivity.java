@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.fragments.ArrivingFragment;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 
 import org.androidannotations.annotations.AfterViews;
@@ -44,11 +45,15 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
     private void setMenu(){
         Menu menu = navigationView.getMenu();
-        menu.add(Menu.NONE, 223, 0, "Посещаемость");
-        menu.add(Menu.NONE, 223, 1, "Расписание");
-        menu.add(Menu.NONE, 223, 2, "Отчеты");
-        menu.add(Menu.NONE, 123, 3, "Коммуникация");
-        menu.add(Menu.NONE, 123, 4, "Выход");
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 0, getString(R.string.attendance_text));
+        menu.getItem(0).setIcon(R.drawable.ic_transfer_within_a_station_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 1, getString(R.string.list_services_menu_item));
+        menu.getItem(1).setIcon(R.drawable.ic_format_list_numbered_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 2, getString(R.string.orders_menu_group));
+        menu.getItem(2).setIcon(R.drawable.ic_assignment_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 3, R.string.communic_text);
+        menu.getItem(3).setIcon(R.drawable.ic_mail_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 4, R.string.exit);
     }
 
     public VospitatelMainActivity () {

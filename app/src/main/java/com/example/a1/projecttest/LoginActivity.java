@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.google.gson.JsonSyntaxException;
@@ -34,6 +35,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public UserLoginSession userLoginSession;
     public TextView loginTV, passwordTV;
     public GetListUsers validUser;
+    public GetUserData getUserData;
     @AfterViews
     protected void main() {
         userLoginSession = new UserLoginSession(getApplicationContext());
@@ -66,15 +68,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void getValidToken () {
         RestService restService = new RestService();
         try {
-            validUser = restService.validUser(loginTV.getText().toString(), passwordTV.getText().toString());
+            getUserData = restService.getUserData(loginTV.getText().toString(), passwordTV.getText().toString());
         } catch (JsonSyntaxException e) {
-            validUser = null;
+            getUserData = null;
             e.printStackTrace();
         } catch (IOException e) {
-            validUser = null;
+            getUserData = null;
             e.printStackTrace();
         } catch (RuntimeException e){
-            validUser = null;
+            getUserData = null;
             e.printStackTrace();
         }
     }
@@ -96,13 +98,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (validUser == null){
-                    startActivity();
+                if (getUserData == null){
                     Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
                 } else {
                     userLoginSession.setUseName(validUser.getEmail(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
                     startActivity();
-                    validUser = null;
+                    getUserData = null;
                 }
                 break;
             case R.id.registrationBT:

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +25,7 @@ public final class RestService {
 
     }
 
-    public String setCoordinates (@NonNull String id, @NonNull String coordinateX, @NonNull String coordinateY) throws IOException{
+    public String setCoordinates (@NonNull int id, @NonNull String coordinateX, @NonNull String coordinateY) throws IOException{
 
         return  restClient.getProjectTestApiEdu()
                 .setCoordinates(id, coordinateX, coordinateY)
@@ -48,6 +49,12 @@ public final class RestService {
     public String getPasswordByEmail (String email) throws IOException{
         return restClient.getProjectTestApiEdu()
                 .getPassByEmail(email)
+                .execute().body();
+    }
+
+    public GetUserData getUserData (String email, String password) throws IOException {
+        return restClient.getProjectTestApiEdu()
+                .getUserData(email, password)
                 .execute().body();
     }
 }

@@ -114,10 +114,10 @@ public class ChildService extends Service {
 
     @Background
     public void postCoordinates (String coordinateX, String coordinateY) {
-        RestService restService = new RestService();
         String status;
         try {
-            status = restService.setCoordinates(String.valueOf(1), coordinateX, coordinateY);
+            RestService restService = new RestService();
+            status = restService.setCoordinates(12, coordinateX, coordinateY);
         } catch (IOException e) {
             e.printStackTrace();
         }

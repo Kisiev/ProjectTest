@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="attendance_text">Посещаемость</string>
     <string name="myChild">Мой ребенок</string>
     <string name="registration_in">Зарегистрироваться</string>
     <string name="signIn">Вход</string>
@@ -80,5 +81,6 @@
     <string name="name_text">Имя</string>
     <string name="last_name_text">Отчество</string>
     <string name="error_count_item_text">Нельзя добавить больше 10 записей</string>
+    <string name="communic_text">Коммуникация</string>
 
 </resources>
