@@ -55,7 +55,7 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(this, status, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.successful, Toast.LENGTH_LONG).show();
                 break;
         }
     }

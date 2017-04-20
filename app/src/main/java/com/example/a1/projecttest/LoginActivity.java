@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,10 @@ import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.vospitatel.VospitatelMainActivity;
+import com.example.a1.projecttest.vospitatel.VospitatelMainActivity_;
+import com.example.a1.projecttest.zavedushaia.MainZavDetSad;
+import com.example.a1.projecttest.zavedushaia.MainZavDetSad_;
 import com.google.gson.JsonSyntaxException;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,8 +44,46 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     @AfterViews
     protected void main() {
         userLoginSession = new UserLoginSession(getApplicationContext());
-        if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty()))
-            startActivity();
+        if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty())){
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getValidToken(userLoginSession.getLogin(), userLoginSession.getPassword());
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (getUserData != null) {
+                switch (userLoginSession.getRoleId()) {
+                    case 1:
+                        startActivity(new Intent(LoginActivity.this, MainActivity_.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
+                        startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
+                        break;
+                    case 0:
+
+                        break;
+                }
+            } else {
+                userLoginSession.clear();
+                startActivity(new Intent(this, LoginActivity_.class));
+                finish();
+            }
+        }
 
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
        // createImage(R.mipmap.fon, imageView);
@@ -54,21 +97,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         passwordTV = (TextView) findViewById(R.id.pass_edit);
     }
 
-    private void startActivity(){
-        Intent intent = new Intent(LoginActivity.this, MainActivity_.class);
-        startActivity(intent);
-        finish();
-    }
 
     public void createImage(int imageResource, ImageView imageView){
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(imageResource);
     }
 
-    public void getValidToken () {
+    public void getValidToken (String login, String password) {
         RestService restService = new RestService();
         try {
-            getUserData = restService.getUserData(loginTV.getText().toString(), passwordTV.getText().toString());
+            getUserData = restService.getUserData(login, password);
         } catch (JsonSyntaxException e) {
             getUserData = null;
             e.printStackTrace();
@@ -89,7 +127,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        getValidToken();
+                        getValidToken(loginTV.getText().toString(), passwordTV.getText().toString());
                     }
                 });
                 thread.start();
@@ -101,13 +139,41 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 if (getUserData == null){
                     Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
                 } else {
-                    userLoginSession.setUseName(validUser.getEmail(), validUser.getPassword(), Integer.parseInt(validUser.getId()));
-                    startActivity();
+                    userLoginSession.setUseName(getUserData.getEmail(),
+                            passwordTV.getText().toString(),
+                            getUserData.getId(),
+                            getUserData.getName(),
+                            getUserData.getSurname(),
+                            getUserData.getPatronymic(),
+                            Integer.valueOf(getUserData.getRoleId()),
+                            Integer.valueOf(getUserData.getIsActivated()));
+                    if (getUserData.getIsActivated().equals("0"))
+                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+                    else if (getUserData.getIsActivated().equals("1")) {
+                        switch (getUserData.getRoleId()) {
+                            case "1":
+                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
+                                break;
+                            case "2":
+                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
+                                break;
+                            case "3":
+                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
+                                break;
+                            case "4":
+
+                                break;
+                            case "5":
+                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
+                                break;
+                        }
+                    }
                     getUserData = null;
+                    finish();
                 }
                 break;
             case R.id.registrationBT:
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity_.class);
+                Intent intent = new Intent(LoginActivity.this, SendMessageSignIn_.class);
                 startActivity(intent);
                 break;
         }

@@ -62,14 +62,33 @@ public class UserLoginSession {
         return prefs.getInt(ConstantsManager.DIALOG_POSITION, 0);
     }
 
-    public void setUseName(String useName, String password, int id) {
-        prefs.edit().putString(ConstantsManager.LOGIN, useName).apply();
+    public void setUseName(String email, String password, String id, String userName, String userSurname, String userPatron, int userRoleId, int userIsActivated) {
+        prefs.edit().putString(ConstantsManager.LOGIN, email).apply();
         prefs.edit().putString(ConstantsManager.PASSWORD, password).apply();
-        prefs.edit().putInt(ConstantsManager.ID, id).apply();
+        prefs.edit().putString(ConstantsManager.ID, id).apply();
+        prefs.edit().putString(ConstantsManager.SURNAME_USER, userSurname).apply();
+        prefs.edit().putString(ConstantsManager.NAME_USER, userName).apply();
+        prefs.edit().putString(ConstantsManager.PATRONIMYC_USER, userPatron).apply();
+        prefs.edit().putInt(ConstantsManager.ROLE_ID_USER, userRoleId).apply();
+        prefs.edit().putInt(ConstantsManager.ISACTIVATED_USER, userIsActivated).apply();
         prefs.edit().apply();
+    }
+
+    public int getRoleId(){
+        return prefs.getInt(ConstantsManager.ROLE_ID_USER, 0);
     }
     public String getID() {
         return prefs.getString(ConstantsManager.ID, "");
+    }
+
+    public String getUserName() {
+        return prefs.getString(ConstantsManager.NAME_USER, "");
+    }
+    public String getUserSurname() {
+        return prefs.getString(ConstantsManager.SURNAME_USER, "");
+    }
+    public String getUserEmail() {
+        return prefs.getString(ConstantsManager.LOGIN, "");
     }
 
     public String getLogin() {
@@ -83,7 +102,12 @@ public class UserLoginSession {
     public void clear(){
         prefs.edit().putString(ConstantsManager.LOGIN, "").apply();
         prefs.edit().putString(ConstantsManager.PASSWORD, "").apply();
-        prefs.edit().putInt(ConstantsManager.ID, 0).apply();
+        prefs.edit().putString(ConstantsManager.ID, "").apply();
+        prefs.edit().putString(ConstantsManager.SURNAME_USER, "").apply();
+        prefs.edit().putString(ConstantsManager.NAME_USER, "").apply();
+        prefs.edit().putString(ConstantsManager.PATRONIMYC_USER, "").apply();
+        prefs.edit().putInt(ConstantsManager.ROLE_ID_USER, -1).apply();
+        prefs.edit().putInt(ConstantsManager.ISACTIVATED_USER, -1).apply();
         prefs.edit().apply();
     }
 }

@@ -3,6 +3,7 @@ package com.example.a1.projecttest.rest;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.util.List;
@@ -32,6 +33,12 @@ public interface ProjectTestApi {
     @GET("/api/signing_in.php")
     Call<GetUserData> getUserData (@Query("email") String email,
                                    @Query("password") String password);
+    @POST("/api/activation.php")
+    Call<GetStatusCode> setUserData (@Query("id") String id,
+                                     @Query("patronymic") String patronymic,
+                                     @Query("surname") String surname,
+                                     @Query("name") String name,
+                                     @Query("roleId") String role);
 
 
 }

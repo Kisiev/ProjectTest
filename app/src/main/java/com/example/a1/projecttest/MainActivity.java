@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,11 +46,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     NavigationView navigationView;
     ImageView imageView;
+    TextView nameTextNavView;
+    TextView emailTextNavView;
+    TextView idTextNavView;
+    UserLoginSession session;
 
     @AfterViews
     public void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -59,11 +65,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         replaceFragment(new FeedFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
+
         View headerView = navigationView.getHeaderView(0);
+        session = new UserLoginSession(getApplicationContext());
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
+        nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
+        emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
+        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+        setNavigationViewItem();
       //  saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
         setMenu(navigationView);
+
         initStetho();
+    }
+
+    private void setNavigationViewItem(){
+        nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
+        emailTextNavView.setText(session.getLogin());
+        idTextNavView.setText("Идентификатор: " + session.getID());
     }
 
     private void initStetho(){

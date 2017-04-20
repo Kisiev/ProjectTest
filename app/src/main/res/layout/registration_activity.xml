@@ -30,49 +30,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Регистрация"
-            android:textSize="12pt"
-            android:textColor="@color/whiteColor"
-            android:layout_gravity="center"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whiteColor"
-            android:textColorHint="@color/whiteColor"
-            android:theme="@style/Theme.App.Base"
-            android:hint="@string/login"
-            android:id="@+id/login_edit_reg"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whiteColor"
-            android:hint="@string/password"
-            android:textColorHint="@color/whiteColor"
-            android:theme="@style/Theme.App.Base"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:id="@+id/pass_edit_reg"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whiteColor"
-            android:hint="@string/password_confirm"
-            android:theme="@style/Theme.App.Base"
-            android:textColorHint="@color/whiteColor"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:id="@+id/pass_confirm_edit_reg"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whiteColor"
-            android:hint="@string/mail"
-            android:theme="@style/Theme.App.Base"
-            android:textColorHint="@color/whiteColor"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:id="@+id/mail_edit"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/start_end_margin"
             android:text="Личные данные"
             android:textSize="12pt"
@@ -104,7 +61,8 @@
             android:id="@+id/lastname_user_edit"/>
         <RadioGroup
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/radioBattonGroup_registration">
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -114,6 +72,7 @@
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/parent_RB"
                 android:text="Родитель"
                 android:textColor="@color/whiteColor"/>
             <RadioButton
@@ -128,12 +87,19 @@
                 android:id="@+id/vospitatel"
                 android:text="Воспитатель"
                 android:textColor="@color/whiteColor"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/contact_face_RB"
+                android:text="Контактное лицо"
+                android:textColor="@color/whiteColor"/>
         </RadioGroup>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:id="@+id/registration_button"
             android:text="@string/registration_in"
             android:background="@color/colorAlphaNULL"
             android:textColor="@color/whiteColor"

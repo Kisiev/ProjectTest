@@ -23,4 +23,9 @@ public class ConstantsManager {
     final public static int REQUEST_CODE_VIDEO = 2;
     final public static int REDICTION_CONTEXT_ITEM = 15;
     final public static int DELETE_CONTEXT_ITEM = 20;
+    final public static String NAME_USER = "user_name";
+    final public static String SURNAME_USER = "sur_name";
+    final public static String PATRONIMYC_USER = "patronimyc";
+    final public static String ROLE_ID_USER = "role_id_user";
+    final public static String ISACTIVATED_USER = "isactivation_user";
 }

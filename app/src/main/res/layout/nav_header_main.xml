@@ -14,15 +14,26 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"/>
-
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Марина Андреевна"
+        android:id="@+id/name_text_view"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/email_text_view"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_user_text_view"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
+
 
 
 </LinearLayout>

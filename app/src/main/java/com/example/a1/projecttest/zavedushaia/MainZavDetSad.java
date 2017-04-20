@@ -96,10 +96,6 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     @AfterViews
     void main () {
 
-        UserLoginSession userLvlToken = new UserLoginSession(getApplicationContext());
-        userLvlToken.clear();
-        userLvlToken.setUseName("Nataly", "123", 44);
-
     if (ServiceListEntity.select().size() == 0) {
         SQLite.insert(ServiceListEntity.class).columns("id", "name").values(-1, "Вид деятельности..").execute();
         SQLite.insert(ServiceListEntity.class).columns("id", "name").values(1, "Уход").execute();

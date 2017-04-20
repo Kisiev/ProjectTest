@@ -4,10 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.io.IOException;
 import java.util.List;
+
+import retrofit2.http.Query;
 
 
 public final class RestService {
@@ -55,6 +58,20 @@ public final class RestService {
     public GetUserData getUserData (String email, String password) throws IOException {
         return restClient.getProjectTestApiEdu()
                 .getUserData(email, password)
+                .execute().body();
+    }
+
+    public GetStatusCode getStatusCode (String id,
+                                        String patronymic,
+                                        String surname,
+                                        String name,
+                                        String role) throws IOException {
+        return restClient.getProjectTestApiEdu()
+                .setUserData(id,
+                        patronymic,
+                        surname,
+                        name,
+                        role)
                 .execute().body();
     }
 }
