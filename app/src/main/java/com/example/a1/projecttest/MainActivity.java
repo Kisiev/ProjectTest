@@ -34,6 +34,8 @@ import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
 import com.facebook.stetho.Stetho;
 
 import org.androidannotations.annotations.AfterViews;
@@ -77,6 +79,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setMenu(navigationView);
 
         initStetho();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                if (f != null) {
+                    updateToolbarTitle(f);
+                } else finish();
+            }
+        });
     }
 
     private void setNavigationViewItem(){
@@ -91,11 +103,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                 .build());
     }
-    private void updateToolbarTitle(Fragment fragment, String title) {
-          String fragmentClassName = fragment.getClass().getName();
-          if (fragmentClassName.equals(fragment.getClass().getName())) {
-              setTitle(title);
-          }
+    private void updateToolbarTitle(Fragment fragment) {
+        String fragmentClassName = fragment.getClass().getName();
+
+        if (fragmentClassName.equals(FeedFragment.class.getName())) {
+            setTitle(getString(R.string.life_feed));
+        } else if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
+            setTitle(getString(R.string.list_rasp));
+        }
     }
 
 
@@ -184,12 +199,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 0:
                FeedFragment feedFragment = new FeedFragment();
                 replaceFragment(feedFragment, R.id.content_main);
-                updateToolbarTitle(feedFragment, "Живая лента");
+                updateToolbarTitle(feedFragment);
                 break;
             case 1:
                 VospitannikFragment vs = new VospitannikFragment();
                 replaceFragment(vs, R.id.content_main);
-                updateToolbarTitle(vs, getString(R.string.status_child));
+                updateToolbarTitle(vs);
                 break;
             case 2:
               //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();

@@ -61,18 +61,22 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 switch (userLoginSession.getRoleId()) {
                     case 1:
                         startActivity(new Intent(LoginActivity.this, MainActivity_.class));
+                        finish();
                         break;
                     case 2:
                         startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
+                        finish();
                         break;
                     case 3:
                         startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
+                        finish();
                         break;
                     case 4:
 
                         break;
                     case 5:
                         startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
+                        finish();
                         break;
                     case 0:
 

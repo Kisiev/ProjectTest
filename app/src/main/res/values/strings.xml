@@ -83,5 +83,6 @@
     <string name="error_count_item_text">Нельзя добавить больше 10 записей</string>
     <string name="communic_text">Коммуникация</string>
     <string name="successful">Успешно. Проверьте почту</string>
+    <string name="list_rasp">Расписание занятий</string>
 
 </resources>

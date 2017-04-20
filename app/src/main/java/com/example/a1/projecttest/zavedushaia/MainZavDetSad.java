@@ -1,5 +1,6 @@
 package com.example.a1.projecttest.zavedushaia;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,10 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.ServiceListEntity;
+import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
@@ -31,6 +36,11 @@ import org.androidannotations.annotations.EActivity;
 public class MainZavDetSad extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
     DrawerLayout drawer;
+    ImageView imageView;
+    TextView nameTextNavView;
+    TextView emailTextNavView;
+    TextView idTextNavView;
+    UserLoginSession session;
     TabHost tabHost;
     ViewPager viewPager;
 
@@ -113,6 +123,14 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
         setMenu();
 
+        View headerView = navigationView.getHeaderView(0);
+        session = new UserLoginSession(getApplicationContext());
+        imageView = (ImageView) headerView.findViewById(R.id.imageView);
+        nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
+        emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
+        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+        setNavigationViewItem();
+
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
@@ -136,7 +154,11 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         }
     }
 
-
+    private void setNavigationViewItem(){
+        nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
+        emailTextNavView.setText(session.getLogin());
+        idTextNavView.setText("Идентификатор: " + session.getID());
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -186,6 +208,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
 
                 break;
             case 13:
+                UserLoginSession session = new UserLoginSession(this);
+                session.clear();
+                startActivity(new Intent(this, LoginActivity_.class));
+                finish();
                 break;
             case 14:
                 ChildAndParentFragment cp = new ChildAndParentFragment();

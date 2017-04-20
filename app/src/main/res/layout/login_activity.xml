@@ -29,14 +29,19 @@
                 android:textSize="12pt"
                 android:textColor="@color/whiteColor"
                 android:layout_gravity="center"/>
-            <EditText
+            <cn.zhaiyifan.rememberedittext.RememberEditText
+                android:id="@+id/login_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
+                android:theme="@style/Theme.App.Remember"
+                android:inputType="text"
                 android:textColorHint="@color/whiteColor"
-                android:theme="@style/Theme.App.Base"
                 android:hint="@string/login"
-                android:id="@+id/login_edit"/>
+                app:rememberCount="3"
+                app:autoSave="true"
+                app:rememberId="username" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
