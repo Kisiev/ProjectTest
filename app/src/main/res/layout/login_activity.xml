@@ -39,7 +39,6 @@
                 android:textColorHint="@color/whiteColor"
                 android:hint="@string/login"
                 app:rememberCount="3"
-                app:autoSave="true"
                 app:rememberId="username" />
 
             <EditText

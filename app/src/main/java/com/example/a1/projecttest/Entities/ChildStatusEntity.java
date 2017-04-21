@@ -184,6 +184,12 @@ public class ChildStatusEntity extends BaseModel {
                 .execute();
     }
 
+    public static void updateSmile(int smile, int id){
+        SQLite.update(ChildStatusEntity.class)
+                .set(ChildStatusEntity_Table.smile.eq(smile))
+                .where(ChildStatusEntity_Table.id.eq(id)).execute();
+    }
+
     public static void updateItem(int id,
                                   String serviceName,
                                   String timeIn,
@@ -193,6 +199,7 @@ public class ChildStatusEntity extends BaseModel {
                                   int selectedSpinnerPosition,
                                   String comments,
                                   int color,
+                                  int smile,
                                   int visible){
         SQLite.update(ChildStatusEntity.class)
                 .set(ChildStatusEntity_Table.serviceName.eq(serviceName),
@@ -203,7 +210,7 @@ public class ChildStatusEntity extends BaseModel {
                         ChildStatusEntity_Table.selectedSpinnerPosition.eq(selectedSpinnerPosition),
                         ChildStatusEntity_Table.comments.eq(comments),
                         ChildStatusEntity_Table.color.eq(color),
-                        ChildStatusEntity_Table.smile.eq(0),
+                        ChildStatusEntity_Table.smile.eq(smile),
                         ChildStatusEntity_Table.visible.eq(visible))
                 .where(ChildStatusEntity_Table.id.eq(id))
                 .execute();

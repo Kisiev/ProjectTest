@@ -19,9 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.MainActivity;
+import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
@@ -35,6 +37,8 @@ import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EFragment;
 
 import java.io.IOException;
@@ -49,6 +53,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     RecyclerView recyclerView;
     Dialog dialog;
     List<GetUserData> getUserRoleChild;
+    PositionSaveSession session;
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -60,6 +65,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.raspisanie_fragment, container, false);
         dialog = new Dialog(getActivity());
+        session = new PositionSaveSession(getActivity());
         int colorApacity = getResources().getColor(R.color.colorForApacityNull);
         final Calendar calendar = Calendar.getInstance();
         TextView date = (TextView) view.findViewById(R.id.date_in_raspisanieTV);
@@ -67,7 +73,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy");
         SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
-        thread.start();
+
         date.setText(dfDate_day.format(calendar.getTime()));
         //times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
         times.setText("Время: 08:03");
@@ -77,8 +83,10 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (!dialog.isShowing())
+                if (!dialog.isShowing()) {
+                    session.saveRecyclerViewPositions(position, ChildStatusEntity.selectChilds().get(position).getId(), 0, 0);
                     showDialog();
+                }
             }
 
             @Override
@@ -88,6 +96,12 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }));
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        thread.start();
     }
 
     public void loadUsersByRole(){
@@ -130,17 +144,26 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     }
 
     public void showDialog() {
-
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         dialog.setContentView(R.layout.list_child_for_tutor_dialog);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        Button backButton = (Button) dialog.findViewById(R.id.back_button_dialog);
 
+        backButton.setOnClickListener(this);
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recycler_list_child_for_tutor);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new DialogTutorListChildAdapter(getUserRoleChild));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                session.saveRecyclerViewPositions(session.getPosSchedule(), session.getIdSchedule(), position, Integer.parseInt(getUserRoleChild.get(position).getId()));
                 view.findViewById(R.id.low_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
+                view.findViewById(R.id.medium_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
+                view.findViewById(R.id.high_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
             }
 
             @Override
@@ -155,13 +178,19 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.low_smile_image_dialog:
-
+                ChildStatusEntity.updateSmile(1, session.getIdSchedule());
+                Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.medium_smile_image_dialog:
-
+                ChildStatusEntity.updateSmile(2, session.getIdSchedule());
+                Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.high_smile_image_dialog:
-
+                ChildStatusEntity.updateSmile(3, session.getIdSchedule());
+                Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.back_button_dialog:
+                dialog.dismiss();
                 break;
         }
     }

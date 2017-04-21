@@ -85,5 +85,6 @@
     <string name="successful">Успешно. Проверьте почту</string>
     <string name="list_rasp">Расписание занятий</string>
     <string name="ist_child_header">Список присутствующих детей</string>
+    <string name="status_update">Статус обновлен</string>
 
 </resources>

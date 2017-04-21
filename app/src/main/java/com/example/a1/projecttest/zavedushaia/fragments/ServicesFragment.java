@@ -341,6 +341,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                                             upbringingSp.getSelectedItemPosition(),
                                             "",
                                             VospitannikFragment.generatedColor(),
+                                            0,
                                             View.VISIBLE);
                                 }
                             } else notifyInputError(getString(R.string.invalidateTime));
