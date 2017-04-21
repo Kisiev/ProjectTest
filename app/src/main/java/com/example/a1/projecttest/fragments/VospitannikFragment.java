@@ -132,7 +132,7 @@ public class VospitannikFragment extends Fragment {
 
         if (ChildStatusEntity.selectChilds().size() == 0) {
             for (int i = 0; i < listService.size(); i ++){
-                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, 0, coments.get(i), generatedColor(), View.GONE);
+                ChildStatusEntity.insert(listService.get(i), time.get(i), time1.get(i), 1, 1, 0, coments.get(i), generatedColor(), 0, View.GONE);
             }
         }
 

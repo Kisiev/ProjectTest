@@ -53,6 +53,9 @@ public class ChildStatusEntity extends BaseModel {
     private int color;
 
     @Column
+    private int smile;
+
+    @Column
     private int visible;
 
     public int getSelectedSpinnerPosition() {
@@ -77,6 +80,14 @@ public class ChildStatusEntity extends BaseModel {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public int getSmile() {
+        return smile;
+    }
+
+    public void setSmile(int smile) {
+        this.smile = smile;
     }
 
     public String getTimeIn() {
@@ -135,10 +146,10 @@ public class ChildStatusEntity extends BaseModel {
         this.visible = visible;
     }
 
-    public static void insert (String serviceName, String timeIn, String timeOut, int typeService, int typeUpbringing, int selectedSpinnerPosition, String comments, int color, int visible) {
+    public static void insert (String serviceName, String timeIn, String timeOut, int typeService, int typeUpbringing, int selectedSpinnerPosition, String comments, int color, int smile, int visible) {
         SQLite.insert(ChildStatusEntity.class)
-                .columns("serviceName", "timeIn", "timeOut", "typeService", "typeUpbringing", "selectedSpinnerPosition", "comments", "color", "visible")
-                .values(serviceName, timeIn, timeOut, typeService, typeUpbringing, selectedSpinnerPosition, comments, color, visible)
+                .columns("serviceName", "timeIn", "timeOut", "typeService", "typeUpbringing", "selectedSpinnerPosition", "comments", "color", "smile", "visible")
+                .values(serviceName, timeIn, timeOut, typeService, typeUpbringing, selectedSpinnerPosition, comments, color, smile, visible)
                 .execute();
     }
 
@@ -192,6 +203,7 @@ public class ChildStatusEntity extends BaseModel {
                         ChildStatusEntity_Table.selectedSpinnerPosition.eq(selectedSpinnerPosition),
                         ChildStatusEntity_Table.comments.eq(comments),
                         ChildStatusEntity_Table.color.eq(color),
+                        ChildStatusEntity_Table.smile.eq(0),
                         ChildStatusEntity_Table.visible.eq(visible))
                 .where(ChildStatusEntity_Table.id.eq(id))
                 .execute();

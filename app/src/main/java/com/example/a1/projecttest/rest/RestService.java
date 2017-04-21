@@ -61,6 +61,11 @@ public final class RestService {
                 .execute().body();
     }
 
+    public List<GetUserData> getUsersByRole (String id) throws IOException {
+        return restClient.getProjectTestApiEdu()
+                .getUsersByRole(id)
+                .execute().body();
+    }
     public GetStatusCode getStatusCode (String id,
                                         String patronymic,
                                         String surname,

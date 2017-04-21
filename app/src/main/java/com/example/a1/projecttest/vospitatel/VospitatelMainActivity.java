@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.vospitatel;
 
 import android.app.Application;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.fragments.ArrivingFragment;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
@@ -94,7 +97,11 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
                 break;
             case 4:
-
+                UserLoginSession session = new UserLoginSession(this);
+                session.clear();
+                startActivity(new Intent(this, LoginActivity_.class));
+                finish();
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);

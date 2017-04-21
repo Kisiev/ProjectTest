@@ -40,5 +40,6 @@ public interface ProjectTestApi {
                                      @Query("name") String name,
                                      @Query("roleId") String role);
 
-
+    @GET("/api/getUserByRoleId.php")
+    Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
 }

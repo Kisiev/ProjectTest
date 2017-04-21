@@ -62,7 +62,6 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
 
         holder.textView.setText(services.get(holder.getAdapterPosition()).getServiceName());
-
         holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeIn().substring(0, 5))
                 + " - "
                 + (services.get(holder.getAdapterPosition()).getTimeOut().substring(0, 5)));
@@ -73,12 +72,30 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             holder.false_tv.setVisibility(View.GONE);
         } else holder.false_tv.setVisibility(View.VISIBLE);
 
-        if (userLoginSession.getLogin().equals("Nataly")){
+        if (userLoginSession.getRoleId() == 2){
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);
         } else {
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
+        }
+
+        if (userLoginSession.getRoleId() == 1){
+            switch (services.get(position).getSmile()){
+                case 0:
+
+                    break;
+                case 1:
+                    holder.imageView.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
+                    break;
+                case 2:
+                    holder.imageView.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
+                    break;
+                case 3:
+                    holder.imageView.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
+                    break;
+            }
+
         }
 
         Calendar now = Calendar.getInstance();
