@@ -3,6 +3,7 @@ package com.example.a1.projecttest.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -22,6 +23,7 @@ import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
+import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.sql.Time;
@@ -41,11 +43,11 @@ import static android.os.Build.VERSION.SDK_INT;
 
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
-    List<ChildStatusEntity> services;
+    List<GetScheduleListModel> services;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm:ss");
     UserLoginSession userLoginSession;
     Context context;
-    public VospitannikAdapter (List<ChildStatusEntity> services, Context context) {
+    public VospitannikAdapter (List<GetScheduleListModel> services, Context context) {
         this.services = services;
         this.context = context;
         userLoginSession = new UserLoginSession(context);
@@ -55,22 +57,24 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     public VospitannikHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.vospit_item, parent, false);
-        return new VospitannikHolder(view);
+        return new VospitannikHolder(view, context);
     }
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
 
-        holder.textView.setText(services.get(holder.getAdapterPosition()).getServiceName());
-        holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeIn().substring(0, 5))
+        holder.textView.setText(services.get(holder.getAdapterPosition()).getName());
+        holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeFrom().substring(0, 5))
                 + " - "
-                + (services.get(holder.getAdapterPosition()).getTimeOut().substring(0, 5)));
+                + (services.get(holder.getAdapterPosition()).getTimeTo().substring(0, 5)));
 
        // holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
-        holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
+       // holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
+/*
         if (services.get(position).getVisible() == View.GONE) {
             holder.false_tv.setVisibility(View.GONE);
         } else holder.false_tv.setVisibility(View.VISIBLE);
+*/
 
         if (userLoginSession.getRoleId() == 2){
             holder.editButton.setVisibility(View.VISIBLE);
@@ -80,7 +84,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             holder.deleteButton.setVisibility(View.GONE);
         }
 
-        if (userLoginSession.getRoleId() == 1){
+       /* if (userLoginSession.getRoleId() == 1){
             switch (services.get(position).getSmile()){
                 case 0:
 
@@ -96,23 +100,23 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
                     break;
             }
 
-        }
+        }*/
 
         Calendar now = Calendar.getInstance();
         Time date = Time.valueOf(dfDate_day_time.format(now.getTime()));
 
         date.setHours(date.getHours());
 
-        if (Time.valueOf(services.get(position).getTimeOut()).after(date)){
+        if (Time.valueOf(services.get(position).getTimeTo()).after(date)){
             holder.imageTime.setImageResource(R.drawable.ic_clear_black_24dp);
         }
 
-        if (Time.valueOf(services.get(position).getTimeOut()).before(date)) {
+        if (Time.valueOf(services.get(position).getTimeTo()).before(date)) {
             holder.imageTime.setImageResource(R.drawable.ic_check_black_24dp);
         }
 
-        if (Time.valueOf(services.get(position).getTimeIn()).before(date)){
-            if (Time.valueOf(services.get(position).getTimeOut()).after(date)){
+        if (Time.valueOf(services.get(position).getTimeFrom()).before(date)){
+            if (Time.valueOf(services.get(position).getTimeTo()).after(date)){
                 holder.imageTime.setImageResource(R.drawable.ic_access_time_black_24dp);
             }
         }
@@ -133,7 +137,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         ImageView imageView;
         Button editButton;
         Button deleteButton;
-        public VospitannikHolder(View itemView) {
+        public VospitannikHolder(View itemView, Context context) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.name_service);
             cardView = (CardView) itemView.findViewById(R.id.card_lay_vospit);
@@ -145,6 +149,13 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             editButton = (Button) itemView.findViewById(R.id.edit_button_raspisanie);
             deleteButton = (Button) itemView.findViewById(R.id.delete_button_raspisanie);
 
+            Typeface typefaceBold = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Bold.ttf");
+            Typeface typefaceItalic = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Italic.ttf");
+            textView.setTypeface(typefaceBold);
+            timeTv.setTypeface(typefaceItalic);
+            false_tv.setTypeface(typefaceItalic);
+            editButton.setTypeface(typefaceBold);
+            deleteButton.setTypeface(typefaceBold);
         }
 
     }

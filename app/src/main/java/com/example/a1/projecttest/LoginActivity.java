@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothClass;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
@@ -39,8 +40,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     public UserLoginSession userLoginSession;
     public TextView loginTV, passwordTV;
+    public TextView header;
     public GetListUsers validUser;
     public GetUserData getUserData;
+    public Typeface typeface;
     @AfterViews
     protected void main() {
         userLoginSession = new UserLoginSession(getApplicationContext());
@@ -90,15 +93,24 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         }
 
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
-       // createImage(R.mipmap.fon, imageView);
+        createImage(R.mipmap.background, imageView);
 
         Button registrationBT = (Button) findViewById(R.id.registrationBT);
         Button loginBT = (Button) findViewById(R.id.signIn);
         registrationBT.setOnClickListener(this);
         loginBT.setOnClickListener(this);
 
+        header = (TextView) findViewById(R.id.header_login_layout);
         loginTV = (TextView) findViewById(R.id.login_edit);
         passwordTV = (TextView) findViewById(R.id.pass_edit);
+
+        typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        header.setTypeface(typeface);
+        loginTV.setTypeface(typeface);
+        passwordTV.setTypeface(typeface);
+        registrationBT.setTypeface(typeface);
+        loginBT.setTypeface(typeface);
+
     }
 
 

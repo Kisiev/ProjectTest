@@ -82,7 +82,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
-        recyclerViewFeed.setAdapter(new FeedAdapter(listService));
+        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), listService));
         Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);

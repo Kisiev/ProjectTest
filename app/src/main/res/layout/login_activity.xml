@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_label"
+                android:id="@+id/header_login_layout"
                 android:textSize="12pt"
                 android:textColor="@color/whiteColor"
                 android:layout_gravity="center"/>
@@ -34,8 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
-                android:theme="@style/Theme.App.Remember"
                 android:inputType="text"
+                android:theme="@style/Theme.App.Remember"
                 android:textColorHint="@color/whiteColor"
                 android:hint="@string/login"
                 app:rememberCount="3"
@@ -46,35 +47,37 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/whiteColor"
                 android:hint="@string/password"
-                android:inputType="textPassword"
                 android:theme="@style/Theme.App.Base"
+                android:inputType="textPassword"
                 android:textColorHint="@color/whiteColor"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:id="@+id/pass_edit"/>
 
-            <Button
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:id="@+id/signIn"
-                android:text="@string/signIn"
-                android:background="@color/colorAlphaNULL"
-                android:textColor="@color/whiteColor"
-                android:textStyle="italic"
-                android:layout_gravity="end"
-                android:textSize="5pt" />
-            <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/registrationBT"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:text="@string/registration"
-            android:background="@color/colorAlphaNULL"
-            android:textColor="@color/whiteColor"
-            android:textStyle="italic"
-            android:layout_gravity="end"
-            android:textSize="5pt"
-            />
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/registrationBT"
+                    android:text="@string/registration"
+                    android:background="@color/colorAlphaNULL"
+                    android:textColor="@color/whiteColor"
+                    android:layout_gravity="end" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/signIn"
+                    android:text="@string/signIn"
+                    android:background="@color/colorAlphaNULL"
+                    android:textColor="@color/whiteColor"
+                    android:layout_gravity="end" />
+            </LinearLayout>
+
         </LinearLayout>
 </LinearLayout>
 </RelativeLayout>

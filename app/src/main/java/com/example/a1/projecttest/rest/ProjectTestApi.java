@@ -2,6 +2,7 @@ package com.example.a1.projecttest.rest;
 
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetUserData;
@@ -42,4 +43,7 @@ public interface ProjectTestApi {
 
     @GET("/api/getUserByRoleId.php")
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
+
+    @GET("api/getScheduleByGroupId.php")
+    Call<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id);
 }

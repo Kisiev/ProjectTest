@@ -3,6 +3,7 @@ package com.example.a1.projecttest.rest;
 import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetUserData;
@@ -77,6 +78,12 @@ public final class RestService {
                         surname,
                         name,
                         role)
+                .execute().body();
+    }
+
+    public List<GetScheduleListModel> getScheduleListModel (String groupId) throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getSchedule(groupId)
                 .execute().body();
     }
 }

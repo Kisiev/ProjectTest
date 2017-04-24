@@ -30,6 +30,7 @@ import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
 import com.example.a1.projecttest.adapters.RaspisanieAdapter;
 import com.example.a1.projecttest.adapters.RaspisanieGroupItemAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
@@ -53,6 +54,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     RecyclerView recyclerView;
     Dialog dialog;
     List<GetUserData> getUserRoleChild;
+    List<GetScheduleListModel> getScheduleListModels;
     PositionSaveSession session;
     private Thread thread = new Thread(new Runnable() {
         @Override
@@ -72,14 +74,20 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         TextView times = (TextView) view.findViewById(R.id.time_in_raspisanieTV);
         SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy");
         SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
-
+        thread.start();
 
         date.setText(dfDate_day.format(calendar.getTime()));
         //times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
         times.setText("Время: 08:03");
         recyclerView = (RecyclerView) view.findViewById(R.id.raspisanie_RV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        loadServicesForTutor();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+        // loadServicesForTutor();
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -98,11 +106,6 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        thread.start();
-    }
 
     public void loadUsersByRole(){
         RestService restService = new RestService();
@@ -111,9 +114,16 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            getScheduleListModels = restService.getScheduleListModel("1");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    @Background
+  /*  @Background
     public void loadServicesForTutor () {
         getLoaderManager().restartLoader(ConstantsManager.ID_LOADER, null, new LoaderManager.LoaderCallbacks<List<ChildStatusEntity>>() {
 
@@ -141,7 +151,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
 
             }
         });
-    }
+    }*/
 
     public void showDialog() {
         try {

@@ -1,6 +1,7 @@
 package com.example.a1.projecttest;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,10 +25,18 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
     ImageView imageView;
     @AfterViews
     public void main(){
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        LoginActivity loginActivity = new LoginActivity();
+        TextView header = (TextView) findViewById(R.id.header_send_message_layout);
         imageView = (ImageView) findViewById(R.id.mail_image_view_layout);
+        loginActivity.createImage(R.mipmap.background, imageView);
         mailEdit = (EditText) findViewById(R.id.mail_editET);
         sendMessageButton = (Button) findViewById(R.id.send_message_button);
         sendMessageButton.setOnClickListener(this);
+        mailEdit.setTypeface(typeface);
+        sendMessageButton.setTypeface(typeface);
+        header.setTypeface(typeface);
+
     }
 
     public void sendPasswordOnEmail(){

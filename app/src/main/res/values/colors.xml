@@ -7,7 +7,7 @@
     <color name="colorNotActive">#c7c7c7</color>
     <color name="colorGray">#6d979797</color>
     <color name="colorBackground">#8d000000</color>
-    <color name="colorAlphaNULL">#76e4e4e4</color>
+    <color name="colorAlphaNULL">#00e4e4e4</color>
     <color name="whiteColor">#ffffff</color>
 
     <color name="color1">#ff0000</color>
@@ -21,4 +21,12 @@
     <color name="color_for_table">#6530bafa</color>
     <color name="colorText">#ffffff</color>
     <color name="colorSecondaryText">#d4d4d4</color>
+
+    <color name="colorBlue">#0273B2</color>
+    <color name="colorYellowWithoutOpacity">#35ffd10e</color>
+    <color name="colorViolet">#BC75B0</color>
+    <color name="colorOrange">#F6921E</color>
+    <color name="colorYellow">#FFD10E</color>
+    <color name="colorGreen">#BED63A</color>
+    <color name="colorLightBlue">#44C2EA</color>
 </resources>

@@ -2,6 +2,7 @@ package com.example.a1.projecttest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.RestService;
@@ -73,8 +75,11 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
     @AfterViews
     public void main () {
+        LoginActivity loginActivity = new LoginActivity();
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
-
+        loginActivity.createImage(R.mipmap.background, imageView);
+        TextView header = (TextView) findViewById(R.id.header_registration);
         userLoginSession = new UserLoginSession(getApplicationContext());
 
         userName = (EditText) findViewById(R.id.name_user_edit);
@@ -92,7 +97,16 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         childRb.setOnClickListener(this);
         zavRb.setOnClickListener(this);
         vospitRb.setOnClickListener(this);
-
+        userName.setTypeface(typeface);
+        userSurname.setTypeface(typeface);
+        patronumicUser.setTypeface(typeface);
+        childRb.setTypeface(typeface);
+        zavRb.setTypeface(typeface);
+        vospitRb.setTypeface(typeface);
+        parentRb.setTypeface(typeface);
+        contactRb.setTypeface(typeface);
+        registrationButton.setTypeface(typeface);
+        header.setTypeface(typeface);
     }
 
     @Override

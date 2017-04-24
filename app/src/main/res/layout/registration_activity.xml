@@ -33,6 +33,7 @@
             android:layout_marginTop="@dimen/start_end_margin"
             android:text="Личные данные"
             android:textSize="12pt"
+            android:id="@+id/header_registration"
             android:textColor="@color/whiteColor"
             android:layout_gravity="center"/>
         <EditText

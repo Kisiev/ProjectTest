@@ -16,7 +16,7 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@mipmap/plus48"
                     android:clickable="true"
-                    app:backgroundTint="@color/colorPrimaryDark"
+                    app:backgroundTint="@color/colorBlue"
                     android:id="@+id/child_add_action_button"
                     android:layout_margin="16dp"
                     />

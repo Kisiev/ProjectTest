@@ -30,6 +30,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Регистрация"
+                    android:id="@+id/header_send_message_layout"
                     android:textSize="12pt"
                     android:textColor="@color/whiteColor"
                     android:layout_gravity="center"/>
@@ -49,14 +50,11 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:text="@string/send_message"
                     android:id="@+id/send_message_button"
                     android:background="@color/colorAlphaNULL"
                     android:textColor="@color/whiteColor"
-                    android:textStyle="italic"
                     android:layout_gravity="end"
-                    android:textSize="5pt"
                     />
 
             </LinearLayout>

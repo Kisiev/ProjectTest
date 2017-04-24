@@ -2,6 +2,7 @@ package com.example.a1.projecttest.fragments;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,8 @@ import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
@@ -32,6 +35,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -44,6 +48,8 @@ import java.util.Random;
 @EFragment(R.layout.vospitanik_fragment)
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
+    Thread getScheduleThread;
+    List<GetScheduleListModel> getScheduleListModels;
     SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
@@ -143,7 +149,20 @@ public class VospitannikFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        loadEntity();
+        getScheduleThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getScheduleList();
+            }
+        });
+        getScheduleThread.start();
+        try {
+            getScheduleThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+        //  loadEntity();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -155,7 +174,7 @@ public class VospitannikFragment extends Fragment {
                         .where(ChildStatusEntity_Table.serviceName.eq(service.get(position).getServiceName()))
                         .execute();
                 service.get(position).setVisible(View.VISIBLE);
-                VospitannikAdapter vospitannikAdapter = new VospitannikAdapter(service, getActivity());
+                VospitannikAdapter vospitannikAdapter = new VospitannikAdapter(getScheduleListModels, getActivity());
                 vospitannikAdapter.notifyDataSetChanged();
             }
 
@@ -172,7 +191,10 @@ public class VospitannikFragment extends Fragment {
                 showDialog();
             }
         });
-
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        button.setTypeface(typeface);
+        date.setTypeface(typeface);
+        times.setTypeface(typeface);
         return view;
     }
 
@@ -205,6 +227,7 @@ public class VospitannikFragment extends Fragment {
         return colors;
     }
 
+/*
     @Background
     public void loadEntity() {
         getLoaderManager().restartLoader(ConstantsManager.ID_LOADER, null, new LoaderManager.LoaderCallbacks<List<ChildStatusEntity>>() {
@@ -234,6 +257,17 @@ public class VospitannikFragment extends Fragment {
             }
         });
     }
+*/
+
+    public void getScheduleList(){
+        RestService restService = new RestService();
+        try {
+            getScheduleListModels = restService.getScheduleListModel("1");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onDetach() {

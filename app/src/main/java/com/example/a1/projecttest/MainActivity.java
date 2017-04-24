@@ -3,6 +3,7 @@ package com.example.a1.projecttest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -74,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
         idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+        nameTextNavView.setTypeface(typeface);
+        emailTextNavView.setTypeface(typeface);
+        idTextNavView.setTypeface(typeface);
         setNavigationViewItem();
       //  saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
         setMenu(navigationView);

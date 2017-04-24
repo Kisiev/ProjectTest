@@ -1,5 +1,7 @@
 package com.example.a1.projecttest.adapters;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +17,17 @@ import java.util.List;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     List<String> list;
-
-    public FeedAdapter (List<String> list) {
+    Context context;
+    public FeedAdapter (Context context, List<String> list) {
         this.list = list;
+        this.context = context;
     }
 
     @Override
     public FeedHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.feed_fragment_item, parent, false);
-        return new FeedHolder(view);
+        return new FeedHolder(view, context);
     }
 
     @Override
@@ -61,13 +64,19 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         TextView dateTV;
         TextView nameChildTV;
         TextView serviceNameTV;
-        public FeedHolder(View itemView) {
+        public FeedHolder(View itemView, Context context) {
             super(itemView);
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
             newsNameTV     = (TextView) itemView.findViewById(R.id.news_nameTV);
             timeTV = (TextView) itemView.findViewById(R.id.time_TV);
             dateTV = (TextView) itemView.findViewById(R.id.date_TV);
             nameChildTV = (TextView) itemView.findViewById(R.id.name_childTV);
             serviceNameTV = (TextView) itemView.findViewById(R.id.service_nameTV);
+            newsNameTV.setTypeface(typeface);
+            timeTV.setTypeface(typeface);
+            dateTV.setTypeface(typeface);
+            nameChildTV.setTypeface(typeface);
+            serviceNameTV.setTypeface(typeface);
         }
     }
 }
