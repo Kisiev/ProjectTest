@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
@@ -85,5 +87,20 @@ public final class RestService {
         return restClient.getProjectTestApiEdu()
                 .getSchedule(groupId)
                 .execute().body();
+    }
+
+    public List<GetServiceListModel> getServiceList () throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getServiceList()
+                .execute().body();
+    }
+    public List<GetServicesByServiceTypeModel> getServicesByServiceTypeModels (String id) throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getServicesByServiceType(id)
+                .execute().body();
+    }
+
+    public GetStatusCode setSchedule(String serviceId, String day, String timeFrom, String timeTo, String groupId) throws IOException {
+        return restClient.getProjectTestApiEdu().setSchedule(serviceId, day, timeFrom, timeTo, groupId).execute().body();
     }
 }

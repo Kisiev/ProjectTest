@@ -2,44 +2,25 @@ package com.example.a1.projecttest.adapters;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.Entities.ChildStatusEntity_Table;
-import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.sql.Time;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Random;
-
-import static android.os.Build.VERSION.SDK;
-import static android.os.Build.VERSION.SDK_INT;
 
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 

@@ -3,12 +3,8 @@ package com.example.a1.projecttest.zavedushaia.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -23,19 +19,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.CareEntity;
-import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.Entities.ServiceListEntity;
-import com.example.a1.projecttest.Entities.UpbringingEntity;
+import com.example.a1.projecttest.Entities.DayOfWeek;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
-import com.example.a1.projecttest.adapters.CareSpinnerAdapter;
+import com.example.a1.projecttest.adapters.ServiceByServiceTypeAdapter;
 import com.example.a1.projecttest.adapters.SpinnerDialogAdapter;
+import com.example.a1.projecttest.adapters.SpinnerDialogDaysAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
+import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
@@ -54,12 +51,14 @@ import java.util.List;
 
 
 @EFragment(R.layout.services_redaction_fragment)
-public class ServicesFragment extends Fragment implements Dialog.OnDismissListener, Spinner.OnItemSelectedListener{
+public class ServicesFragment extends Fragment implements Dialog.OnDismissListener, Spinner.OnItemSelectedListener {
     RecyclerView recyclerView;
     Button addButton;
     Dialog dialog;
-    List<GetServiceType> getServiceTypeCare;
-    List<GetServiceType> getServiceTypeUpbring;
+    GetStatusCode setScheduleStatus;
+    List<GetServicesByServiceTypeModel> getServicesByServiceTypeModels;
+    List<GetServiceListModel> getServiceListModels;
+    List<GetServiceType> getServiceTypes;
    Thread getServiceListThread;
     List<GetScheduleListModel> getScheduleListModels;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
@@ -68,37 +67,85 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
-    private List<ChildStatusEntity> updateServiceList(List<ChildStatusEntity> service){
-        service.clear();
-        service.addAll(ChildStatusEntity.selectChilds());
-        return service;
+    private int findNameServicePosition(int position){
+        int positionService = 0;
+        for (int i = 0; i < getScheduleListModels.size(); i ++){
+            if (getScheduleListModels.get(i).getServiceId().equals(getScheduleListModels.get(position).getServiceId())){
+                positionService = i;
+                break;
+            }
+        }
+        return positionService;
     }
-
+    private int findServiceListModels(int position){
+        int positionService = 0;
+        for (int i = 0; i < getServiceListModels.size(); i ++){
+            if (getServiceListModels.get(i).getId().equals(getServiceListModels.get(position).getId())){
+                positionService = i;
+                break;
+            }
+        }
+        return positionService;
+    }
+    private int findServiceTypes(int position){
+        int positionService = 0;
+        for (int i = 0; i < getServiceTypes.size(); i ++){
+            if (getServiceTypes.get(i).getId().equals(getServiceTypes.get(position).getId())){
+                positionService = i;
+                break;
+            }
+        }
+        return positionService;
+    }
+    private int findDayWeek(int position){
+        int positionService = 0;
+        for (int i = 0; i < DayOfWeek.selectDays().size(); i ++){
+            if (DayOfWeek.selectDays().get(i).getId() == (DayOfWeek.selectDays().get(position).getId())){
+                positionService = i;
+                break;
+            }
+        }
+        return positionService;
+    }
     public void getServiceList(){
         RestService restService = new RestService();
-        try {
-            getServiceTypeCare = (restService.serviceType(String.valueOf(1)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            getServiceTypeUpbring = (restService.serviceType(String.valueOf(2)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         try {
             getScheduleListModels = restService.getScheduleListModel("1");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            getServiceListModels = restService.getServiceList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
+    public void getServiceTypeById(String id){
+        RestService restService = new RestService();
+        try {
+            getServiceTypes = (restService.serviceType(id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getServicesByServiceType(String id){
+        RestService restService = new RestService();
+        try {
+            getServicesByServiceTypeModels = restService.getServicesByServiceTypeModels(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.services_redaction_fragment, container, false);
-        ChildStatusEntity.updateVisibility(View.GONE);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -134,11 +181,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                 view.findViewById(R.id.delete_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        List<ChildStatusEntity> service = ChildStatusEntity.selectChilds();
-                        service.addAll(updateServiceList(service));
-                        ChildStatusEntity.deleteItem(service.get(position).getId());
-                        service.addAll(updateServiceList(service));
-                        //loadServices();
+
                     }
                 });
             }
@@ -210,36 +253,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         });
     }*/
 
-    public int positionSpinnerUpbringing(int selectionItem, Spinner upbringingSp, List<GetScheduleListModel> allService, int position){
-        List upbringingList  = new ArrayList<>();
-        upbringingList.addAll(UpbringingEntity.selectAll());
-        List careList  = new ArrayList<>();
-        careList.addAll(CareEntity.select());
-        int posSpinner = 0;
-        switch (selectionItem){
-            case 1:
-                upbringingSp.setAdapter(new CareSpinnerAdapter(getActivity(), careList));
-                for (int i = 0; i < upbringingSp.getCount(); i++) {
-                        CareEntity selectionUpbringing = (CareEntity) upbringingSp.getItemAtPosition(i);
-                        if (Integer.valueOf(getServiceTypeCare.get(i).getId()) == Integer.valueOf(allService.get(position).getServiceTypeId())) {
-                            posSpinner = i;
-                            break;
-                        }
-                    }
-                break;
-            case 2:
-                upbringingSp.setAdapter(new UpbringingAdapter(getActivity(), upbringingList));
-                for (int i = 0; i < upbringingSp.getCount(); i++) {
-                    UpbringingEntity selectionUpbringing = (UpbringingEntity) upbringingSp.getItemAtPosition(i);
-                    if (Integer.valueOf(getServiceTypeUpbring.get(i).getId()) == Integer.valueOf(allService.get(position).getServiceTypeId())) {
-                        posSpinner = i;
-                        break;
-                    }
-                }
-                break;
-        }
-        return posSpinner;
-    }
+
 
     @Background
     public void showDialog(final boolean isReduction, final int position) {
@@ -259,128 +273,68 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         final Spinner upbringingSp = (Spinner) dialog.findViewById(R.id.upbringingSp);
         final EditText timeIn = (EditText) dialog.findViewById(R.id.since_edit_ET);
         final EditText timeOut = (EditText) dialog.findViewById(R.id.till_edit_ET);
-        final EditText nameServiceEditor = (EditText) dialog.findViewById(R.id.name_service_editorET);
+        final Spinner nameServiceEditor = (Spinner) dialog.findViewById(R.id.name_service_editorET);
+        final Spinner daysSpinner = (Spinner) dialog.findViewById(R.id.days_spinner);
 
-        if (getServiceTypeCare != null && getServiceTypeUpbring != null) {
-            CareEntity.deleteAll();
-            UpbringingEntity.deleteAll();
-            for (GetServiceType i: getServiceTypeCare) {
-                CareEntity.insertCare(i.getName(), Integer.valueOf(i.getServiceListId()));
-            }
-            for (GetServiceType i: getServiceTypeUpbring) {
-                UpbringingEntity.insertItem(i.getName(), Integer.parseInt(i.getServiceListId()));
-            }
-        }
-        final List childStatusEntities  = new ArrayList<>();
-        childStatusEntities.addAll(ServiceListEntity.select());
+        List serviceTypeList = new ArrayList<>();
+        serviceTypeList.addAll(getServiceListModels);
 
-        final List upBringingEntity = new ArrayList<>();
-        upBringingEntity.addAll(UpbringingEntity.selectAll());
+        List daysList = new ArrayList<>();
+        daysList.addAll(DayOfWeek.selectDays());
+        SpinnerDialogDaysAdapter adapter = new SpinnerDialogDaysAdapter(getActivity(), daysList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        daysSpinner.setAdapter(adapter);
 
-        SpinnerDialogAdapter spinnerDialogAdapter = new SpinnerDialogAdapter(getActivity(),childStatusEntities);
-        UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upBringingEntity);
-
+        SpinnerDialogAdapter spinnerDialogAdapter = new SpinnerDialogAdapter(getActivity(),serviceTypeList);
         spinnerDialogAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        upbringingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinnerDialogAdapter.notifyDataSetChanged();
-        upbringingAdapter.notifyDataSetChanged();
-
         spinner.setAdapter(spinnerDialogAdapter);
-        upbringingSp.setAdapter(upbringingAdapter);
 
         if (session.getStateDialogScreen()){
-            nameServiceEditor.setText(session.getSaveEditText(ConstantsManager.EDIT_TEXT_STATE));
             timeIn.setText(session.getSaveEditText(ConstantsManager.TIME_IN));
             timeOut.setText(session.getSaveEditText(ConstantsManager.TIME_OUT));
         }
 
-
-
         textChange(timeIn);
         textChange(timeOut);
-        textChange(nameServiceEditor);
-        session.saveStateDialogScreen(true, isReduction, position);
-        if (isReduction) {
-            headerDialog.setText(R.string.edit_header);
-          //  nameServiceEditor.setText(allService.get(position).getServiceName());
-            nameServiceEditor.setText(getScheduleListModels.get(position).getName());
-/*            timeIn.setText(String.valueOf(allService.get(position).getTimeIn() + String.valueOf(allService.get(position).getTimeIn())));
-            timeOut.setText(String.valueOf(allService.get(position).getTimeOut() + String.valueOf(allService.get(position).getTimeOut())));*/
-            timeIn.setText(String.valueOf(getScheduleListModels.get(position).getTimeFrom()));
-            timeOut.setText(String.valueOf(getScheduleListModels.get(position).getTimeTo()));
-            spinner.setSelection(Integer.parseInt(allService.get(position).getServiceTypeId()) >= 4 ? 2:1);
-            int selectionItem = Integer.valueOf(getScheduleListModels.get(position).getServiceTypeId());
-                        //spinner.setSelection(i);
-                        upbringingSp.setSelection(positionSpinnerUpbringing(selectionItem >= 4 ? 2:1, upbringingSp, allService, position));
-
-        } else headerDialog.setText(R.string.addActivityTV);
-
+        if (isReduction){
+            spinner.setSelection(findServiceListModels(position));
+            upbringingSp.setSelection(findServiceTypes(position));
+            nameServiceEditor.setSelection(findNameServicePosition(position));
+            daysSpinner.setSelection(findDayWeek(position));
+            timeIn.setText(getScheduleListModels.get(position).getTimeFrom());
+            timeOut.setText(getScheduleListModels.get(position).getTimeTo());
+        }
         spinner.setOnItemSelectedListener(this);
         upbringingSp.setOnItemSelectedListener(this);
 
         saveServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ServiceListEntity typeCare = (ServiceListEntity) spinner.getSelectedItem();
-                CareEntity careEntity = new CareEntity();
-                UpbringingEntity upbringingEntity = new UpbringingEntity();
-                if (((ServiceListEntity) spinner.getSelectedItem()).getId() == 1){
-                    careEntity = (CareEntity) upbringingSp.getSelectedItem();
-                } else if (((ServiceListEntity) spinner.getSelectedItem()).getId() == 2){
-                    upbringingEntity = (UpbringingEntity) upbringingSp.getSelectedItem();
-                }
-                    if (!nameServiceEditor.getText().toString().equals("")
-                            && (!timeIn.getText().toString().equals("")
-                            && (!timeIn.getText().toString().contains("м") || (!timeIn.getText().toString().contains("ч")))
-                            && !timeOut.getText().toString().equals("")
-                            && (!timeOut.getText().toString().contains("м"))||(!timeOut.getText().toString().contains("ч")))
-                            && !typeCare.getName().equals("")) {
-                            if (Time.valueOf(VospitannikFragment.getDateString(
-                                    Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
-                                    Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0)).before(
-                                            Time.valueOf(VospitannikFragment.getDateString(
+                GetServiceListModel getServiceListModel = (GetServiceListModel) spinner.getSelectedItem();
+                GetServiceType getServiceType = (GetServiceType) upbringingSp.getSelectedItem();
+                DayOfWeek dayOfWeek = (DayOfWeek) daysSpinner.getSelectedItem();
+                GetServicesByServiceTypeModel getServicesByServiceTypeModel = (GetServicesByServiceTypeModel) nameServiceEditor.getSelectedItem();
+                if ((getServiceListModel != null)
+                        && (getServiceType != null)
+                        && (dayOfWeek.getDay() != null)
+                        && (getServicesByServiceTypeModel != null)
+                        && ((!timeIn.getText().toString().contains("ч")) && (!timeIn.getText().toString().contains("м")) && (!timeIn.getText().toString().isEmpty()))
+                        && ((!timeOut.getText().toString().contains("ч")) && (!timeOut.getText().toString().contains("м")) && (!timeOut.getText().toString().isEmpty()))){
+                    if (Time.valueOf(VospitannikFragment.getDateString(
+                            Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
+                            Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0)).before(
+                            Time.valueOf(VospitannikFragment.getDateString(
                                     Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
                                     Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0)))) {
-                                if (!isReduction) {
-                                    if (ChildStatusEntity.selectIndividualItem(nameServiceEditor.getText().toString()).size() <= 0) {
-                                        ChildStatusEntity.insert(nameServiceEditor.getText().toString(),
-                                                VospitannikFragment.getDateString(
-                                                        Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
-                                                        Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
-                                                VospitannikFragment.getDateString(
-                                                        Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
-                                                        Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
-                                                typeCare.getId(),
-                                                upbringingEntity.getName() != null ? upbringingEntity.getId() : careEntity.getId(),
-                                                upbringingSp.getSelectedItemPosition(),
-                                                "",
-                                                VospitannikFragment.generatedColor(),
-                                                0,
-                                                View.VISIBLE);
-                                    } else notifyInputError(getString(R.string.invalidateNameService));
-                                } else {
-                                    ChildStatusEntity.updateItem(Integer.parseInt(allService.get(position).getId()), nameServiceEditor.getText().toString(),
-                                            VospitannikFragment.getDateString(
-                                                    Integer.valueOf(timeIn.getText().toString().substring(0, 2)),
-                                                    Integer.valueOf(timeIn.getText().toString().substring(3, 5)), 0),
-                                            VospitannikFragment.getDateString(
-                                                    Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
-                                                    Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0),
-                                            typeCare.getId(),
-                                            upbringingEntity.getName() != null ? upbringingEntity.getId() : careEntity.getId(),
-                                            upbringingSp.getSelectedItemPosition(),
-                                            "",
-                                            VospitannikFragment.generatedColor(),
-                                            0,
-                                            View.VISIBLE);
-                                }
-                            } else notifyInputError(getString(R.string.invalidateTime));
-                        } else notifyInputError(getString(R.string.invalidateNameService));
+                        createScheduleThread(getServicesByServiceTypeModel.getId(), dayOfWeek.getDay(), timeIn.getText().toString(), timeOut.getText().toString(), "1");
+                        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                        if(setScheduleStatus.getCode().equals("200"))
+                            Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
+                        else Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();
+                    }
 
-                //loadServices();
-               // dialog.dismiss();
-
+                }
             }
         });
 
@@ -393,6 +347,30 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         dialog.show();
     }
 
+    public void setSchedule(String serviceId, String day, String timeFrom, String timeTo, String groupId){
+        RestService restService = new RestService();
+        try {
+            setScheduleStatus = restService.setSchedule(serviceId, day, timeFrom, timeTo, groupId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        getServiceList();
+    }
+
+    public void createScheduleThread(final String serviceId, final String day, final String timeFrom, final String timeTo, final String groupId) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                setSchedule(serviceId, day, timeFrom, timeTo, groupId);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void textChange(final EditText editText){
 
@@ -492,39 +470,106 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         UserLoginSession session = new UserLoginSession(getActivity());
         Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
         Spinner upBring = (Spinner) dialog.findViewById(R.id.upbringingSp);
-        ServiceListEntity serviceListEntity = (ServiceListEntity) spinner.getSelectedItem();
+        Spinner nameServiceSpinner = (Spinner) dialog.findViewById(R.id.name_service_editorET);
+        GetServiceListModel serviceListEntity = (GetServiceListModel) spinner.getSelectedItem();
         final List<GetScheduleListModel> allService = new ArrayList<>();
         allService.addAll(getScheduleListModels);
         switch (parent.getId()){
             case R.id.careSp:
-                    session.saveStateSpinner(ConstantsManager.SPINNER_STATE, ((ServiceListEntity) parent.getSelectedItem()).getId());
                     switch (serviceListEntity.getId()) {
-                        case 1:
-                            List careList;
-                            careList = (CareEntity.select());
-                            CareSpinnerAdapter careSpinnerAdapter = new CareSpinnerAdapter(getActivity(), careList);
+                        case "1":
+                            Thread threadByOne = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getServiceTypeById("1");
+                                }
+                            });
+                            threadByOne.start();
+                            try {
+                                threadByOne.join();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            List serviceTypes = new ArrayList<>();
+                            serviceTypes.addAll(getServiceTypes);
+                            UpbringingAdapter careSpinnerAdapter = new UpbringingAdapter(getActivity(), serviceTypes);
                             careSpinnerAdapter.notifyDataSetChanged();
                             upBring.setAdapter(careSpinnerAdapter);
-                            if (session.getIsReductionState())
-                                upBring.setSelection(positionSpinnerUpbringing(Integer.valueOf(allService.get(session.getPositionState()).getServiceTypeId()) >= 4 ? 2:1, upBring, allService, session.getPositionState()));
                             upBring.setVisibility(View.VISIBLE);
                             break;
-                        case 2:
-                            List upbringingList;
-                            upbringingList = (UpbringingEntity.selectAll());
-                            UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), upbringingList);
+                        case "2":
+                            Thread threadByTwo = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getServiceTypeById("2");
+                                }
+                            });
+                            threadByTwo.start();
+                            try {
+                                threadByTwo.join();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            List serviceTypesByTwo = new ArrayList<>();
+                            serviceTypesByTwo.addAll(getServiceTypes);
+                            UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), serviceTypesByTwo);
                             upbringingAdapter.notifyDataSetChanged();
                             upBring.setAdapter(upbringingAdapter);
-                            if (session.getIsReductionState())
-                                upBring.setSelection(positionSpinnerUpbringing(Integer.valueOf(allService.get(session.getPositionState()).getServiceTypeId()) >= 4 ? 2:1, upBring, allService, session.getPositionState()));
                             upBring.setVisibility(View.VISIBLE);
                             break;
-                        case -1:
-                            upBring.setVisibility(View.GONE);
-                            break;
+
                     }
 
                 break;
+            case R.id.upbringingSp:
+                GetServiceType getServiceType = (GetServiceType) upBring.getSelectedItem();
+                switch (getServiceType.getId()){
+                    case "1":
+                        beginThreadGetServices("1");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                    case "2":
+                        beginThreadGetServices("2");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                    case "3":
+                        beginThreadGetServices("3");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                    case "4":
+                        beginThreadGetServices("4");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                    case "5":
+                        beginThreadGetServices("5");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                    case "6":
+                        beginThreadGetServices("6");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                    case "7":
+                        beginThreadGetServices("7");
+                        nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        break;
+                }
+                break;
+        }
+
+    }
+
+    public void beginThreadGetServices(final String id){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getServicesByServiceType(id);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -532,4 +577,5 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

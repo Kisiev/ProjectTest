@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class GetScheduleListModel {
 
-    @SerializedName("id")
-    private String id;
     @SerializedName("serviceId")
     private String serviceId;
     @SerializedName("day")
@@ -19,18 +17,8 @@ public class GetScheduleListModel {
     private String groupId;
     @SerializedName("isFinished")
     private String isFinished;
-    @SerializedName("serviceTypeId")
-    private String serviceTypeId;
     @SerializedName("name")
     private String name;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getServiceId() {
         return serviceId;
@@ -80,13 +68,6 @@ public class GetScheduleListModel {
         this.isFinished = isFinished;
     }
 
-    public String getServiceTypeId() {
-        return serviceTypeId;
-    }
-
-    public void setServiceTypeId(String serviceTypeId) {
-        this.serviceTypeId = serviceTypeId;
-    }
 
     public String getName() {
         return name;

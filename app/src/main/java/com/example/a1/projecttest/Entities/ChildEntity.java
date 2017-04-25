@@ -58,11 +58,7 @@ public class ChildEntity extends BaseModel{
                 .execute();
     }
 
-    public static void deleteChild(int id){
-        SQLite.delete().from(ChildEntity.class)
-                .where(ChildStatusEntity_Table.id.eq(id))
-                .execute();
-    }
+
 
     public static void updateItem(int id, String name, String photo){
         SQLite.update(ChildEntity.class)

@@ -17,12 +17,6 @@
         android:id="@+id/header_dialog_menu"
         android:textSize="15pt"
         android:text="@string/addActivityTV"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.App.Base_Dialog"
-        android:hint="@string/name_activity"
-        android:id="@+id/name_service_editorET"/>
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +25,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/upbringingSp"/>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_service_editorET"/>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/days_spinner">
+
+    </Spinner>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

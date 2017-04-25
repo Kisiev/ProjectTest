@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.ServiceListEntity;
 import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.R;

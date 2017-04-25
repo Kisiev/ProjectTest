@@ -1,14 +1,11 @@
 package com.example.a1.projecttest.fragments;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -18,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -28,21 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.CareEntity;
 import com.example.a1.projecttest.Entities.ChildEntity;
-import com.example.a1.projecttest.Entities.ChildStatusEntity;
 import com.example.a1.projecttest.MainActivity;
-import com.example.a1.projecttest.MapActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.FeedAdapter;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
-import com.google.android.gms.common.api.Releasable;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -52,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.CONTEXT_IGNORE_SECURITY;
 
 @EFragment
 public class FeedFragment extends Fragment implements View.OnClickListener {
@@ -124,7 +114,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         switch (item.getItemId()){
             case ConstantsManager.DELETE_CONTEXT_ITEM:
                 if (pos != -1) {
-                    ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
+                   // ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
                     loadChildList();
                     MainActivity.setMenu(navigationView);
                     pos = -1;

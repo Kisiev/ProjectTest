@@ -3,7 +3,9 @@ package com.example.a1.projecttest.rest;
 
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
+import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
@@ -25,7 +27,7 @@ public interface ProjectTestApi {
                                @Query("coordinateX") String coordinateX,
                                @Query("coordinateY") String coordinateY);
 
-    @GET("/api/getServiceTypesById.php")
+    @GET("/api/getServiceTypesByServiceListId.php")
     Call<List<GetServiceType>> getServiceTypeCall (@Query("id") String id);
 
     @GET("/api/emailRegistration.php")
@@ -44,6 +46,19 @@ public interface ProjectTestApi {
     @GET("/api/getUserByRoleId.php")
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
 
-    @GET("api/getScheduleByGroupId.php")
+    @GET("/api/getScheduleByGroupId.php")
     Call<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id);
+
+    @GET("/api/getServiceList.php")
+    Call<List<GetServiceListModel>> getServiceList();
+
+    @GET("/api/getServicesByServiceTypeId.php")
+    Call<List<GetServicesByServiceTypeModel>> getServicesByServiceType(@Query("serviceTypeId") String id);
+
+    @GET("/api/createSchedule.php")
+    Call<GetStatusCode> setSchedule(@Query("serviceId") String serviceId,
+                                    @Query("day") String day,
+                                    @Query("timeFrom") String timeFrom,
+                                    @Query("timeTo") String timeTo,
+                                    @Query("groupId") String groupId);
 }

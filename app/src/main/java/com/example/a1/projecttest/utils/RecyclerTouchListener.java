@@ -6,12 +6,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.a1.projecttest.Entities.ChildEntity;
-import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.R;
-
-import java.util.List;
-
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 

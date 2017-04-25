@@ -4,47 +4,29 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.ChildStatusEntity;
-import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
-import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
-import com.example.a1.projecttest.adapters.RaspisanieAdapter;
-import com.example.a1.projecttest.adapters.RaspisanieGroupItemAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
-import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EFragment;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -92,7 +74,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view, int position) {
                 if (!dialog.isShowing()) {
-                    session.saveRecyclerViewPositions(position, ChildStatusEntity.selectChilds().get(position).getId(), 0, 0);
+                   // session.saveRecyclerViewPositions(position, ChildStatusEntity.selectChilds().get(position).getId(), 0, 0);
                     showDialog();
                 }
             }
@@ -188,15 +170,15 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.low_smile_image_dialog:
-                ChildStatusEntity.updateSmile(1, session.getIdSchedule());
+              //  ChildStatusEntity.updateSmile(1, session.getIdSchedule());
                 Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.medium_smile_image_dialog:
-                ChildStatusEntity.updateSmile(2, session.getIdSchedule());
+             //   ChildStatusEntity.updateSmile(2, session.getIdSchedule());
                 Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.high_smile_image_dialog:
-                ChildStatusEntity.updateSmile(3, session.getIdSchedule());
+              //  ChildStatusEntity.updateSmile(3, session.getIdSchedule());
                 Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button_dialog:

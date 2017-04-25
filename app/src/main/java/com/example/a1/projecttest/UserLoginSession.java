@@ -25,8 +25,8 @@ public class UserLoginSession {
     public String getSaveEditText(String key){
         return prefs.getString(key, "");
     }
-    public void saveStateSpinner(String key, int id){
-        prefs.edit().putInt(key, id).apply();
+    public void saveStateSpinner(String key, String id){
+        prefs.edit().putString(key, id).apply();
         prefs.edit().apply();
     }
 
