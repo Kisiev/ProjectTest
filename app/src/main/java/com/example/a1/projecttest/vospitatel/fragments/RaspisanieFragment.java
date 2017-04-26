@@ -160,9 +160,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                 low = (ImageView) view.findViewById(R.id.low_smile_image_dialog);
                 medium = (ImageView) view.findViewById(R.id.medium_smile_image_dialog);
                 high = (ImageView) view.findViewById(R.id.high_smile_image_dialog);
-                view.findViewById(R.id.low_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
-                view.findViewById(R.id.medium_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
-                view.findViewById(R.id.high_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
+                low.setOnClickListener(RaspisanieFragment.this);
+                medium.setOnClickListener(RaspisanieFragment.this);
+                high.setOnClickListener(RaspisanieFragment.this);
             }
 
             @Override
