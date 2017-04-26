@@ -84,28 +84,33 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="В разработке"/>
+                    android:textColor="@color/whiteColor"
+                    android:text="В разработке (Админ)"/>
                 <RadioGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/whiteColor"
                         android:id="@+id/roditel"
                         android:text="Родитель"/>
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/whiteColor"
                         android:id="@+id/vospitatel"
                         android:text="Воспитатель"/>
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/whiteColor"
                         android:id="@+id/rebenok"
                         android:text="Ребенок"/>
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/whiteColor"
                         android:id="@+id/zaveduushi"
                         android:text="Заведующая"/>
                 </RadioGroup>

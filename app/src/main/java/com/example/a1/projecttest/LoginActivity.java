@@ -221,20 +221,156 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.zaveduushi:
-                startActivity(new Intent(this, MainZavDetSad_.class));
-                finish();
+                Thread thread1 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getValidToken("kisivaleri@gmail.com", "aQO6O4rzBg");
+                    }
+                });
+                thread1.start();
+                try {
+                    thread1.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getUserData == null){
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+                } else {
+                    userLoginSession.setUseName(getUserData.getEmail(),
+                            passwordTV.getText().toString(),
+                            getUserData.getId(),
+                            getUserData.getName(),
+                            getUserData.getSurname(),
+                            getUserData.getPatronymic(),
+                            Integer.valueOf(getUserData.getRoleId()),
+                            Integer.valueOf(getUserData.getIsActivated()));
+                    if (getUserData.getIsActivated().equals("0"))
+                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+                    else if (getUserData.getIsActivated().equals("1")) {
+                        switch (getUserData.getRoleId()) {
+                            case "1":
+                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
+                                break;
+                            case "2":
+                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
+                                break;
+                            case "3":
+                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
+                                break;
+                            case "4":
+
+                                break;
+                            case "5":
+                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
+                                break;
+                        }
+                    }
+                    getUserData = null;
+                    finish();
+                }
+
                 break;
             case R.id.vospitatel:
-                startActivity(new Intent(this, VospitatelMainActivity_.class));
-                finish();
+                Thread thread2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getValidToken("v_stronger@mail.ru", "NNhGleFSGB");
+                    }
+                });
+                thread2.start();
+                try {
+                    thread2.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getUserData == null){
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+                } else {
+                    userLoginSession.setUseName(getUserData.getEmail(),
+                            passwordTV.getText().toString(),
+                            getUserData.getId(),
+                            getUserData.getName(),
+                            getUserData.getSurname(),
+                            getUserData.getPatronymic(),
+                            Integer.valueOf(getUserData.getRoleId()),
+                            Integer.valueOf(getUserData.getIsActivated()));
+                    if (getUserData.getIsActivated().equals("0"))
+                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+                    else if (getUserData.getIsActivated().equals("1")) {
+                        switch (getUserData.getRoleId()) {
+                            case "1":
+                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
+                                break;
+                            case "2":
+                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
+                                break;
+                            case "3":
+                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
+                                break;
+                            case "4":
+
+                                break;
+                            case "5":
+                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
+                                break;
+                        }
+                    }
+                    getUserData = null;
+                    finish();
+                }
                 break;
             case R.id.rebenok:
                 startActivity(new Intent(this, ChildActivity_.class));
                 finish();
                 break;
             case R.id.roditel:
-                startActivity(new Intent(this, MainActivity_.class));
-                finish();
+                Thread thread3 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getValidToken("v.kisiev@asa.guru", "Wg9xsP8flq");
+                    }
+                });
+                thread3.start();
+                try {
+                    thread3.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (getUserData == null){
+                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+                } else {
+                    userLoginSession.setUseName(getUserData.getEmail(),
+                            passwordTV.getText().toString(),
+                            getUserData.getId(),
+                            getUserData.getName(),
+                            getUserData.getSurname(),
+                            getUserData.getPatronymic(),
+                            Integer.valueOf(getUserData.getRoleId()),
+                            Integer.valueOf(getUserData.getIsActivated()));
+                    if (getUserData.getIsActivated().equals("0"))
+                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+                    else if (getUserData.getIsActivated().equals("1")) {
+                        switch (getUserData.getRoleId()) {
+                            case "1":
+                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
+                                break;
+                            case "2":
+                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
+                                break;
+                            case "3":
+                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
+                                break;
+                            case "4":
+
+                                break;
+                            case "5":
+                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
+                                break;
+                        }
+                    }
+                    getUserData = null;
+                    finish();
+                }
                 break;
         }
     }
