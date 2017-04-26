@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     List<GetUserData> getUserRoleChild;
     List<GetScheduleListModel> getScheduleListModels;
     PositionSaveSession session;
+    ImageView low;
+    ImageView medium;
+    ImageView high;
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -151,8 +155,11 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         recyclerView.setAdapter(new DialogTutorListChildAdapter(getUserRoleChild));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(final View view, int position) {
                 session.saveRecyclerViewPositions(session.getPosSchedule(), session.getIdSchedule(), position, Integer.parseInt(getUserRoleChild.get(position).getId()));
+                low = (ImageView) view.findViewById(R.id.low_smile_image_dialog);
+                medium = (ImageView) view.findViewById(R.id.medium_smile_image_dialog);
+                high = (ImageView) view.findViewById(R.id.high_smile_image_dialog);
                 view.findViewById(R.id.low_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
                 view.findViewById(R.id.medium_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
                 view.findViewById(R.id.high_smile_image_dialog).setOnClickListener(RaspisanieFragment.this);
@@ -171,14 +178,23 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         switch (v.getId()){
             case R.id.low_smile_image_dialog:
               //  ChildStatusEntity.updateSmile(1, session.getIdSchedule());
+                low.setImageResource(R.drawable.ic_sentiment_dissatisfied_red_24dp);
+                medium.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
+                high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
                 Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.medium_smile_image_dialog:
              //   ChildStatusEntity.updateSmile(2, session.getIdSchedule());
+                medium.setImageResource(R.drawable.ic_sentiment_satisfied_yellow_24dp);
+                low.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
+                high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
                 Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.high_smile_image_dialog:
               //  ChildStatusEntity.updateSmile(3, session.getIdSchedule());
+                high.setImageResource(R.drawable.ic_sentiment_very_satisfied_green_24dp);
+                low.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
+                medium.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
                 Toast.makeText(getActivity(), R.string.status_update, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.back_button_dialog:

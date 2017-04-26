@@ -25,6 +25,21 @@ public class PositionSaveSession {
         prefs.edit().apply();
     }
 
+    public void savePositionSession(int pos){
+        prefs.edit().putInt(ConstantsManager.POS_SCHEDULE_ZAV, pos).apply();
+        prefs.edit().apply();
+    }
+    public void saveIsReductionState(boolean status){
+        prefs.edit().putBoolean(ConstantsManager.SAVE_ISREDICTION_STATE, status).apply();
+        prefs.edit().apply();
+    }
+    public boolean isReductionState(){
+        return prefs.getBoolean(ConstantsManager.SAVE_ISREDICTION_STATE, false);
+    }
+    public int getPositionSession(){
+        return prefs.getInt(ConstantsManager.POS_SCHEDULE_ZAV, 0);
+    }
+
     public int getPosSchedule(){
         return prefs.getInt(ConstantsManager.POS_SCHEDULE, 0);
     }

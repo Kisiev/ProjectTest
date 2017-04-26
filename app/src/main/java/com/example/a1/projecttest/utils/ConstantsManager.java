@@ -24,6 +24,7 @@ public class ConstantsManager {
     final public static int REDICTION_CONTEXT_ITEM = 15;
     final public static int DELETE_CONTEXT_ITEM = 20;
     final public static String POS_SCHEDULE = "position_schedule";
+    final public static String POS_SCHEDULE_ZAV = "position_schedule_zav";
     final public static String ID_SCHEDULE = "id_schedule";
     final public static String POS_CHILD = "pos_child";
     final public static String ID_CHILD = "id_child";
@@ -32,4 +33,6 @@ public class ConstantsManager {
     final public static String PATRONIMYC_USER = "patronimyc";
     final public static String ROLE_ID_USER = "role_id_user";
     final public static String ISACTIVATED_USER = "isactivation_user";
+    final public static String SAVE_ISREDICTION_STATE = "is_reduct";
+
 }

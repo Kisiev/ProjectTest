@@ -42,8 +42,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         setMenu();
-        ArrivingFragment arrivingFragment = new ArrivingFragment();
-        replaceFragment(arrivingFragment, R.id.content_main);
+        //ArrivingFragment arrivingFragment = new ArrivingFragment();
+        //replaceFragment(arrivingFragment, R.id.content_main);
     }
 
     private void setMenu(){
@@ -83,8 +83,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         int id = item.getOrder();
         switch (id){
             case 0:
-                ArrivingFragment arrivingFragment = new ArrivingFragment();
-                replaceFragment(arrivingFragment, R.id.content_main);
+             //   ArrivingFragment arrivingFragment = new ArrivingFragment();
+                //replaceFragment(arrivingFragment, R.id.content_main);
                 break;
             case 1:
                 RaspisanieFragment raspisanieFragment = new RaspisanieFragment();

@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.example.a1.projecttest.Entities.DayOfWeek;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
+import com.example.a1.projecttest.utils.ChildService;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.VospitatelMainActivity;
 import com.example.a1.projecttest.vospitatel.VospitatelMainActivity_;
@@ -31,6 +33,7 @@ import com.google.gson.JsonSyntaxException;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.IgnoreWhen;
 import org.androidannotations.annotations.UiThread;
 
 import java.io.IOException;
@@ -45,6 +48,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public GetListUsers validUser;
     public GetUserData getUserData;
     public Typeface typeface;
+
+    private RadioButton vospitatel;
+    private RadioButton roditel;
+    private RadioButton zav;
+    private RadioButton rebenok;
+
+
     @AfterViews
     protected void main() {
         if(DayOfWeek.selectDays().size() == 0) {
@@ -56,6 +66,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             DayOfWeek.insertDay("Суббота");
             DayOfWeek.insertDay("Воскресенье");
         }
+        zav = (RadioButton) findViewById(R.id.zaveduushi);
+        vospitatel = (RadioButton) findViewById(R.id.vospitatel);
+        rebenok = (RadioButton) findViewById(R.id.rebenok);
+        roditel = (RadioButton) findViewById(R.id.roditel);
+        zav.setOnClickListener(this);
+        vospitatel.setOnClickListener(this);
+        rebenok.setOnClickListener(this);
+        roditel.setOnClickListener(this);
         userLoginSession = new UserLoginSession(getApplicationContext());
         if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty())){
             Thread thread = new Thread(new Runnable() {
@@ -201,6 +219,22 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             case R.id.registrationBT:
                 Intent intent = new Intent(LoginActivity.this, SendMessageSignIn_.class);
                 startActivity(intent);
+                break;
+            case R.id.zaveduushi:
+                startActivity(new Intent(this, MainZavDetSad_.class));
+                finish();
+                break;
+            case R.id.vospitatel:
+                startActivity(new Intent(this, VospitatelMainActivity_.class));
+                finish();
+                break;
+            case R.id.rebenok:
+                startActivity(new Intent(this, ChildActivity_.class));
+                finish();
+                break;
+            case R.id.roditel:
+                startActivity(new Intent(this, MainActivity_.class));
+                finish();
                 break;
         }
     }

@@ -103,4 +103,12 @@ public final class RestService {
     public GetStatusCode setSchedule(String serviceId, String day, String timeFrom, String timeTo, String groupId) throws IOException {
         return restClient.getProjectTestApiEdu().setSchedule(serviceId, day, timeFrom, timeTo, groupId).execute().body();
     }
+
+    public GetStatusCode updateSchedule(String id, String serviceId, String day, String timeFrom, String timeTo, String groupId) throws IOException {
+        return restClient.getProjectTestApiEdu().updateSchedule(id, serviceId, day, timeFrom, timeTo, groupId).execute().body();
+    }
+
+    public GetStatusCode deleteScheduleById(String id) throws IOException{
+        return restClient.getProjectTestApiEdu().deleteSchedule(id).execute().body();
+    }
 }

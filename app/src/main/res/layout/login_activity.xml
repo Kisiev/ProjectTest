@@ -77,7 +77,41 @@
                     android:textColor="@color/whiteColor"
                     android:layout_gravity="end" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="В разработке"/>
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/roditel"
+                        android:text="Родитель"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/vospitatel"
+                        android:text="Воспитатель"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rebenok"
+                        android:text="Ребенок"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/zaveduushi"
+                        android:text="Заведующая"/>
+                </RadioGroup>
 
+            </LinearLayout>
         </LinearLayout>
+
 </LinearLayout>
 </RelativeLayout>

@@ -50,6 +50,11 @@ public class UserLoginSession {
         prefs.edit().apply();
     }
 
+    public void savePosition(int position){
+        prefs.edit().putInt(ConstantsManager.DIALOG_POSITION, position).apply();
+        prefs.edit().apply();
+    }
+
 
 
     public boolean getStateDialogScreen(){

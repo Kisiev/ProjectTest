@@ -61,4 +61,15 @@ public interface ProjectTestApi {
                                     @Query("timeFrom") String timeFrom,
                                     @Query("timeTo") String timeTo,
                                     @Query("groupId") String groupId);
+
+    @GET ("/api/updateScheduleById.php")
+    Call<GetStatusCode> updateSchedule(@Query("id") String id,
+                                       @Query("serviceId") String serviceId,
+                                       @Query("day") String day,
+                                       @Query("timeFrom") String timeFrom,
+                                       @Query("timeTo") String timeTo,
+                                       @Query("groupId") String groupId);
+
+    @GET ("/api/deleteScheduleById.php")
+    Call<GetStatusCode> deleteSchedule(@Query("id") String id);
 }

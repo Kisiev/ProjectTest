@@ -86,5 +86,7 @@
     <string name="list_rasp">Расписание занятий</string>
     <string name="ist_child_header">Список присутствующих детей</string>
     <string name="status_update">Статус обновлен</string>
+    <string name="delete_item_status">Запись удалена</string>
+    <string name="status_error_delete_item">Ошибка при удалении записи</string>
 
 </resources>

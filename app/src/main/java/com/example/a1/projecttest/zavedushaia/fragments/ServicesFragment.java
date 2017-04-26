@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.Entities.DayOfWeek;
+import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.ServiceByServiceTypeAdapter;
@@ -59,6 +60,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     List<GetServicesByServiceTypeModel> getServicesByServiceTypeModels;
     List<GetServiceListModel> getServiceListModels;
     List<GetServiceType> getServiceTypes;
+    GetStatusCode statusCodeUpdate;
+    GetStatusCode statusCodeDelete;
    Thread getServiceListThread;
     List<GetScheduleListModel> getScheduleListModels;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
@@ -69,8 +72,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
 
     private int findNameServicePosition(int position){
         int positionService = 0;
-        for (int i = 0; i < getScheduleListModels.size(); i ++){
-            if (getScheduleListModels.get(i).getServiceId().equals(getScheduleListModels.get(position).getServiceId())){
+        for (int i = 0; i < getServicesByServiceTypeModels.size(); i ++){
+            if (getServicesByServiceTypeModels.get(i).getId().equals(getScheduleListModels.get(position).getServiceId())){
                 positionService = i;
                 break;
             }
@@ -80,7 +83,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     private int findServiceListModels(int position){
         int positionService = 0;
         for (int i = 0; i < getServiceListModels.size(); i ++){
-            if (getServiceListModels.get(i).getId().equals(getServiceListModels.get(position).getId())){
+            if (getScheduleListModels.get(position).getServiceListId().equals(getServiceListModels.get(i).getId())){
                 positionService = i;
                 break;
             }
@@ -89,18 +92,20 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     }
     private int findServiceTypes(int position){
         int positionService = 0;
-        for (int i = 0; i < getServiceTypes.size(); i ++){
-            if (getServiceTypes.get(i).getId().equals(getServiceTypes.get(position).getId())){
+
+        for (int i = 0; i < getServiceTypes.size(); i ++) {
+            if (getScheduleListModels.get(position).getServiceTypeId().equals(getServiceTypes.get(i).getId())) {
                 positionService = i;
                 break;
             }
         }
+
         return positionService;
     }
     private int findDayWeek(int position){
         int positionService = 0;
         for (int i = 0; i < DayOfWeek.selectDays().size(); i ++){
-            if (DayOfWeek.selectDays().get(i).getId() == (DayOfWeek.selectDays().get(position).getId())){
+            if (getScheduleListModels.get(position).getDay().equals(DayOfWeek.selectDays().get(i).getDay())){
                 positionService = i;
                 break;
             }
@@ -137,6 +142,31 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         try {
             getServicesByServiceTypeModels = restService.getServicesByServiceTypeModels(id);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getStatusOfDeleteSchedule(String id){
+        RestService restService = new RestService();
+        try {
+            statusCodeDelete = restService.deleteScheduleById(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        getServiceList();
+    }
+
+    public void deleteSchedule(final String id){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getStatusOfDeleteSchedule(id);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -181,7 +211,13 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                 view.findViewById(R.id.delete_button_raspisanie).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        deleteSchedule(getScheduleListModels.get(position).getId());
+                        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                        if (statusCodeDelete != null) {
+                            if (statusCodeDelete.getCode().equals("200")) {
+                                Toast.makeText(getActivity(), R.string.delete_item_status, Toast.LENGTH_SHORT).show();
+                            }
+                        }else Toast.makeText(getActivity(), R.string.status_error_delete_item, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -258,6 +294,9 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     @Background
     public void showDialog(final boolean isReduction, final int position) {
 
+        PositionSaveSession positionSaveSession = new PositionSaveSession(getActivity());
+        positionSaveSession.saveIsReductionState(isReduction);
+
         final List<GetScheduleListModel> allService = new ArrayList<>();
         allService.addAll(getScheduleListModels);
         dialog = new Dialog(getActivity());
@@ -298,9 +337,9 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         textChange(timeIn);
         textChange(timeOut);
         if (isReduction){
+            PositionSaveSession saveSession = new PositionSaveSession(getActivity());
+            saveSession.savePositionSession(position);
             spinner.setSelection(findServiceListModels(position));
-            upbringingSp.setSelection(findServiceTypes(position));
-            nameServiceEditor.setSelection(findNameServicePosition(position));
             daysSpinner.setSelection(findDayWeek(position));
             timeIn.setText(getScheduleListModels.get(position).getTimeFrom());
             timeOut.setText(getScheduleListModels.get(position).getTimeTo());
@@ -327,11 +366,20 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                             Time.valueOf(VospitannikFragment.getDateString(
                                     Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
                                     Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0)))) {
-                        createScheduleThread(getServicesByServiceTypeModel.getId(), dayOfWeek.getDay(), timeIn.getText().toString(), timeOut.getText().toString(), "1");
-                        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
-                        if(setScheduleStatus.getCode().equals("200"))
-                            Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
-                        else Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();
+                        if (!isReduction) {
+                            createScheduleThread(getServicesByServiceTypeModel.getId(), dayOfWeek.getDay(), timeIn.getText().toString(), timeOut.getText().toString(), "1");
+                            recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                            if (setScheduleStatus.getCode().equals("200"))
+                                Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();
+                        } else if (isReduction){
+                            updateSchedule(getScheduleListModels.get(position).getId(), getServicesByServiceTypeModel.getId(), dayOfWeek.getDay(), timeIn.getText().toString(), timeOut.getText().toString(), "1");
+                            recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                            if (statusCodeUpdate.getCode().equals("200")){
+                                Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
+                            } else Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 }
@@ -346,7 +394,15 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         });
         dialog.show();
     }
-
+    public void updateScheduleBy(String id, String serviceId, String day, String timeFrom, String timeTo, String groupId){
+        RestService restService = new RestService();
+        try {
+            statusCodeUpdate = restService.updateSchedule(id, serviceId, day, timeFrom, timeTo, groupId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        getServiceList();
+    }
     public void setSchedule(String serviceId, String day, String timeFrom, String timeTo, String groupId){
         RestService restService = new RestService();
         try {
@@ -355,6 +411,21 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
             e.printStackTrace();
         }
         getServiceList();
+    }
+
+    public void updateSchedule(final String id, final String serviceId, final String day, final String timeFrom, final String timeTo, final String groupId) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                updateScheduleBy(id, serviceId, day, timeFrom, timeTo, groupId);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createScheduleThread(final String serviceId, final String day, final String timeFrom, final String timeTo, final String groupId) {
@@ -463,11 +534,15 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         session.saveStateEditText(ConstantsManager.EDIT_TEXT_STATE, "");
         session.saveStateEditText(ConstantsManager.TIME_IN, "");
         session.saveStateEditText(ConstantsManager.TIME_OUT, "");
+
+        PositionSaveSession saveSession = new PositionSaveSession(getActivity());
+        saveSession.saveIsReductionState(false);
+        saveSession.savePositionSession(0);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        UserLoginSession session = new UserLoginSession(getActivity());
+        PositionSaveSession session = new PositionSaveSession(getActivity());
         Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
         Spinner upBring = (Spinner) dialog.findViewById(R.id.upbringingSp);
         Spinner nameServiceSpinner = (Spinner) dialog.findViewById(R.id.name_service_editorET);
@@ -495,6 +570,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                             UpbringingAdapter careSpinnerAdapter = new UpbringingAdapter(getActivity(), serviceTypes);
                             careSpinnerAdapter.notifyDataSetChanged();
                             upBring.setAdapter(careSpinnerAdapter);
+                            if (session.isReductionState())
+                                upBring.setSelection(findServiceTypes(session.getPositionSession()));
                             upBring.setVisibility(View.VISIBLE);
                             break;
                         case "2":
@@ -515,6 +592,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                             UpbringingAdapter upbringingAdapter = new UpbringingAdapter(getActivity(), serviceTypesByTwo);
                             upbringingAdapter.notifyDataSetChanged();
                             upBring.setAdapter(upbringingAdapter);
+                            if (session.isReductionState())
+                                upBring.setSelection(findServiceTypes(session.getPositionSession()));
                             upBring.setVisibility(View.VISIBLE);
                             break;
 
@@ -527,30 +606,44 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                     case "1":
                         beginThreadGetServices("1");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                     case "2":
                         beginThreadGetServices("2");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                     case "3":
                         beginThreadGetServices("3");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                     case "4":
                         beginThreadGetServices("4");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                     case "5":
                         beginThreadGetServices("5");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                     case "6":
                         beginThreadGetServices("6");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                     case "7":
                         beginThreadGetServices("7");
                         nameServiceSpinner.setAdapter(new ServiceByServiceTypeAdapter(getActivity(), getServicesByServiceTypeModels));
+                        if (session.isReductionState())
+                            nameServiceSpinner.setSelection(findNameServicePosition(session.getPositionSession()));
                         break;
                 }
                 break;

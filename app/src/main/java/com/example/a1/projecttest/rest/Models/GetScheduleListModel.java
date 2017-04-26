@@ -5,20 +5,45 @@ import com.google.gson.annotations.SerializedName;
 
 public class GetScheduleListModel {
 
+
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("serviceId")
+    @Expose
     private String serviceId;
     @SerializedName("day")
+    @Expose
     private String day;
     @SerializedName("timeFrom")
+    @Expose
     private String timeFrom;
     @SerializedName("timeTo")
+    @Expose
     private String timeTo;
     @SerializedName("groupId")
+    @Expose
     private String groupId;
     @SerializedName("isFinished")
+    @Expose
     private String isFinished;
     @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("serviceTypeId")
+    @Expose
+    private String serviceTypeId;
+    @SerializedName("serviceListId")
+    @Expose
+    private String serviceListId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getServiceId() {
         return serviceId;
@@ -68,13 +93,28 @@ public class GetScheduleListModel {
         this.isFinished = isFinished;
     }
 
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getServiceTypeId() {
+        return serviceTypeId;
+    }
+
+    public void setServiceTypeId(String serviceTypeId) {
+        this.serviceTypeId = serviceTypeId;
+    }
+
+    public String getServiceListId() {
+        return serviceListId;
+    }
+
+    public void setServiceListId(String serviceListId) {
+        this.serviceListId = serviceListId;
     }
 
 }
