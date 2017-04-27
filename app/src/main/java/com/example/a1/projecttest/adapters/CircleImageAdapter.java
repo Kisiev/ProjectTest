@@ -39,7 +39,7 @@ public class CircleImageAdapter extends RecyclerView.Adapter<CircleImageAdapter.
     @Override
     public void onBindViewHolder(CircleImageHolder holder, int position) {
         holder.textView.setText(item.get(position).getName());
-        MainActivity.saveGlideParam(holder.imageView, context, Uri.parse(item.get(position).getPhoto()));
+        MainActivity.saveGlideParam(holder.imageView, context, Uri.parse(item.get(position).getPhoto()), 0);
     }
 
     @Override

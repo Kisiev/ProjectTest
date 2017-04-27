@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -43,6 +44,7 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
     Button saveChildButton;
     int idParentCount = 0;
     List<EditText> listEdit;
+    ImageView backgroundImage;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

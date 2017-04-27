@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         emailTextNavView.setTypeface(typeface);
         idTextNavView.setTypeface(typeface);
         setNavigationViewItem();
-      //  saveGlideParam(imageView, MainActivity.this, R.mipmap.mom);
+        saveGlideParam(imageView, MainActivity.this, null, R.mipmap.avatar);
         setMenu(navigationView);
 
         initStetho();
@@ -141,10 +141,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public static void saveGlideParam(ImageView imageView, Context context, Uri imagePath) {
+    public static void saveGlideParam(ImageView imageView, Context context, Uri imagePath, int image) {
 
         Glide.with(context)
-                .load(imagePath)
+                .load(imagePath == null? image : imagePath)
                 .bitmapTransform(new CircleTransform(context))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new BitmapImageViewTarget(imageView).getView());

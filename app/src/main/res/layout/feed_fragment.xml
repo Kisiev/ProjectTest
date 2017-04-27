@@ -14,7 +14,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/plus48"
+                    app:srcCompat="@drawable/ic_add_black_24dp"
                     android:clickable="true"
                     app:backgroundTint="@color/colorBlue"
                     android:id="@+id/child_add_action_button"
