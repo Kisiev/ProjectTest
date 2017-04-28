@@ -68,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel"
+            android:textColor="@color/colorOrange"
             android:background="@color/colorForApacityNull"
             android:id="@+id/cancel_serviceBT"/>
 
@@ -76,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/save_service"
+            android:textColor="@color/colorOrange"
             android:background="@color/colorForApacityNull"
             android:id="@+id/save_serviceBT"/>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/relative_dialog_list_child"
     android:layout_margin="@dimen/activity_horizontal_margin">
     <TextView
@@ -14,7 +14,7 @@
         android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 <android.support.v7.widget.RecyclerView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_below="@id/header_text_dialog"
     android:id="@+id/recycler_list_child_for_tutor">
 
@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/back_button_dialog"
+        android:textColor="@color/colorOrange"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/recycler_list_child_for_tutor"

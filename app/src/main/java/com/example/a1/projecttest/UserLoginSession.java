@@ -25,32 +25,10 @@ public class UserLoginSession {
     public String getSaveEditText(String key){
         return prefs.getString(key, "");
     }
-    public void saveStateSpinner(String key, String id){
-        prefs.edit().putString(key, id).apply();
-        prefs.edit().apply();
-    }
-
-    public String getSaveSpinner(String key){
-        return prefs.getString(key, "");
-    }
-
-    public void saveTextBox(String key, String name){
-        prefs.edit().putString(key, name).apply();
-        prefs.edit().apply();
-    }
-
-    public String getSaveTextBox(String key){
-        return prefs.getString(key, "");
-    }
 
     public void saveStateDialogScreen(boolean state, boolean isRediction, int position){
         prefs.edit().putBoolean(ConstantsManager.DIALOG_INSTANCE_NAME, state).apply();
         prefs.edit().putBoolean(ConstantsManager.DIALOG_ISREDUCTION, isRediction).apply();
-        prefs.edit().putInt(ConstantsManager.DIALOG_POSITION, position).apply();
-        prefs.edit().apply();
-    }
-
-    public void savePosition(int position){
         prefs.edit().putInt(ConstantsManager.DIALOG_POSITION, position).apply();
         prefs.edit().apply();
     }
@@ -102,6 +80,19 @@ public class UserLoginSession {
 
     public String getPassword() {
         return prefs.getString(ConstantsManager.PASSWORD, "");
+    }
+
+    public void savePassword(String login, String password) {
+        prefs.edit().putString(ConstantsManager.SAVE_LOGIN_FOR_SIGN_UP, login).apply();
+        prefs.edit().putString(ConstantsManager.SAVE_PASSWORD_FOR_SIGN_UP, password).apply();
+        prefs.edit().apply();
+    }
+    public String getSaveLogin(){
+        return prefs.getString(ConstantsManager.SAVE_LOGIN_FOR_SIGN_UP, "");
+    }
+
+    public String getSavePassword(){
+        return prefs.getString(ConstantsManager.SAVE_PASSWORD_FOR_SIGN_UP, "");
     }
 
     public void clear(){

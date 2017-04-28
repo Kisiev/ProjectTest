@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.a1.projecttest.Entities.ServiceListEntity;
 import com.example.a1.projecttest.LoginActivity;
 import com.example.a1.projecttest.LoginActivity_;
+import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
@@ -132,6 +133,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
         setNavigationViewItem();
         backgroundImage = (ImageView) findViewById(R.id.background_image_view_zav);
+        MainActivity.saveGlideParam(imageView, this, null, R.mipmap.avatar);
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {

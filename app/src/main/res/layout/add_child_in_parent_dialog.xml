@@ -45,12 +45,14 @@
             android:layout_height="wrap_content"
             android:background="@color/colorForApacityNull"
             android:layout_weight="1"
+            android:textColor="@color/colorOrange"
             android:id="@+id/cancel_buttonBT"
             android:text="@string/cancel"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/add_child_buttonBT"
+            android:textColor="@color/colorOrange"
             android:background="@color/colorForApacityNull"
             android:layout_weight="1"
             android:text="@string/add_service"/>

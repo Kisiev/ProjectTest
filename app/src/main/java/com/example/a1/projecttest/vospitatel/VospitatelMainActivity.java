@@ -14,8 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.a1.projecttest.LoginActivity_;
+import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.fragments.ArrivingFragment;
@@ -30,6 +34,11 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
     DrawerLayout drawer;
     Application context;
     NavigationView navigationView;
+    ImageView imageView;
+    TextView nameTextNavView;
+    TextView emailTextNavView;
+    UserLoginSession session;
+    TextView idTextNavView;
     @AfterViews
     void main(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -42,8 +51,23 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         setMenu();
+        View headerView = navigationView.getHeaderView(0);
+        imageView = (ImageView) headerView.findViewById(R.id.imageView);
+        nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
+        emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
+        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+        session = new UserLoginSession(this);
+        MainActivity.saveGlideParam(imageView, this, null, R.mipmap.avatar);
+        setNavigationViewItem();
+
         //ArrivingFragment arrivingFragment = new ArrivingFragment();
         //replaceFragment(arrivingFragment, R.id.content_main);
+    }
+
+    private void setNavigationViewItem() {
+        nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
+        emailTextNavView.setText(session.getLogin());
+        idTextNavView.setText("Идентификатор: " + session.getID());
     }
 
     private void setMenu(){

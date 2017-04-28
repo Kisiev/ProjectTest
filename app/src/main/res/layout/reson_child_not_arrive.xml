@@ -28,12 +28,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/cancel_bt"
+            android:textColor="@color/colorOrange"
             android:background="@color/colorForApacityNull"
             android:text="Отменить"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/colorOrange"
             android:id="@+id/send_bt"
             android:background="@color/colorForApacityNull"
             android:text="Отправить"/>
