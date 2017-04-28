@@ -20,6 +20,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.Entities.ServiceListEntity;
+import com.example.a1.projecttest.LoginActivity;
 import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
@@ -35,6 +36,7 @@ import org.androidannotations.annotations.EActivity;
 public class MainZavDetSad extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     NavigationView navigationView;
     DrawerLayout drawer;
+    ImageView backgroundImage;
     ImageView imageView;
     TextView nameTextNavView;
     TextView emailTextNavView;
@@ -129,7 +131,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
         idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
         setNavigationViewItem();
-
+        backgroundImage = (ImageView) findViewById(R.id.background_image_view_zav);
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
@@ -164,12 +166,14 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
+        LoginActivity loginActivity = new LoginActivity();
         int id = item.getOrder();
         switch (id){
             case 1:
                 ServicesFragment servicesFragment = new ServicesFragment();
                 replaceFragment(servicesFragment, R.id.content_main);
                 updateToolbarTitle(servicesFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 0:
                 break;
@@ -216,6 +220,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
                 ChildAndParentFragment cp = new ChildAndParentFragment();
                 replaceFragment(cp, R.id.content_main);
                 updateToolbarTitle(cp);
+                loginActivity.createImage(R.mipmap.background, backgroundImage);
                 break;
 
         }

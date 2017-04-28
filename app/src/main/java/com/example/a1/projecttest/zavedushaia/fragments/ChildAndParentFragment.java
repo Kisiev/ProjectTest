@@ -57,7 +57,9 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
         linearLayout = (LinearLayout) view.findViewById(R.id.parent_list_liner);
         linearLayout.addView(onCreateEditText());
         idParentCount ++;
-
+       /* LoginActivity loginActivity = new LoginActivity();
+        ImageView backgroundImage = (ImageView) view.findViewById(R.id.background_image_parent_and_child);
+        loginActivity.createImage(R.mipmap.background, backgroundImage);*/
         return view;
     }
 
