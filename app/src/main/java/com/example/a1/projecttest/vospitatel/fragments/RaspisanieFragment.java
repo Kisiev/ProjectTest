@@ -152,7 +152,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         backButton.setOnClickListener(this);
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recycler_list_child_for_tutor);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new DialogTutorListChildAdapter(getUserRoleChild));
+        recyclerView.setAdapter(new DialogTutorListChildAdapter(getUserRoleChild, getActivity()));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(final View view, int position) {

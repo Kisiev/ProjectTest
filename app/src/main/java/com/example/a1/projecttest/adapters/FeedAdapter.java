@@ -13,11 +13,14 @@ import com.example.a1.projecttest.R;
 
 import java.util.List;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     List<String> list;
     Context context;
+    Typeface typeface;
     public FeedAdapter (Context context, List<String> list) {
         this.list = list;
         this.context = context;
@@ -32,6 +35,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     @Override
     public void onBindViewHolder(FeedHolder holder, int position) {
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         if (position == 0) {
             holder.newsNameTV.setText("Ребенок");
             holder.timeTV.setText("20 минут назад");
@@ -51,6 +55,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
             holder.nameChildTV.setText("Иванов А.В");
             holder.serviceNameTV.setText("Прибыл к точке: Музей искусств");
         }
+        holder.newsNameTV.setTypeface(typeface);
+        holder.timeTV.setTypeface(typeface);
+        holder.dateTV.setTypeface(typeface);
+        holder.nameChildTV.setTypeface(typeface);
+        holder.serviceNameTV.setTypeface(typeface);
     }
 
     @Override

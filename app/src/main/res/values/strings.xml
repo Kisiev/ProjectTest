@@ -89,5 +89,6 @@
     <string name="delete_item_status">Запись удалена</string>
     <string name="status_error_delete_item">Ошибка при удалении записи</string>
     <string name="ask_save_pass">Сохранить пароль?</string>
+    <string name="activities">Деятельность</string>
 
 </resources>

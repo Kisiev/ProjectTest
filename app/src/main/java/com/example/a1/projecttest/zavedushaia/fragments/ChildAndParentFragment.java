@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -35,6 +36,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 
 @EFragment
 public class ChildAndParentFragment extends Fragment implements View.OnClickListener{
@@ -45,11 +48,13 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
     int idParentCount = 0;
     List<EditText> listEdit;
     ImageView backgroundImage;
+    Typeface typeface;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.parent_and_child_fragment, container, false);
         listEdit = new ArrayList<>();
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
         saveChildButton = (Button) view.findViewById(R.id.save_child_and_parent_button);
         addParentFab = (FloatingActionButton) view.findViewById(R.id.parent_add_action_button);
         addParentFab.setOnClickListener(this);
@@ -57,6 +62,7 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
         linearLayout = (LinearLayout) view.findViewById(R.id.parent_list_liner);
         linearLayout.addView(onCreateEditText());
         idParentCount ++;
+        saveChildButton.setTypeface(typeface);
        /* LoginActivity loginActivity = new LoginActivity();
         ImageView backgroundImage = (ImageView) view.findViewById(R.id.background_image_parent_and_child);
         loginActivity.createImage(R.mipmap.background, backgroundImage);*/
@@ -94,6 +100,7 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
         editText.setHintTextColor(Color.WHITE);
         editText.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setTypeface(typeface);
         listEdit.add(editText);
         idParentCount ++;
         return editText;

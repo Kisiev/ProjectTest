@@ -1,6 +1,8 @@
 package com.example.a1.projecttest.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import com.example.a1.projecttest.R;
 
 import java.util.List;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 /**
  * Created by 1 on 21.03.2017.
  */
@@ -24,10 +28,13 @@ public class RaspisanieGroupItemAdapter extends RecyclerView.Adapter<RaspisanieG
     List<String> listNames;
     ImageView imageView;
     int color;
-    public RaspisanieGroupItemAdapter (List<String> listNames, int color, ImageView imageView) {
+    Typeface typeface;
+    Context context;
+    public RaspisanieGroupItemAdapter (List<String> listNames, int color, ImageView imageView, Context context) {
         this.listNames = listNames;
         this.color = color;
         this.imageView = imageView;
+        this.context = context;
     }
 
     @Override
@@ -38,9 +45,11 @@ public class RaspisanieGroupItemAdapter extends RecyclerView.Adapter<RaspisanieG
 
     @Override
     public void onBindViewHolder(final RaspisanieGroupItemHolder holder, int position) {
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         holder.name.setText(listNames.get(position));
         holder.name.setTextColor(Color.WHITE);
         holder.cardView.setBackgroundColor(color);
+        holder.name.setTypeface(typeface);
         onClick(holder);
 
     }

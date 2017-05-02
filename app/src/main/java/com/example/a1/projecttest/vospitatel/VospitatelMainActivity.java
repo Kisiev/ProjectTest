@@ -2,6 +2,7 @@ package com.example.a1.projecttest.vospitatel;
 
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 @EActivity(R.layout.vospitatel_activity)
 public class VospitatelMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
@@ -39,10 +42,12 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
     TextView emailTextNavView;
     UserLoginSession session;
     TextView idTextNavView;
+    Typeface typeface;
     @AfterViews
     void main(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -57,6 +62,11 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
         idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
         session = new UserLoginSession(this);
+
+        nameTextNavView.setTypeface(typeface);
+        emailTextNavView.setTypeface(typeface);
+        idTextNavView.setTypeface(typeface);
+
         MainActivity.saveGlideParam(imageView, this, null, R.mipmap.avatar);
         setNavigationViewItem();
 

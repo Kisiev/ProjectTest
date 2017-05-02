@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.zavedushaia;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -27,11 +28,14 @@ import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.GroupsFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+
+import static ru.yandex.core.CoreApplication.getActivity;
 
 @EActivity(R.layout.zav_det_sada)
 public class MainZavDetSad extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -45,6 +49,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     UserLoginSession session;
     TabHost tabHost;
     ViewPager viewPager;
+    Typeface typeface;
 
     private void updateToolbarTitle(Fragment fragment) {
         String fragmentClassName = fragment.getClass().getName();
@@ -52,6 +57,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         if (fragmentClassName.equals(ChildAndParentFragment.class.getName())) {
             setTitle(getString(R.string.parent_and_child));
         } else if (fragmentClassName.equals(ServicesFragment.class.getName())) {
+            setTitle(getString(R.string.activities));
+        } else if (fragmentClassName.equals(GroupsFragment.class.getName())) {
             setTitle(getString(R.string.group_tab_header));
         }
     }
@@ -107,7 +114,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     }
     @AfterViews
     void main () {
-
+        typeface = Typeface.createFromAsset(this.getAssets(), "font/opensans.ttf");
     if (ServiceListEntity.select().size() == 0) {
         SQLite.insert(ServiceListEntity.class).columns("id", "name").values(-1, "Вид деятельности..").execute();
         SQLite.insert(ServiceListEntity.class).columns("id", "name").values(1, "Уход").execute();
@@ -143,7 +150,9 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
                 } else finish();
             }
         });
-
+        nameTextNavView.setTypeface(typeface);
+        emailTextNavView.setTypeface(typeface);
+        idTextNavView.setTypeface(typeface);
     }
     public void replaceFragment(Fragment fragment, int id) {
         String backStackName = fragment.getClass().getName();
@@ -172,10 +181,9 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         int id = item.getOrder();
         switch (id){
             case 1:
-                ServicesFragment servicesFragment = new ServicesFragment();
-                replaceFragment(servicesFragment, R.id.content_main);
-                updateToolbarTitle(servicesFragment);
-                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
+                GroupsFragment groupsFragment = new GroupsFragment();
+                replaceFragment(groupsFragment, R.id.content_main);
+                updateToolbarTitle(groupsFragment);
                 break;
             case 0:
                 break;
@@ -183,7 +191,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
 
                 break;
             case 3:
-
+                ServicesFragment servicesFragment = new ServicesFragment();
+                replaceFragment(servicesFragment, R.id.content_main);
+                updateToolbarTitle(servicesFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 4:
 

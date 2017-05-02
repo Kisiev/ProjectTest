@@ -2,6 +2,8 @@ package com.example.a1.projecttest.rest;
 
 import android.support.annotation.NonNull;
 
+import com.example.a1.projecttest.rest.Models.GetKinderGarten;
+import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
@@ -110,5 +112,17 @@ public final class RestService {
 
     public GetStatusCode deleteScheduleById(String id) throws IOException{
         return restClient.getProjectTestApiEdu().deleteSchedule(id).execute().body();
+    }
+
+    public List<GetKinderGartenGroup> getKinderGartenGroups (String kindergartenId) throws IOException {
+        return restClient.getProjectTestApiEdu().getGroups(kindergartenId).execute().body();
+    }
+
+    public GetKinderGarten getKinderGartenZav (String managerId) throws IOException{
+        return restClient.getProjectTestApiEdu().getKinderGartenZav(managerId).execute().body();
+    }
+
+    public GetKinderGarten getKinderGartenTutor (String tutor) throws IOException{
+        return restClient.getProjectTestApiEdu().getKinderGartenZav(tutor).execute().body();
     }
 }

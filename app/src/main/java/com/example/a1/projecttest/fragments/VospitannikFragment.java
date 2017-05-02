@@ -42,7 +42,6 @@ public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
     Thread getScheduleThread;
     List<GetScheduleListModel> getScheduleListModels;
-    SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
         return String.valueOf(time);
@@ -53,16 +52,6 @@ public class VospitannikFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
 
-        SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy, hh:mm");
-
-        final Calendar calendar = Calendar.getInstance();
-
-        TextView date = (TextView) view.findViewById(R.id.date_in_childTV);
-        TextView times = (TextView) view.findViewById(R.id.time_in_child);
-
-
-        date.setText(dfDate_day.format(calendar.getTime()));
-        times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
         recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -102,8 +91,6 @@ public class VospitannikFragment extends Fragment {
         });
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
         button.setTypeface(typeface);
-        date.setTypeface(typeface);
-        times.setTypeface(typeface);
         return view;
     }
 

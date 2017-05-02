@@ -83,14 +83,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/edit_button_raspisanie"
-        android:textColor="@color/black"
+        android:textColor="@color/colorOrange"
         android:background="@color/colorForApacityNull"
         android:text="@string/edit"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorForApacityNull"
-        android:textColor="@color/black"
+        android:textColor="@color/colorOrange"
         android:layout_toEndOf="@+id/edit_button_raspisanie"
         android:id="@+id/delete_button_raspisanie"
         android:text="@string/delete"/>

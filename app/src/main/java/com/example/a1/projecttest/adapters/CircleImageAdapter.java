@@ -2,6 +2,7 @@ package com.example.a1.projecttest.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +20,14 @@ import com.google.android.gms.maps.model.Circle;
 
 import java.util.List;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 
 public class CircleImageAdapter extends RecyclerView.Adapter<CircleImageAdapter.CircleImageHolder>{
 
     List<ChildEntity> item;
     Context context;
+    Typeface typeface;
     public CircleImageAdapter (List<ChildEntity> item, Context context) {
         this.item = item;
         this.context = context;
@@ -38,7 +42,9 @@ public class CircleImageAdapter extends RecyclerView.Adapter<CircleImageAdapter.
 
     @Override
     public void onBindViewHolder(CircleImageHolder holder, int position) {
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         holder.textView.setText(item.get(position).getName());
+        holder.textView.setTypeface(typeface);
         MainActivity.saveGlideParam(holder.imageView, context, Uri.parse(item.get(position).getPhoto()), 0);
     }
 

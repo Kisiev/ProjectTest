@@ -22,16 +22,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
     List<GetScheduleListModel> services;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm:ss");
     UserLoginSession userLoginSession;
+    Typeface typeface;
     Context context;
     public VospitannikAdapter (List<GetScheduleListModel> services, Context context) {
         this.services = services;
         this.context = context;
         userLoginSession = new UserLoginSession(context);
+
     }
 
     @Override
@@ -43,7 +47,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
-
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         holder.textView.setText(services.get(holder.getAdapterPosition()).getName());
         holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeFrom().substring(0, 5))
                 + " - "
@@ -56,7 +60,11 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             holder.false_tv.setVisibility(View.GONE);
         } else holder.false_tv.setVisibility(View.VISIBLE);
 */
-
+        holder.textView.setTypeface(typeface);
+        holder.timeTv.setTypeface(typeface);
+        holder.editButton.setTypeface(typeface);
+        holder.deleteButton.setTypeface(typeface);
+        holder.false_tv.setTypeface(typeface);
         if (userLoginSession.getRoleId() == 2){
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);

@@ -2,6 +2,7 @@ package com.example.a1.projecttest.zavedushaia.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static ru.yandex.core.CoreApplication.getActivity;
+
 
 @EFragment(R.layout.services_redaction_fragment)
 public class ServicesFragment extends Fragment implements Dialog.OnDismissListener, Spinner.OnItemSelectedListener {
@@ -63,6 +66,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     GetStatusCode statusCodeUpdate;
     GetStatusCode statusCodeDelete;
    Thread getServiceListThread;
+    Typeface typeface;
     List<GetScheduleListModel> getScheduleListModels;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
 
@@ -178,6 +182,8 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        addButton.setTypeface(typeface);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getServiceListThread = new Thread(new Runnable() {
             @Override
@@ -314,7 +320,11 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         final EditText timeOut = (EditText) dialog.findViewById(R.id.till_edit_ET);
         final Spinner nameServiceEditor = (Spinner) dialog.findViewById(R.id.name_service_editorET);
         final Spinner daysSpinner = (Spinner) dialog.findViewById(R.id.days_spinner);
-
+        headerDialog.setTypeface(typeface);
+        saveServiceButton.setTypeface(typeface);
+        cancelServiceButton.setTypeface(typeface);
+        timeIn.setTypeface(typeface);
+        timeOut.setTypeface(typeface);
         List serviceTypeList = new ArrayList<>();
         serviceTypeList.addAll(getServiceListModels);
 
