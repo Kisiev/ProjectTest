@@ -184,6 +184,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
                 GroupsFragment groupsFragment = new GroupsFragment();
                 replaceFragment(groupsFragment, R.id.content_main);
                 updateToolbarTitle(groupsFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 0:
                 break;

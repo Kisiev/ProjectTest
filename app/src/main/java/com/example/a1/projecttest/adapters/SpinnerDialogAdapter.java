@@ -22,16 +22,18 @@ public class SpinnerDialogAdapter extends ArrayAdapter<GetServiceListModel> impl
 
     List<GetServiceListModel> services;
     Typeface typeface;
+    Context context;
     public SpinnerDialogAdapter(@NonNull Context context, List<GetServiceListModel> services) {
         super(context, 0, services);
         this.services = services;
+        this.context = context;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
             GetServiceListModel serviceListModel = (GetServiceListModel) getItem(position);
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
             }
@@ -47,7 +49,7 @@ public class SpinnerDialogAdapter extends ArrayAdapter<GetServiceListModel> impl
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
             GetServiceListModel servicesEntity = (GetServiceListModel) getItem(position);
-            typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+            typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
             }

@@ -47,8 +47,12 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
     Button saveChildButton;
     int idParentCount = 0;
     List<EditText> listEdit;
+    TextView headerTV;
     ImageView backgroundImage;
     Typeface typeface;
+    TextView nameTV;
+    TextView surnameTV;
+    TextView patronimicTV;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,7 +66,15 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
         linearLayout = (LinearLayout) view.findViewById(R.id.parent_list_liner);
         linearLayout.addView(onCreateEditText());
         idParentCount ++;
+        headerTV = (TextView) view.findViewById(R.id.parent_child_headerTV);
+        headerTV.setTypeface(typeface);
         saveChildButton.setTypeface(typeface);
+        nameTV = (TextView) view.findViewById(R.id.name_user_parent_and_childTV);
+        surnameTV = (TextView) view.findViewById(R.id.surname_user_parent_and_childTV);
+        patronimicTV = (TextView) view.findViewById(R.id.patronimic_user_parent_and_childTV);
+        nameTV.setTypeface(typeface);
+        surnameTV.setTypeface(typeface);
+        patronimicTV.setTypeface(typeface);
        /* LoginActivity loginActivity = new LoginActivity();
         ImageView backgroundImage = (ImageView) view.findViewById(R.id.background_image_parent_and_child);
         loginActivity.createImage(R.mipmap.background, backgroundImage);*/

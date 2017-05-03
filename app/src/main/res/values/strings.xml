@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ProjectTest</string>
-
+        <string name="font_name_fontawesome">fontawesome</string>
+        <string name="font_name_source_sans_pro">SourceSansPro</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

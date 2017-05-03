@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.rest;
 
 
+import com.example.a1.projecttest.rest.Models.GetAllTutors;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
@@ -81,6 +82,9 @@ public interface ProjectTestApi {
     @GET ("/api/getKindergartenByManagerId.php")
     Call<GetKinderGarten> getKinderGartenZav (@Query("managerId") String managerId);
 
-    @GET ("/api/api/getKindergartenByTutorId.php")
+    @GET ("/api/getKindergartenByTutorId.php")
     Call<GetKinderGarten> getKinderGartenTutor (@Query("tutorId") String managerId);
+
+    @GET ("/api/getAllTutorsByKindergartenId.php")
+    Call<List<GetAllTutors>> getAllTutors (@Query("kindergartenId") String kindergartenId);
 }

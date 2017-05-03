@@ -22,16 +22,18 @@ import static ru.yandex.core.CoreApplication.getActivity;
 public class SpinnerDialogDaysAdapter extends ArrayAdapter<DayOfWeek> implements SpinnerAdapter {
     List<DayOfWeek> services;
     Typeface typeface;
+    Context context;
     public SpinnerDialogDaysAdapter(@NonNull Context context, List<DayOfWeek> services) {
         super(context, 0, services);
         this.services = services;
+        this.context = context;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         DayOfWeek serviceListModel = (DayOfWeek) getItem(position);
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
@@ -46,7 +48,7 @@ public class SpinnerDialogDaysAdapter extends ArrayAdapter<DayOfWeek> implements
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
         DayOfWeek servicesEntity = (DayOfWeek) getItem(position);
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
