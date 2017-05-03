@@ -2,6 +2,7 @@ package com.example.a1.projecttest.rest;
 
 import android.support.annotation.NonNull;
 
+import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
@@ -129,5 +130,9 @@ public final class RestService {
 
     public List<GetAllTutors> getAllTutorses (String kindergartenId) throws IOException{
         return  restClient.getProjectTestApiEdu().getAllTutors(kindergartenId).execute().body();
+    }
+
+    public List<GetAllKidsModel> getAllKidsModels (String kindergartenId) throws IOException {
+        return restClient.getProjectTestApiEdu().getAlLKids(kindergartenId).execute().body();
     }
 }

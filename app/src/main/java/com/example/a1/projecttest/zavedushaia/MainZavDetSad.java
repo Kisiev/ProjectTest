@@ -29,7 +29,9 @@ import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.GroupsFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.RegisterChildFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.TutorFragment;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.AfterViews;
@@ -60,6 +62,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             setTitle(getString(R.string.activities));
         } else if (fragmentClassName.equals(GroupsFragment.class.getName())) {
             setTitle(getString(R.string.group_tab_header));
+        } else if (fragmentClassName.equals(TutorFragment.class.getName())){
+            setTitle(getString(R.string.tutor_tab_header));
+        } else if (fragmentClassName.equals(RegisterChildFragment.class.getName())){
+            setTitle(getString(R.string.registry_child_menu_item));
         }
     }
 
@@ -189,7 +195,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             case 0:
                 break;
             case 2:
-
+                TutorFragment tutorFragment = new TutorFragment();
+                replaceFragment(tutorFragment, R.id.content_main);
+                updateToolbarTitle(tutorFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 3:
                 ServicesFragment servicesFragment = new ServicesFragment();
@@ -201,7 +210,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
 
                 break;
             case 5:
-
+                RegisterChildFragment registerChildFragment = new RegisterChildFragment();
+                replaceFragment(registerChildFragment, R.id.content_main);
+                updateToolbarTitle(registerChildFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 6:
 

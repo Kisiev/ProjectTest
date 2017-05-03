@@ -1,5 +1,6 @@
 package com.example.a1.projecttest.zavedushaia.fragments;
 
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,34 +11,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a1.projecttest.R;
-import com.example.a1.projecttest.UserLoginSession;
-import com.example.a1.projecttest.rest.Models.GetAllTutors;
+import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.RestService;
-import com.example.a1.projecttest.zavedushaia.adapters.TutorAdapter;
+import com.example.a1.projecttest.zavedushaia.adapters.RegisterKidsAdapter;
 
 import java.io.IOException;
 import java.util.List;
 
-public class TutorFragment extends Fragment {
+public class RegisterChildFragment extends Fragment{
     RecyclerView recyclerView;
-    List<GetAllTutors> getAllTutorses;
     GetKinderGarten getKinderGarten;
+    List<GetAllKidsModel> getAllKidsModels;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tutor_zav_fragment, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_tutor);
+        View view = inflater.inflate(R.layout.kids_fragment_zav, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_kids);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         beginThread();
-        recyclerView.setAdapter(new TutorAdapter(getAllTutorses, getActivity()));
+        recyclerView.setAdapter(new RegisterKidsAdapter(getAllKidsModels, getActivity()));
         return view;
     }
     public void beginThread(){
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                getTutors();
+                getAllKids();
             }
         });
         thread.start();
@@ -47,16 +47,16 @@ public class TutorFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    public void getTutors(){
+
+    public void getAllKids(){
         RestService restService = new RestService();
-        UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         try {
-            getKinderGarten = restService.getKinderGartenTutor("352");
+            getKinderGarten = restService.getKinderGartenZav("352");
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            getAllTutorses = restService.getAllTutorses(getKinderGarten.getId());
+            getAllKidsModels = restService.getAllKidsModels(getKinderGarten.getId());
         } catch (IOException e) {
             e.printStackTrace();
         }

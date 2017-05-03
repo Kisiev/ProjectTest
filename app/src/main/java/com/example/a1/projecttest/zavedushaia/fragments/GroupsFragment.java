@@ -37,7 +37,7 @@ public class GroupsFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_groups);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         threadGetGroup();
-        GroupsAdapter groupsAdapter = new GroupsAdapter(getKinderGartenGroups);
+        GroupsAdapter groupsAdapter = new GroupsAdapter(getKinderGartenGroups, getActivity());
         recyclerView.setAdapter(groupsAdapter);
         return view;
     }

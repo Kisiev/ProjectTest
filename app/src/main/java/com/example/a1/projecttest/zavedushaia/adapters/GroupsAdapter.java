@@ -1,6 +1,8 @@
 package com.example.a1.projecttest.zavedushaia.adapters;
 
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,11 @@ import java.util.List;
 
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsHolder>{
     List<GetKinderGartenGroup> getKinderGartenGroups;
-    public GroupsAdapter(List<GetKinderGartenGroup> getKinderGartenGroups){
+    Context context;
+    Typeface typeface;
+    public GroupsAdapter(List<GetKinderGartenGroup> getKinderGartenGroups, Context context){
         this.getKinderGartenGroups = getKinderGartenGroups;
+        this.context = context;
     }
 
     @Override
@@ -26,11 +31,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsHold
 
     @Override
     public void onBindViewHolder(GroupsHolder holder, int position) {
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         holder.nameGroup.setText("Группа: " + getKinderGartenGroups.get(position).getGroupName());
         holder.tutorName.setText("Воспитатель: " + getKinderGartenGroups.get(position).getTutorSurname()
         +" "+ getKinderGartenGroups.get(position).getTutorName().substring(0, 1)
         +". "+ getKinderGartenGroups.get(position).getTutorPatronymic().substring(0, 1)
         +".");
+        holder.nameGroup.setTypeface(typeface);
+        holder.tutorName.setTypeface(typeface);
     }
 
     @Override
