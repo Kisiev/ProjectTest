@@ -107,4 +107,9 @@ public interface ProjectTestApi {
 
     @GET ("/api/GetAllKindergartensByCityCode.php")
     Call<List<GetKinderGartensByCityCode>> getKinderGartenByCityCode(@Query("cityCode") String cityCode);
+
+    @GET ("/api/addGroup.php")
+    Call<GetStatusCode> setGroup (@Query("name") String name,
+                                       @Query("kindergartenId") String kindergartenId,
+                                       @Query("tutorId") String tutorId);
 }

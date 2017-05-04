@@ -156,4 +156,8 @@ public final class RestService {
     public List<GetKinderGartensByCityCode> getKinderGartensByCityCodes (String cityCode) throws IOException {
         return restClient.getProjectTestApiEdu().getKinderGartenByCityCode(cityCode).execute().body();
     }
+
+    public GetStatusCode setGroups(String name, String kinderGartenId, String tutorId) throws IOException {
+        return restClient.getProjectTestApiEdu().setGroup(name, kinderGartenId, tutorId).execute().body();
+    }
 }

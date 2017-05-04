@@ -94,5 +94,8 @@
     <string name="region_registration">Регион</string>
     <string name="city_registration">Город</string>
     <string name="kinder_garten_registration">Детский сад</string>
+    <string name="add_group_header">Добавить группу</string>
+    <string name="name_group">Название группы</string>
+    <string name="id_tutor">Идентификатор воспитателя</string>
 
 </resources>

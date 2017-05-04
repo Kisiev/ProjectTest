@@ -42,6 +42,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     ImageView low;
     ImageView medium;
     ImageView high;
+
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
