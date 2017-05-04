@@ -68,7 +68,7 @@ public class GroupsFragment extends Fragment {
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         try {
-            getKinderGarten = restService.getKinderGartenZav("352");
+            getKinderGarten = restService.getKinderGartenZav(userLoginSession.getID());
         } catch (IOException e) {
             e.printStackTrace();
         }

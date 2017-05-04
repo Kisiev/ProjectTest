@@ -2,10 +2,12 @@ package com.example.a1.projecttest.rest;
 
 
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
+import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
+import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
@@ -46,7 +48,8 @@ public interface ProjectTestApi {
                                      @Query("patronymic") String patronymic,
                                      @Query("surname") String surname,
                                      @Query("name") String name,
-                                     @Query("roleId") String role);
+                                     @Query("roleId") String role,
+                                     @Query("kindergartenId") String kindergartenId);
 
     @GET("/api/getUserByRoleId.php")
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
@@ -95,4 +98,13 @@ public interface ProjectTestApi {
 
     @GET ("/api/getAllKidsByGroupId.php")
     Call<List<GetKidsByGroupIdModel>> getKidsByGroup (@Query("groupId") String groupId);
+
+    @GET ("/api/getAllRegions.php")
+    Call<List<GetAllRegionsModel>> getAllRegions ();
+
+    @GET ("/api/GetAllCitiesByRegionCode.php")
+    Call<List<GetAllRegionsModel>> getAllCitiesByRegionCode (@Query("code") String code);
+
+    @GET ("/api/GetAllKindergartensByCityCode.php")
+    Call<List<GetKinderGartensByCityCode>> getKinderGartenByCityCode(@Query("cityCode") String cityCode);
 }

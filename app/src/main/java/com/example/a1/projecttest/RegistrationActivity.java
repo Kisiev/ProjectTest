@@ -5,28 +5,36 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
+import com.example.a1.projecttest.rest.Models.GetKinderGarten;
+import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.vospitatel.VospitatelMainActivity;
 import com.example.a1.projecttest.vospitatel.VospitatelMainActivity_;
 import com.example.a1.projecttest.zavedushaia.MainZavDetSad;
 import com.example.a1.projecttest.zavedushaia.MainZavDetSad_;
+import com.example.a1.projecttest.zavedushaia.adapters.SpinnerKinderGartenadapter;
+import com.example.a1.projecttest.zavedushaia.adapters.SpinnerRegionsAndCitiesAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
+import java.util.List;
 
 @EActivity(R.layout.registration_activity)
-public class RegistrationActivity extends Activity implements View.OnClickListener {
+public class RegistrationActivity extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     RadioButton childRb;
     RadioButton zavRb;
     RadioButton vospitRb;
@@ -38,6 +46,13 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     EditText userName;
     EditText userSurname;
     EditText patronumicUser;
+    Spinner regionSpinner;
+    Spinner citySpinner;
+    Spinner kinderGartenSpinner;
+    List<GetAllRegionsModel> getAllRegions;
+    List<GetAllRegionsModel> getAllCities;
+    SpinnerRegionsAndCitiesAdapter adapter;
+    List<GetKinderGartensByCityCode> getKinderGartensByCityCodes;
     int roleId = 0;
     private void setSession(){
         userLoginSession.setUseName(userLoginSession.getLogin(),
@@ -49,6 +64,30 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                 roleId, 1);
     }
 
+    public void getCitiesByRegionId(){
+        RestService restService = new RestService();
+        try {
+            getAllCities = restService.getAllcitiesByRegion(((GetAllRegionsModel)(regionSpinner.getSelectedItem())).getCode().substring(0, 2));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void getRegions(){
+        RestService restService = new RestService();
+        try {
+            getAllRegions = restService.getAllRegionsModels();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void getKinderGartenByManager(){
+        RestService restService = new RestService();
+        try {
+            getKinderGartensByCityCodes = restService.getKinderGartensByCityCodes(((GetAllRegionsModel)(citySpinner.getSelectedItem())).getCode());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void setUserData(){
         RestService restService = new RestService();
         if (childRb.isChecked()){
@@ -67,8 +106,35 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     patronumicUser.getText().toString(),
                     userSurname.getText().toString(),
                     userName.getText().toString(),
-                    String.valueOf(roleId));
+                    String.valueOf(roleId),
+                    ((GetKinderGartensByCityCode)kinderGartenSpinner.getSelectedItem()).getId());
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void threadBegin(final String get){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                switch (get){
+                    case "region":
+                        getRegions();
+                        break;
+                    case "city":
+                        getCitiesByRegionId();
+                        break;
+                    case "kinder":
+                        getKinderGartenByManager();
+                        break;
+                }
+
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -80,6 +146,17 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
         loginActivity.createImage(R.mipmap.background, imageView);
         TextView header = (TextView) findViewById(R.id.header_registration);
+        regionSpinner = (Spinner) findViewById(R.id.region_spinner_registration);
+        citySpinner = (Spinner) findViewById(R.id.city_spinner_registration);
+        kinderGartenSpinner = (Spinner) findViewById(R.id.kinder_garten_spinner_registration);
+
+        regionSpinner.setOnItemSelectedListener(this);
+        citySpinner.setOnItemSelectedListener(this);
+        kinderGartenSpinner.setOnItemSelectedListener(this);
+        threadBegin("region");
+        adapter = new SpinnerRegionsAndCitiesAdapter(this, getAllRegions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        regionSpinner.setAdapter(adapter);
         userLoginSession = new UserLoginSession(getApplicationContext());
 
         userName = (EditText) findViewById(R.id.name_user_edit);
@@ -94,9 +171,6 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
 
         registrationButton = (Button) findViewById(R.id.registration_button);
         registrationButton.setOnClickListener(this);
-        childRb.setOnClickListener(this);
-        zavRb.setOnClickListener(this);
-        vospitRb.setOnClickListener(this);
         userName.setTypeface(typeface);
         userSurname.setTypeface(typeface);
         patronumicUser.setTypeface(typeface);
@@ -112,15 +186,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.child_RB:
-                startActivity(new Intent(RegistrationActivity.this, ChildActivity_.class));
-                break;
-            case R.id.zavDetSadRB:
-                startActivity(new Intent(RegistrationActivity.this, MainZavDetSad_.class));
-                break;
-            case R.id.vospitatel:
-                startActivity(new Intent(RegistrationActivity.this, VospitatelMainActivity_.class));
-                break;
+
             case R.id.registration_button:
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -142,4 +208,28 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()){
+            case R.id.region_spinner_registration:
+                threadBegin("city");
+                SpinnerRegionsAndCitiesAdapter spinnerRegionsAndCitiesAdapter = new SpinnerRegionsAndCitiesAdapter(this, getAllCities);
+                spinnerRegionsAndCitiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                citySpinner.setAdapter(spinnerRegionsAndCitiesAdapter);
+                break;
+            case R.id.city_spinner_registration:
+                threadBegin("kinder");
+                SpinnerKinderGartenadapter spinnerKinderGartenadapter = new SpinnerKinderGartenadapter(this, getKinderGartensByCityCodes);
+                spinnerKinderGartenadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                kinderGartenSpinner.setAdapter(spinnerKinderGartenadapter);
+                break;
+            case R.id.kinder_garten_spinner_registration:
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

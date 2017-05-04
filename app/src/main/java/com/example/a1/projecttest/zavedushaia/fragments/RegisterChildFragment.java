@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.RestService;
@@ -23,12 +24,14 @@ public class RegisterChildFragment extends Fragment{
     RecyclerView recyclerView;
     GetKinderGarten getKinderGarten;
     List<GetAllKidsModel> getAllKidsModels;
+    UserLoginSession session;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.kids_fragment_zav, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_kids);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        session = new UserLoginSession(getActivity());
         beginThread();
         recyclerView.setAdapter(new RegisterKidsAdapter(getAllKidsModels, getActivity()));
         return view;
@@ -51,7 +54,7 @@ public class RegisterChildFragment extends Fragment{
     public void getAllKids(){
         RestService restService = new RestService();
         try {
-            getKinderGarten = restService.getKinderGartenZav("352");
+            getKinderGarten = restService.getKinderGartenZav(session.getID());
         } catch (IOException e) {
             e.printStackTrace();
         }

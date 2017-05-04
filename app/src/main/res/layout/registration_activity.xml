@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical|center_horizontal"
     android:fillViewport="true">
 
@@ -13,7 +14,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentLeft="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,6 +61,20 @@
             android:theme="@style/Theme.App.Base"
             android:hint="Отчество"
             android:id="@+id/lastname_user_edit"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/region_spinner_registration">
+
+        </Spinner>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/city_spinner_registration" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/kinder_garten_spinner_registration" />
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

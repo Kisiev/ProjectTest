@@ -49,4 +49,9 @@
         <item name="android:textSize">@dimen/textSize</item>
     </style>
 
+    <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:textColorPrimary">@color/whiteColor</item>
+        <item name="android:divider">@color/whiteColor</item>
+    </style>
+
 </resources>

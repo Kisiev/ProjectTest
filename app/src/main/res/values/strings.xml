@@ -91,5 +91,8 @@
     <string name="status_error_delete_item">Ошибка при удалении записи</string>
     <string name="ask_save_pass">Сохранить пароль?</string>
     <string name="activities">Деятельность</string>
+    <string name="region_registration">Регион</string>
+    <string name="city_registration">Город</string>
+    <string name="kinder_garten_registration">Детский сад</string>
 
 </resources>

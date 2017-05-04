@@ -3,10 +3,12 @@ package com.example.a1.projecttest.rest;
 import android.support.annotation.NonNull;
 
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
+import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
+import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
@@ -78,13 +80,15 @@ public final class RestService {
                                         String patronymic,
                                         String surname,
                                         String name,
-                                        String role) throws IOException {
+                                        String role,
+                                        String kindergartenId) throws IOException {
         return restClient.getProjectTestApiEdu()
                 .setUserData(id,
                         patronymic,
                         surname,
                         name,
-                        role)
+                        role,
+                        kindergartenId)
                 .execute().body();
     }
 
@@ -139,5 +143,17 @@ public final class RestService {
 
     public List<GetKidsByGroupIdModel> getKidsByGroupIdModels (String groupId) throws IOException {
         return restClient.getProjectTestApiEdu().getKidsByGroup(groupId).execute().body();
+    }
+
+    public List<GetAllRegionsModel> getAllRegionsModels () throws IOException {
+        return restClient.getProjectTestApiEdu().getAllRegions().execute().body();
+    }
+
+    public List<GetAllRegionsModel> getAllcitiesByRegion(String code)throws IOException{
+        return restClient.getProjectTestApiEdu().getAllCitiesByRegionCode(code).execute().body();
+    }
+
+    public List<GetKinderGartensByCityCode> getKinderGartensByCityCodes (String cityCode) throws IOException {
+        return restClient.getProjectTestApiEdu().getKinderGartenByCityCode(cityCode).execute().body();
     }
 }

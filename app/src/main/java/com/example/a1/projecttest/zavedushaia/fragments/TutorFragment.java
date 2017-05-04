@@ -51,7 +51,7 @@ public class TutorFragment extends Fragment {
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         try {
-            getKinderGarten = restService.getKinderGartenTutor("352");
+            getKinderGarten = restService.getKinderGartenTutor(userLoginSession.getID());
         } catch (IOException e) {
             e.printStackTrace();
         }
