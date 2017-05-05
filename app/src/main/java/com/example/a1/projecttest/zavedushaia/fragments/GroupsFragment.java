@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
@@ -128,6 +129,8 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                 if (getStatusCodeSetGroup.getCode().equals("200")){
                     threadGetGroup();
                     recyclerView.setAdapter(new GroupsAdapter(getKinderGartenGroups, getActivity()));
+                } else if (getStatusCodeSetGroup.getCode().equals("500")){
+                    Toast.makeText(getActivity(), getStatusCodeSetGroup.getStatus(), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.cancel_button_add_group:
