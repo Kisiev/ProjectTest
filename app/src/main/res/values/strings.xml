@@ -97,5 +97,7 @@
     <string name="add_group_header">Добавить группу</string>
     <string name="name_group">Название группы</string>
     <string name="id_tutor">Идентификатор воспитателя</string>
+    <string name="patronymic">Отчество</string>
+    <string name="add_kid_in_group_text">Добавить ребенка в группу</string>
 
 </resources>

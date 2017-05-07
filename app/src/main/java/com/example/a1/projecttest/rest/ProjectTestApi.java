@@ -112,4 +112,12 @@ public interface ProjectTestApi {
     Call<GetStatusCode> setGroup (@Query("name") String name,
                                        @Query("kindergartenId") String kindergartenId,
                                        @Query("tutorId") String tutorId);
+    @GET("/api/addKid.php")
+    Call<GetStatusCode> addKidInGroup(@Query("parentId") String parentId,
+                                      @Query("name") String name,
+                                      @Query("surname") String surname,
+                                      @Query("patronymic") String patronymic,
+                                      @Query("groupId") String groupId);
+    @GET("/api/getAllKidsByParentId.php")
+    Call<List<GetAllKidsModel>> getKidByParentId(@Query("parentId") String parentId);
 }

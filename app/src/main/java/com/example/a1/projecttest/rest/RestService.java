@@ -160,4 +160,16 @@ public final class RestService {
     public GetStatusCode setGroups(String name, String kinderGartenId, String tutorId) throws IOException {
         return restClient.getProjectTestApiEdu().setGroup(name, kinderGartenId, tutorId).execute().body();
     }
+
+    public GetStatusCode setKidInGroup(String parentId,
+                                       String name,
+                                       String surname,
+                                       String patronymic,
+                                       String groupId) throws IOException{
+        return restClient.getProjectTestApiEdu().addKidInGroup(parentId, name, surname, patronymic, groupId).execute().body();
+    }
+
+    public List<GetAllKidsModel> getKidByParentId(String parentId)throws IOException{
+        return restClient.getProjectTestApiEdu().getKidByParentId(parentId).execute().body();
+    }
 }

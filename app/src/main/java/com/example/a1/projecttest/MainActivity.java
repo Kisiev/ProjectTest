@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -28,12 +29,16 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
+import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.CircleTransform;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.facebook.stetho.Stetho;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
+import java.io.IOException;
 import java.util.List;
 
 @EActivity (R.layout.activity_main)
@@ -45,12 +50,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView emailTextNavView;
     TextView idTextNavView;
     UserLoginSession session;
+    List<GetAllKidsModel> getAllKidsModels;
+
+    public void beginThread(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getAllKid();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getAllKid(){
+        RestService restService = new RestService();
+        UserLoginSession userLoginSession = new UserLoginSession(this);
+        try {
+            getAllKidsModels = restService.getKidByParentId(userLoginSession.getID());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @AfterViews
     public void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        beginThread();
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -110,15 +142,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public static void setMenu(NavigationView navigationView){
+    public void setMenu(NavigationView navigationView){
         Menu menu = navigationView.getMenu();
         menu.clear();
         menu.add(Menu.NONE, 223, 0, "Живая лента");
         menu.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
         menu = menu.addSubMenu("Дети");
-        List<ChildEntity> list = ChildEntity.selectChild();
-        for (int i = 0; i < list.size(); i ++){
-            menu.add(Menu.NONE, 223, i + 1, list.get(i).getName());
+        for (int i = 0; i < getAllKidsModels.size(); i ++){
+            menu.add(Menu.NONE, Integer.parseInt(getAllKidsModels.get(i).getId()), ConstantsManager.ID_MENU_ITEM, getAllKidsModels.get(i).getName());
             menu.getItem(i).setIcon(R.drawable.ic_person_black_24dp);
         }
         Menu chatParentsMenu = navigationView.getMenu();
@@ -197,10 +228,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(feedFragment, R.id.content_main);
                 updateToolbarTitle(feedFragment);
                 break;
-            case 1:
-                VospitannikFragment vs = new VospitannikFragment();
-                replaceFragment(vs, R.id.content_main);
-                updateToolbarTitle(vs);
+            case ConstantsManager.ID_MENU_ITEM:
+                for (int i = 0; i < getAllKidsModels.size(); i ++) {
+                    if (item.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
+                        Toast.makeText(this, "Нажата " + getAllKidsModels.get(i).getName(), Toast.LENGTH_SHORT).show();
+                        VospitannikFragment vs = new VospitannikFragment();
+                        replaceFragment(vs, R.id.content_main);
+                        updateToolbarTitle(vs);
+                    }
+
+                }
                 break;
             case 2:
               //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
@@ -221,6 +258,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 session.clear();
                 startActivity(new Intent(this, LoginActivity_.class));
                 finish();
+        }
+
+        switch (item.getItemId()){
+
         }
 
         drawer.closeDrawer(GravityCompat.START);

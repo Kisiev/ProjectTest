@@ -116,7 +116,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 if (pos != -1) {
                    // ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
                     loadChildList();
-                    MainActivity.setMenu(navigationView);
+                    //MainActivity.setMenu(navigationView);
                     pos = -1;
                 }
                 break;
@@ -181,7 +181,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                     dialog.dismiss();
                 }
                 loadChildList();
-                MainActivity.setMenu(navigationView);
+              //  MainActivity.setMenu(navigationView);
             }
         });
 

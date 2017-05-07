@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_vertical_margin">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/header_dialog_add_kid"
+    android:layout_marginBottom="8dp"
+    android:textSize="10pt"
+    android:text="@string/add_kid_in_group_text"
+    android:textAlignment="center"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/id_parent_text"
+        android:id="@+id/id_parent_child_add_kid_dialog"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/name_text"
+        android:id="@+id/name_child_add_kid_dialog"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/surname_text"
+        android:id="@+id/surname_child_add_kid_dialog"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/patronymic"
+        android:id="@+id/patronimic_child_add_kid_dialog"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorForApacityNull"
+            android:text="@string/cancel"
+            android:textColor="@color/colorOrange"
+            android:layout_weight="1"
+            android:id="@+id/cancel_button_child_in_group"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorForApacityNull"
+            android:text="@string/add_service"
+            android:textColor="@color/colorOrange"
+            android:layout_weight="1"
+            android:id="@+id/add_button_child_in_group"/>
+    </LinearLayout>
+
+</LinearLayout>
