@@ -33,8 +33,22 @@ public class UserLoginSession {
         prefs.edit().apply();
     }
 
+    public void saveTutorGroup(String groupId, String groupName, String klnderGartenId){
+        prefs.edit().putString(ConstantsManager.SAVE_GROUP_ID, groupId).apply();
+        prefs.edit().putString(ConstantsManager.SAVE_GROUP_NAME, groupName).apply();
+        prefs.edit().putString(ConstantsManager.SAVE_KINDERGARTEN_ID, klnderGartenId).apply();
+        prefs.edit().apply();
+    }
 
-
+    public String getTutorGroupId(){
+        return prefs.getString(ConstantsManager.SAVE_GROUP_ID, "");
+    }
+    public String getTutorGroupName(){
+        return prefs.getString(ConstantsManager.SAVE_GROUP_NAME, "");
+    }
+    public String getTutorKinderGartenId(){
+        return prefs.getString(ConstantsManager.SAVE_KINDERGARTEN_ID, "");
+    }
     public boolean getStateDialogScreen(){
         return prefs.getBoolean(ConstantsManager.DIALOG_INSTANCE_NAME, false);
     }

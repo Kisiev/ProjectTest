@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
 import static ru.yandex.core.CoreApplication.getActivity;
 
 public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTutorListChildAdapter.DialogTutorListChildHolder> {
-    List<GetUserData> users;
+    List<GetKidsByGroupIdModel> users;
     Typeface typeface;
     Context context;
-    public DialogTutorListChildAdapter (List<GetUserData> users, Context context){
+    public DialogTutorListChildAdapter (List<GetKidsByGroupIdModel> users, Context context){
         this.users = users;
         this.context = context;
     }

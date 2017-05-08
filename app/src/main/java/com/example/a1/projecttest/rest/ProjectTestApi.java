@@ -4,6 +4,7 @@ package com.example.a1.projecttest.rest;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
+import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
@@ -120,4 +121,7 @@ public interface ProjectTestApi {
                                       @Query("groupId") String groupId);
     @GET("/api/getAllKidsByParentId.php")
     Call<List<GetAllKidsModel>> getKidByParentId(@Query("parentId") String parentId);
+
+    @GET("/api/getKindergartenGroupByTutorId.php")
+    Call<GetGroupByTutorModel> getTutorGroup(@Query("tutorId") String tutorId);
 }

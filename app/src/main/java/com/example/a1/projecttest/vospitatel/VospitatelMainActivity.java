@@ -24,11 +24,15 @@ import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.fragments.ArrivingFragment;
+import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
+import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+
+import java.io.IOException;
 
 import static ru.yandex.core.CoreApplication.getActivity;
 
@@ -40,13 +44,16 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
     ImageView imageView;
     TextView nameTextNavView;
     TextView emailTextNavView;
-    UserLoginSession session;
     TextView idTextNavView;
     Typeface typeface;
+    UserLoginSession session;
+    GetGroupByTutorModel getGroupByTutorModel;
     @AfterViews
     void main(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        session = new UserLoginSession(this);
+        beginThread();
         typeface = Typeface.createFromAsset(this.getAssets(), "font/opensans.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -61,7 +68,6 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
         idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
-        session = new UserLoginSession(this);
 
         nameTextNavView.setTypeface(typeface);
         emailTextNavView.setTypeface(typeface);
@@ -95,6 +101,26 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
     public VospitatelMainActivity () {
 
+    }
+
+    public void beginThread(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getTutorGroup();
+            }
+        });
+        thread.start();
+    }
+
+    public void getTutorGroup(){
+        RestService restService = new RestService();
+        try {
+            getGroupByTutorModel = restService.getGroupByTutorModel(session.getID());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        session.saveTutorGroup(getGroupByTutorModel.getId(), getGroupByTutorModel.getName(), getGroupByTutorModel.getKindergartenId());
     }
 
     public void replaceFragment(Fragment fragment, int id) {

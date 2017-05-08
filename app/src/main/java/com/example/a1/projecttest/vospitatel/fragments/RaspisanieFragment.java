@@ -16,8 +16,10 @@ import android.widget.Toast;
 
 import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
@@ -36,13 +38,13 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
 
     RecyclerView recyclerView;
     Dialog dialog;
-    List<GetUserData> getUserRoleChild;
+    List<GetKidsByGroupIdModel> getKidsByGroupIdModels;
     List<GetScheduleListModel> getScheduleListModels;
     PositionSaveSession session;
     ImageView low;
     ImageView medium;
     ImageView high;
-
+    UserLoginSession userLoginSession;
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -53,6 +55,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.raspisanie_fragment, container, false);
+        userLoginSession = new UserLoginSession(getActivity());
         dialog = new Dialog(getActivity());
         session = new PositionSaveSession(getActivity());
         int colorApacity = getResources().getColor(R.color.colorForApacityNull);
@@ -97,7 +100,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     public void loadUsersByRole(){
         RestService restService = new RestService();
         try {
-            getUserRoleChild = restService.getUsersByRole(String.valueOf(3));
+            getKidsByGroupIdModels = restService.getKidsByGroupIdModels(userLoginSession.getTutorGroupId());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,11 +156,11 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         backButton.setOnClickListener(this);
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recycler_list_child_for_tutor);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new DialogTutorListChildAdapter(getUserRoleChild, getActivity()));
+        recyclerView.setAdapter(new DialogTutorListChildAdapter(getKidsByGroupIdModels, getActivity()));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(final View view, int position) {
-                session.saveRecyclerViewPositions(session.getPosSchedule(), session.getIdSchedule(), position, Integer.parseInt(getUserRoleChild.get(position).getId()));
+                session.saveRecyclerViewPositions(session.getPosSchedule(), session.getIdSchedule(), position, Integer.parseInt(getKidsByGroupIdModels.get(position).getId()));
                 low = (ImageView) view.findViewById(R.id.low_smile_image_dialog);
                 medium = (ImageView) view.findViewById(R.id.medium_smile_image_dialog);
                 high = (ImageView) view.findViewById(R.id.high_smile_image_dialog);
