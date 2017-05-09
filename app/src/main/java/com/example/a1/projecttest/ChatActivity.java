@@ -1,6 +1,8 @@
 package com.example.a1.projecttest;
 
+import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.print.PrintAttributes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.utils.ConstantsManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -33,6 +37,14 @@ public class ChatActivity extends AppCompatActivity {
     Button sendBtn;
     EditText smsEdit;
     int i = 0;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null){
+            Log.d("asfasf", "Нет");
+        } else  Log.d("asfasf", "Нет");
+    }
 
     @AfterViews
     public void main () {

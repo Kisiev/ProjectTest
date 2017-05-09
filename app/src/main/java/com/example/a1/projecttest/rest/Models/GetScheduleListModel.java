@@ -3,7 +3,9 @@ package com.example.a1.projecttest.rest.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetScheduleListModel {
+import java.io.Serializable;
+
+public class GetScheduleListModel implements Serializable {
 
 
     @SerializedName("id")

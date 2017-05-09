@@ -28,6 +28,13 @@ import static com.example.a1.projecttest.R.id.imageView;
 public class ArrivingFragment extends Fragment {
     Spinner spinnerGroup;
     Spinner spinnerDate;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

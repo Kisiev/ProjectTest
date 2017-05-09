@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +43,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @EActivity (R.layout.activity_main)
@@ -77,12 +83,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+            outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS, (Serializable) getAllKidsModels);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null || !savedInstanceState.containsKey(ConstantsManager.SAVE_INSTAANTS_GET_KIDS)){
+            beginThread();
+        } else  getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS);
+    }
+
+
     @AfterViews
     public void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
-        beginThread();
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -251,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case 3:
-                startActivity(new Intent(MainActivity.this, ChatActivity_.class));
+                startActivity(new Intent(this, ChatActivity_.class));
               break;
             case 4:
                 UserLoginSession session = new UserLoginSession(this);

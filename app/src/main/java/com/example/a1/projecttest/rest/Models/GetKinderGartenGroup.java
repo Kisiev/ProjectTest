@@ -5,7 +5,9 @@ import com.google.firebase.storage.StorageException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetKinderGartenGroup {
+import java.io.Serializable;
+
+public class GetKinderGartenGroup implements Serializable {
 
     @SerializedName("groupId")
     @Expose

@@ -4,7 +4,9 @@ package com.example.a1.projecttest.rest.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetKinderGarten {
+import java.io.Serializable;
+
+public class GetKinderGarten implements Serializable {
 
     @SerializedName("id")
     @Expose

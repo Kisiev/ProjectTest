@@ -3,7 +3,9 @@ package com.example.a1.projecttest.rest.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetServiceListModel {
+import java.io.Serializable;
+
+public class GetServiceListModel implements Serializable {
 
     @SerializedName("id")
     @Expose

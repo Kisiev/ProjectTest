@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -74,6 +75,21 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     void main () {
 
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES, getListUsers);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            getListUsers = (GetListUsers) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES);
+            getCoordinates();
+        }
     }
 
     @Override

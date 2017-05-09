@@ -69,7 +69,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     Typeface typeface;
     List<GetScheduleListModel> getScheduleListModels;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
-
+    Bundle bundle;
     private void notifyInputError(String error){
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
@@ -260,7 +260,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         if (session.getStateDialogScreen()){
             showDialog(session.getIsReductionState(), session.getPositionState());
         }
-
+        setRetainInstance(true);
     }
 
 
