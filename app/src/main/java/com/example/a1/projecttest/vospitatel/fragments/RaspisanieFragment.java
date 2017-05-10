@@ -106,7 +106,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }
 
         try {
-            getScheduleListModels = restService.getScheduleListModel("1");
+            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId());
         } catch (IOException e) {
             e.printStackTrace();
         }

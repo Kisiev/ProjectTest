@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.RestService;
@@ -163,8 +164,10 @@ public class VospitannikFragment extends Fragment {
 
     public void getScheduleList(){
         RestService restService = new RestService();
+        UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         try {
-            getScheduleListModels = restService.getScheduleListModel("1");
+            if (!userLoginSession.getKidIdSchedule().equals(""))
+                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidIdSchedule());
         } catch (IOException e) {
             e.printStackTrace();
         }

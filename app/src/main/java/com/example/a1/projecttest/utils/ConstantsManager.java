@@ -42,5 +42,6 @@ public class ConstantsManager {
     final public static int ID_MENU_ITEM = 10679;
     final public static String SAVE_INSTAANTS_GET_KIDS = "save_getKids";
     final public static String SAVE_INSTAANTS_COORDINATES= "save_coordinates_user";
+    final public static String SAVE_KID_ID= "kid_id";
 
 }

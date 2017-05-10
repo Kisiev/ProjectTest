@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class GetScheduleListModel implements Serializable {
-
-
     @SerializedName("id")
     @Expose
     private String id;
@@ -17,6 +15,9 @@ public class GetScheduleListModel implements Serializable {
     @SerializedName("day")
     @Expose
     private String day;
+    @SerializedName("dayId")
+    @Expose
+    private String dayId;
     @SerializedName("timeFrom")
     @Expose
     private String timeFrom;
@@ -61,6 +62,14 @@ public class GetScheduleListModel implements Serializable {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getDayId() {
+        return dayId;
+    }
+
+    public void setDayId(String dayId) {
+        this.dayId = dayId;
     }
 
     public String getTimeFrom() {
@@ -118,5 +127,6 @@ public class GetScheduleListModel implements Serializable {
     public void setServiceListId(String serviceListId) {
         this.serviceListId = serviceListId;
     }
+
 
 }

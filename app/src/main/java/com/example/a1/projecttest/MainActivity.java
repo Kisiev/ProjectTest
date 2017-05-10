@@ -34,6 +34,7 @@ import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
+import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ConstantsManager;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView idTextNavView;
     UserLoginSession session;
     List<GetAllKidsModel> getAllKidsModels;
+    GetScheduleByKidIdModel getScheduleByKidIdModel;
 
     public void beginThread(){
         Thread thread = new Thread(new Runnable() {
@@ -82,6 +84,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
     }
+
+    public void threadGetGroup(final String id){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getKidGroup(id);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void getKidGroup(String id){
+        RestService restService = new RestService();
+        try {
+            getScheduleByKidIdModel = restService.getScheduleByKidIdModels(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -153,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     private void updateToolbarTitle(Fragment fragment) {
         String fragmentClassName = fragment.getClass().getName();
-
         if (fragmentClassName.equals(FeedFragment.class.getName())) {
             setTitle(getString(R.string.life_feed));
         } else if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
@@ -184,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String backStackName = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
         boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
-        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
+        if (!fragmentPopped) {
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(id, fragment, backStackName);
             ft.addToBackStack(backStackName);
@@ -251,7 +276,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case ConstantsManager.ID_MENU_ITEM:
                 for (int i = 0; i < getAllKidsModels.size(); i ++) {
                     if (item.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
-                        Toast.makeText(this, "Нажата " + getAllKidsModels.get(i).getName(), Toast.LENGTH_SHORT).show();
+                        UserLoginSession userLoginSession = new UserLoginSession(this);
+                        threadGetGroup(getAllKidsModels.get(i).getId());
+                        if (getScheduleByKidIdModel != null)
+                            userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId());
                         VospitannikFragment vs = new VospitannikFragment();
                         replaceFragment(vs, R.id.content_main);
                         updateToolbarTitle(vs);

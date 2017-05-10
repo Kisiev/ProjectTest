@@ -30,6 +30,9 @@ import com.example.a1.projecttest.adapters.SpinnerDialogDaysAdapter;
 import com.example.a1.projecttest.adapters.UpbringingAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
+import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
+import com.example.a1.projecttest.rest.Models.GetKinderGarten;
+import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
@@ -39,6 +42,7 @@ import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.example.a1.projecttest.zavedushaia.adapters.AllGroupSpinner;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -65,11 +69,14 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     List<GetServiceType> getServiceTypes;
     GetStatusCode statusCodeUpdate;
     GetStatusCode statusCodeDelete;
-   Thread getServiceListThread;
+    Thread getServiceListThread;
+    List<GetKinderGartenGroup> getKinderGartenGroups;
     Typeface typeface;
+    Spinner allGroupsSpinner;
+    GetKinderGarten getKinderGarten;
+    List<GetAllDaysModel> getAllDaysModels;
     List<GetScheduleListModel> getScheduleListModels;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
-    Bundle bundle;
     private void notifyInputError(String error){
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
@@ -108,24 +115,78 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     }
     private int findDayWeek(int position){
         int positionService = 0;
-        for (int i = 0; i < DayOfWeek.selectDays().size(); i ++){
-            if (getScheduleListModels.get(position).getDay().equals(DayOfWeek.selectDays().get(i).getDay())){
+        for (int i = 0; i < getAllDaysModels.size(); i ++){
+            if (getScheduleListModels.get(position).getDay().equals(getAllDaysModels.get(i).getName())){
                 positionService = i;
                 break;
             }
         }
         return positionService;
     }
+
+    public void threadGetGroup(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getGroupByKinderGart();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getGroupByKinderGart(){
+        RestService restService = new RestService();
+        UserLoginSession userLoginSession = new UserLoginSession(getActivity());
+        try {
+            getKinderGarten = restService.getKinderGartenZav(userLoginSession.getID());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            getKinderGartenGroups = restService.getKinderGartenGroups(getKinderGarten.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void threadServiceList(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getServiceList();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getServiceList(){
         RestService restService = new RestService();
+
         try {
-            getScheduleListModels = restService.getScheduleListModel("1");
+            getScheduleListModels = restService.getScheduleListModel(((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
             getServiceListModels = restService.getServiceList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            getAllDaysModels = restService.getAllDaysModels();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -179,12 +240,11 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.services_redaction_fragment, container, false);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
-        addButton = (Button) view.findViewById(R.id.add_serviceBT);
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
-        addButton.setTypeface(typeface);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        threadGetGroup();
+        allGroupsSpinner = (Spinner) view.findViewById(R.id.all_group_of_kindergarten);
+        AllGroupSpinner groupsAdapter = new AllGroupSpinner(getActivity(), getKinderGartenGroups);
+        groupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        allGroupsSpinner.setAdapter(groupsAdapter);
         getServiceListThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -197,6 +257,28 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        UserLoginSession session = new UserLoginSession(getActivity());
+        if (session.getStateDialogScreen()){
+            showDialog(session.getIsReductionState(), session.getPositionState());
+        }
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
+        addButton = (Button) view.findViewById(R.id.add_serviceBT);
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        addButton.setTypeface(typeface);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        threadServiceList();
+        allGroupsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                threadServiceList();
+                recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -241,27 +323,6 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         super.onStart();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getServiceListThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getServiceList();
-            }
-        });
-        getServiceListThread.start();
-        try {
-            getServiceListThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        UserLoginSession session = new UserLoginSession(getActivity());
-        if (session.getStateDialogScreen()){
-            showDialog(session.getIsReductionState(), session.getPositionState());
-        }
-        setRetainInstance(true);
-    }
 
 
 
@@ -328,9 +389,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         List serviceTypeList = new ArrayList<>();
         serviceTypeList.addAll(getServiceListModels);
 
-        List daysList = new ArrayList<>();
-        daysList.addAll(DayOfWeek.selectDays());
-        SpinnerDialogDaysAdapter adapter = new SpinnerDialogDaysAdapter(getActivity(), daysList);
+        SpinnerDialogDaysAdapter adapter = new SpinnerDialogDaysAdapter(getActivity(), getAllDaysModels);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         daysSpinner.setAdapter(adapter);
 
@@ -363,11 +422,11 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
             public void onClick(View view) {
                 GetServiceListModel getServiceListModel = (GetServiceListModel) spinner.getSelectedItem();
                 GetServiceType getServiceType = (GetServiceType) upbringingSp.getSelectedItem();
-                DayOfWeek dayOfWeek = (DayOfWeek) daysSpinner.getSelectedItem();
+                GetAllDaysModel dayOfWeek = (GetAllDaysModel) daysSpinner.getSelectedItem();
                 GetServicesByServiceTypeModel getServicesByServiceTypeModel = (GetServicesByServiceTypeModel) nameServiceEditor.getSelectedItem();
                 if ((getServiceListModel != null)
                         && (getServiceType != null)
-                        && (dayOfWeek.getDay() != null)
+                        && (dayOfWeek.getName() != null)
                         && (getServicesByServiceTypeModel != null)
                         && ((!timeIn.getText().toString().contains("ч")) && (!timeIn.getText().toString().contains("м")) && (!timeIn.getText().toString().isEmpty()))
                         && ((!timeOut.getText().toString().contains("ч")) && (!timeOut.getText().toString().contains("м")) && (!timeOut.getText().toString().isEmpty()))){
@@ -378,14 +437,14 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                                     Integer.valueOf(timeOut.getText().toString().substring(0, 2)),
                                     Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0)))) {
                         if (!isReduction) {
-                            createScheduleThread(getServicesByServiceTypeModel.getId(), dayOfWeek.getDay(), timeIn.getText().toString(), timeOut.getText().toString(), "1");
+                            createScheduleThread(getServicesByServiceTypeModel.getId(), dayOfWeek.getId(), timeIn.getText().toString(), timeOut.getText().toString(), ((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId());
                             recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
                             if (setScheduleStatus.getCode().equals("200"))
                                 Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
                             else
                                 Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();
                         } else if (isReduction){
-                            updateSchedule(getScheduleListModels.get(position).getId(), getServicesByServiceTypeModel.getId(), dayOfWeek.getDay(), timeIn.getText().toString(), timeOut.getText().toString(), "1");
+                            updateSchedule(getScheduleListModels.get(position).getId(), getServicesByServiceTypeModel.getId(), dayOfWeek.getId(), timeIn.getText().toString(), timeOut.getText().toString(), ((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId());
                             recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
                             if (statusCodeUpdate.getCode().equals("200")){
                                 Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
@@ -553,11 +612,11 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        PositionSaveSession session = new PositionSaveSession(getActivity());
-        Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
-        Spinner upBring = (Spinner) dialog.findViewById(R.id.upbringingSp);
-        Spinner nameServiceSpinner = (Spinner) dialog.findViewById(R.id.name_service_editorET);
-        GetServiceListModel serviceListEntity = (GetServiceListModel) spinner.getSelectedItem();
+            PositionSaveSession session = new PositionSaveSession(getActivity());
+            Spinner spinner = (Spinner) dialog.findViewById(R.id.careSp);
+            Spinner upBring = (Spinner) dialog.findViewById(R.id.upbringingSp);
+            Spinner nameServiceSpinner = (Spinner) dialog.findViewById(R.id.name_service_editorET);
+            GetServiceListModel serviceListEntity = (GetServiceListModel) spinner.getSelectedItem();
         final List<GetScheduleListModel> allService = new ArrayList<>();
         allService.addAll(getScheduleListModels);
         switch (parent.getId()){

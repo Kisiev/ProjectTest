@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,9 +75,22 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         recyclerView.setAdapter(groupsAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
-            public void onClick(View view, int position) {
-                pos = position;
-                showDialogAddKid();
+            public void onClick(View view, final int position) {
+                Button reductionButtonGroup = (Button) view.findViewById(R.id.edit_button_group);
+                reductionButtonGroup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "РЕДАКТОР", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                CardView cardView = (CardView) view.findViewById(R.id.card_group_list_fragment);
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pos = position;
+                        showDialogAddKid();
+                    }
+                });
             }
 
             @Override
@@ -237,7 +251,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         cancelButton.setTypeface(typeface);
 
         header.setText(header.getText() +" "+ getKinderGartenGroups.get(pos).getGroupName());
-        addKidDialog.show();
+
 
         addKidDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -245,6 +259,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                 pos = -1;
             }
         });
+        addKidDialog.show();
     }
 
 }

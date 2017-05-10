@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.rest;
 
 
+import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
@@ -10,6 +11,7 @@ import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
@@ -66,7 +68,7 @@ public interface ProjectTestApi {
 
     @GET("/api/createSchedule.php")
     Call<GetStatusCode> setSchedule(@Query("serviceId") String serviceId,
-                                    @Query("day") String day,
+                                    @Query("dayId") String day,
                                     @Query("timeFrom") String timeFrom,
                                     @Query("timeTo") String timeTo,
                                     @Query("groupId") String groupId);
@@ -74,7 +76,7 @@ public interface ProjectTestApi {
     @GET ("/api/updateScheduleById.php")
     Call<GetStatusCode> updateSchedule(@Query("id") String id,
                                        @Query("serviceId") String serviceId,
-                                       @Query("day") String day,
+                                       @Query("dayId") String day,
                                        @Query("timeFrom") String timeFrom,
                                        @Query("timeTo") String timeTo,
                                        @Query("groupId") String groupId);
@@ -124,4 +126,10 @@ public interface ProjectTestApi {
 
     @GET("/api/getKindergartenGroupByTutorId.php")
     Call<GetGroupByTutorModel> getTutorGroup(@Query("tutorId") String tutorId);
+
+    @GET("/api/getGroupIdByKidId.php")
+    Call<GetScheduleByKidIdModel> getScheduleByKidId(@Query("KidId") String kid);
+
+    @GET ("/api/getAllDays.php")
+    Call<List<GetAllDaysModel>> getAllDay();
 }

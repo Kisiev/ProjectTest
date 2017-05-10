@@ -2,6 +2,7 @@ package com.example.a1.projecttest.rest;
 
 import android.support.annotation.NonNull;
 
+import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
@@ -11,6 +12,7 @@ import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
@@ -176,5 +178,13 @@ public final class RestService {
 
     public GetGroupByTutorModel getGroupByTutorModel (String tutorId) throws IOException{
         return restClient.getProjectTestApiEdu().getTutorGroup(tutorId).execute().body();
+    }
+
+    public GetScheduleByKidIdModel getScheduleByKidIdModels (String kidId) throws IOException {
+        return restClient.getProjectTestApiEdu().getScheduleByKidId(kidId).execute().body();
+    }
+
+    public List<GetAllDaysModel> getAllDaysModels () throws IOException {
+        return restClient.getProjectTestApiEdu().getAllDay().execute().body();
     }
 }

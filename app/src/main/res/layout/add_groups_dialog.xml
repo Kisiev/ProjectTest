@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/name_group"
-        android:theme="@style/Theme.App.Base_Dialog"
         android:inputType="textWebEditText"
         android:layout_marginBottom="8dp"
         android:id="@+id/name_group_add_groups_dialog"/>
@@ -23,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/id_tutor"
-        android:theme="@style/Theme.App.Base_Dialog"
         android:layout_marginBottom="8dp"
         android:inputType="number"
         android:id="@+id/id_tutor_add_groups_dialog"/>

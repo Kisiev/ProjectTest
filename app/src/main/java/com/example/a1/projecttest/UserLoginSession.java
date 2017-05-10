@@ -17,6 +17,14 @@ public class UserLoginSession {
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
     }
 
+    public void saveKidId(String kidId){
+        prefs.edit().putString(ConstantsManager.SAVE_KID_ID, kidId).apply();
+    }
+
+    public String getKidIdSchedule(){
+        return prefs.getString(ConstantsManager.SAVE_KID_ID, "");
+    }
+
     public void saveStateEditText(String key, String text){
         prefs.edit().putString(key, text).apply();
         prefs.edit().apply();
