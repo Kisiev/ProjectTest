@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,11 +35,13 @@ import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
+import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.facebook.stetho.Stetho;
+import com.google.gson.JsonSyntaxException;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     UserLoginSession session;
     List<GetAllKidsModel> getAllKidsModels;
     GetScheduleByKidIdModel getScheduleByKidIdModel;
+    GetListUsers getUserData;
 
     public void beginThread(){
         Thread thread = new Thread(new Runnable() {
@@ -276,13 +280,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case ConstantsManager.ID_MENU_ITEM:
                 for (int i = 0; i < getAllKidsModels.size(); i ++) {
                     if (item.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
-                        UserLoginSession userLoginSession = new UserLoginSession(this);
-                        threadGetGroup(getAllKidsModels.get(i).getId());
-                        if (getScheduleByKidIdModel != null)
-                            userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId());
-                        VospitannikFragment vs = new VospitannikFragment();
-                        replaceFragment(vs, R.id.content_main);
-                        updateToolbarTitle(vs);
+                        threadGetUserData(getAllKidsModels.get(i).getId());
+                        if (getUserData != null)
+                            if (!getUserData.getEmail().equals("")) {
+                                UserLoginSession userLoginSession = new UserLoginSession(this);
+                                threadGetGroup(getAllKidsModels.get(i).getId());
+                                if (getScheduleByKidIdModel != null)
+                                    userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId());
+                                VospitannikFragment vs = new VospitannikFragment();
+                                replaceFragment(vs, R.id.content_main);
+                                updateToolbarTitle(vs);
+                            } else {
+                                Intent intent = new Intent(this, YandexMapActivity_.class);
+                                intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, getUserData.getId());
+                                startActivity(intent);
+                            }
                     }
 
                 }
@@ -314,5 +326,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void threadGetUserData(final String id){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getKidCoordinates(id);
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getKidCoordinates(String id){
+        RestService restService = new RestService();
+        try {
+            getUserData = restService.getUserById(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JsonSyntaxException e){
+            e.printStackTrace();
+        }
     }
 }

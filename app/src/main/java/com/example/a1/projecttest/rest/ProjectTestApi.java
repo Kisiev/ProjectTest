@@ -26,7 +26,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 public interface ProjectTestApi {
     @GET("/api/getUserById.php")
-    Call<GetListUsers> getListModel (@Query("id") String id);
+    Call<GetListUsers> getUserById (@Query("id") String id);
 
     @GET("/api/Authentication.php")
     Call<GetListUsers> validUser (@Query("login") String login,
@@ -57,8 +57,9 @@ public interface ProjectTestApi {
     @GET("/api/getUserByRoleId.php")
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
 
-    @GET("/api/getScheduleByGroupId.php")
-    Call<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id);
+    @GET("/api/getScheduleByGroupIdAndDayId.php")
+    Call<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id,
+                                                  @Query("dayId") String dayId);
 
     @GET("/api/getServiceList.php")
     Call<List<GetServiceListModel>> getServiceList();

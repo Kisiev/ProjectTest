@@ -43,6 +43,7 @@ import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 import com.example.a1.projecttest.zavedushaia.adapters.AllGroupSpinner;
+import com.example.a1.projecttest.zavedushaia.adapters.DayOfWeekAdapter;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
@@ -76,6 +77,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     GetKinderGarten getKinderGarten;
     List<GetAllDaysModel> getAllDaysModels;
     List<GetScheduleListModel> getScheduleListModels;
+    Spinner dayOfWeekSpinner;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     private void notifyInputError(String error){
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
@@ -116,7 +118,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     private int findDayWeek(int position){
         int positionService = 0;
         for (int i = 0; i < getAllDaysModels.size(); i ++){
-            if (getScheduleListModels.get(position).getDay().equals(getAllDaysModels.get(i).getName())){
+            if (((GetAllDaysModel)(dayOfWeekSpinner.getSelectedItem())).getName().equals(getAllDaysModels.get(i).getName())){
                 positionService = i;
                 break;
             }
@@ -155,6 +157,29 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         }
     }
 
+    public void threadGetAllDay(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getAllDaysFunc();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getAllDaysFunc(){
+        RestService  restService =  new RestService();
+        try {
+            getAllDaysModels = restService.getAllDaysModels();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void threadServiceList(){
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -174,7 +199,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         RestService restService = new RestService();
 
         try {
-            getScheduleListModels = restService.getScheduleListModel(((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId());
+            getScheduleListModels = restService.getScheduleListModel(((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId(),   ((GetAllDaysModel) dayOfWeekSpinner.getSelectedItem()).getId());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -185,11 +210,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
             e.printStackTrace();
         }
 
-        try {
-            getAllDaysModels = restService.getAllDaysModels();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
@@ -241,6 +262,25 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.services_redaction_fragment, container, false);
         threadGetGroup();
+        threadGetAllDay();
+        dayOfWeekSpinner = (Spinner) view.findViewById(R.id.day_of_week_spinner);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DayOfWeekAdapter dayOfWeekAdapter = new DayOfWeekAdapter(getActivity(), getAllDaysModels);
+        dayOfWeekAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dayOfWeekSpinner.setAdapter(dayOfWeekAdapter);
+        dayOfWeekSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                threadServiceList();
+                recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         allGroupsSpinner = (Spinner) view.findViewById(R.id.all_group_of_kindergarten);
         AllGroupSpinner groupsAdapter = new AllGroupSpinner(getActivity(), getKinderGartenGroups);
         groupsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -261,12 +301,14 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         if (session.getStateDialogScreen()){
             showDialog(session.getIsReductionState(), session.getPositionState());
         }
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_service);
+
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
         addButton.setTypeface(typeface);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
         threadServiceList();
+
         allGroupsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

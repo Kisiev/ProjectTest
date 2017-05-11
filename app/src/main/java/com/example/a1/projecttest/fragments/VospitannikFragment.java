@@ -18,9 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.Entities.DayOfWeek;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
@@ -42,6 +44,7 @@ import java.util.Random;
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
     Thread getScheduleThread;
+    List<DayOfWeek> getDays;
     List<GetScheduleListModel> getScheduleListModels;
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
@@ -165,9 +168,13 @@ public class VospitannikFragment extends Fragment {
     public void getScheduleList(){
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
+        getDays = DayOfWeek.selectDays();
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
         try {
             if (!userLoginSession.getKidIdSchedule().equals(""))
-                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidIdSchedule());
+                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidIdSchedule(), String.valueOf(day - 1));
         } catch (IOException e) {
             e.printStackTrace();
         }

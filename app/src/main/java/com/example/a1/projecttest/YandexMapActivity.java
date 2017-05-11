@@ -204,7 +204,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     public void getCoordinates () {
         final RestService restService = new RestService();
         try {
-            getListUsers = (restService.viewListInMainFragmenr(String.valueOf(20)));
+            getListUsers = (restService.getUserById(String.valueOf(20)));
         } catch (IOException e) {
             e.printStackTrace();
         }

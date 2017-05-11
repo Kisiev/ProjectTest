@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 import android.widget.Toast;
 
+import com.example.a1.projecttest.utils.ChildService;
 import com.example.a1.projecttest.utils.ChildService_;
 import com.example.a1.projecttest.utils.ConstantsManager;
 
@@ -27,7 +29,10 @@ public class ChildActivity extends Activity {
     Runnable runnable;
     public void setCoordinates(){
         if (ContextCompat.checkSelfPermission(ChildActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            startService(new Intent(ChildActivity.this, ChildService_.class));
+            Bundle bundle = getIntent().getExtras();
+            Intent intent = new Intent(ChildActivity.this, ChildService_.class);
+            intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, bundle == null? 0: bundle.getString(ConstantsManager.USER_ID_AND_COORDINATES));
+            startService(intent);
             handler.removeCallbacks(runnable);
         } else {
             handler.postDelayed(runnable, 1000);
@@ -50,6 +55,10 @@ public class ChildActivity extends Activity {
             public void onClick(View v) {
                 stopService(new Intent(ChildActivity.this, ChildService_.class));
                 Toast.makeText(ChildActivity.this, "Сервис был уничтожен", Toast.LENGTH_LONG).show();
+                UserLoginSession session = new UserLoginSession(ChildActivity.this);
+                session.clear();
+                startActivity(new Intent(ChildActivity.this, LoginActivity_.class));
+                finish();
             }
         });
     }

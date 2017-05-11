@@ -12,12 +12,6 @@ public class GetScheduleListModel implements Serializable {
     @SerializedName("serviceId")
     @Expose
     private String serviceId;
-    @SerializedName("day")
-    @Expose
-    private String day;
-    @SerializedName("dayId")
-    @Expose
-    private String dayId;
     @SerializedName("timeFrom")
     @Expose
     private String timeFrom;
@@ -54,22 +48,6 @@ public class GetScheduleListModel implements Serializable {
 
     public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getDayId() {
-        return dayId;
-    }
-
-    public void setDayId(String dayId) {
-        this.dayId = dayId;
     }
 
     public String getTimeFrom() {

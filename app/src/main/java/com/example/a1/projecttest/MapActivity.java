@@ -168,7 +168,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void getCoordinates () {
         final RestService restService = new RestService();
         try {
-            getListUsers = (restService.viewListInMainFragmenr(String.valueOf(12)));
+            getListUsers = (restService.getUserById(String.valueOf(12)));
         } catch (IOException e) {
             e.printStackTrace();
         }

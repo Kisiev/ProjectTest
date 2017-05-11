@@ -21,7 +21,7 @@ import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
-import com.example.a1.projecttest.rest.Models.GetUserData;
+
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
@@ -58,17 +58,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         userLoginSession = new UserLoginSession(getActivity());
         dialog = new Dialog(getActivity());
         session = new PositionSaveSession(getActivity());
-        int colorApacity = getResources().getColor(R.color.colorForApacityNull);
-        final Calendar calendar = Calendar.getInstance();
-        TextView date = (TextView) view.findViewById(R.id.date_in_raspisanieTV);
-        TextView times = (TextView) view.findViewById(R.id.time_in_raspisanieTV);
-        SimpleDateFormat dfDate_day= new SimpleDateFormat("E, dd.MM.yyyy");
-        SimpleDateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
+
         thread.start();
 
-        date.setText(dfDate_day.format(calendar.getTime()));
-        //times.setText("Время: " + dfDate_day_time.format(calendar.getTime()));
-        times.setText("Время: 08:03");
         recyclerView = (RecyclerView) view.findViewById(R.id.raspisanie_RV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         try {
@@ -104,9 +96,10 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
         try {
-            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId());
+            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(day - 1));
         } catch (IOException e) {
             e.printStackTrace();
         }

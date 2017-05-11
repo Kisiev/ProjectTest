@@ -33,10 +33,10 @@ public final class RestService {
         restClient = new RestClient();
     }
 
-    public GetListUsers viewListInMainFragmenr (@NonNull String id) throws IOException{
+    public GetListUsers getUserById (@NonNull String id) throws IOException{
 
         return  restClient.getProjectTestApiEdu()
-                .getListModel(id)
+                .getUserById(id)
                 .execute().body();
 
     }
@@ -95,9 +95,9 @@ public final class RestService {
                 .execute().body();
     }
 
-    public List<GetScheduleListModel> getScheduleListModel (String groupId) throws IOException{
+    public List<GetScheduleListModel> getScheduleListModel (String groupId, String dayId) throws IOException{
         return restClient.getProjectTestApiEdu()
-                .getSchedule(groupId)
+                .getSchedule(groupId, dayId)
                 .execute().body();
     }
 
