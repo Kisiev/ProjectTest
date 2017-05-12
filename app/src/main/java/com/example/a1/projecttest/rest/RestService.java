@@ -6,6 +6,7 @@ import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
+import com.example.a1.projecttest.rest.Models.GetCoordinatesByUserIdModel;
 import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
@@ -186,5 +187,9 @@ public final class RestService {
 
     public List<GetAllDaysModel> getAllDaysModels () throws IOException {
         return restClient.getProjectTestApiEdu().getAllDay().execute().body();
+    }
+
+    public GetCoordinatesByUserIdModel getCoordinatesByUserIdModel (String userId) throws IOException {
+        return restClient.getProjectTestApiEdu().getCoordinates(userId).execute().body();
     }
 }

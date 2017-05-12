@@ -29,9 +29,7 @@ public class ChildActivity extends Activity {
     Runnable runnable;
     public void setCoordinates(){
         if (ContextCompat.checkSelfPermission(ChildActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Bundle bundle = getIntent().getExtras();
             Intent intent = new Intent(ChildActivity.this, ChildService_.class);
-            intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, bundle == null? 0: bundle.getString(ConstantsManager.USER_ID_AND_COORDINATES));
             startService(intent);
             handler.removeCallbacks(runnable);
         } else {

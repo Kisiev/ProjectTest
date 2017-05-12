@@ -17,8 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.example.a1.projecttest.MainActivity;
-import com.example.a1.projecttest.MainActivity_;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.RestService;
 
 import org.androidannotations.annotations.Background;
@@ -29,7 +28,6 @@ import java.io.IOException;
 @EService
 public class ChildService extends Service {
     LocationManager locationManager;
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -117,7 +115,8 @@ public class ChildService extends Service {
         String status;
         try {
             RestService restService = new RestService();
-            status = restService.setCoordinates(1, coordinateX, coordinateY);
+            UserLoginSession session = new UserLoginSession(getApplication());
+            status = restService.setCoordinates(Integer.parseInt(session.getID()), coordinateX, coordinateY);
         } catch (IOException e) {
             e.printStackTrace();
         }

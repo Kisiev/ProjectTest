@@ -21,6 +21,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 
+import com.example.a1.projecttest.rest.Models.GetCoordinatesByUserIdModel;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
@@ -63,7 +64,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     @ViewById(R.id.map_yandex)
     public MapView webView;
     private LocationManager locationManager;
-    private GetListUsers getListUsers;
+    private GetCoordinatesByUserIdModel getCoordinatesByUserIdModel;
     private Handler handler;
     private Runnable runnable;
     private int calbacks = 0;
@@ -71,6 +72,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     private LinearLayout view;
     private OverlayItem overlayItem;
     private Overlay overlay;
+    private String userId;
     @AfterViews
     void main () {
 
@@ -80,16 +82,20 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES, getListUsers);
+        outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES, getCoordinatesByUserIdModel);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            getListUsers = (GetListUsers) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES);
+            getCoordinatesByUserIdModel = (GetCoordinatesByUserIdModel) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES);
             getCoordinates();
         }
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+            userId = bundle.getString(ConstantsManager.USER_ID_AND_COORDINATES);
     }
 
     @Override
@@ -144,12 +150,12 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     private void setPeriodicTime() {
         calbacks++;
 
-        if (getListUsers != null) {
+        if (getCoordinatesByUserIdModel != null) {
             if (overlay != null)
                 overlay.clearOverlayItems();
             MapController mapController = webView.getMapController();
             if (calbacks <=3) {
-                mapController.setPositionAnimationTo(new GeoPoint(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf(getListUsers.getCoordinateY())));
+                mapController.setPositionAnimationTo(new GeoPoint(Double.valueOf(getCoordinatesByUserIdModel.getCoordinateX()), Double.valueOf(getCoordinatesByUserIdModel.getCoordinateY())));
                 mapController.setZoomCurrent(17);
             }
 
@@ -159,7 +165,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
             Resources res = getResources();
 
             Drawable bitmap = getResources().getDrawable(R.drawable.ic_person_pin_circle_black_24dp);
-            overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getListUsers.getCoordinateX()), Double.valueOf( getListUsers.getCoordinateY())), bitmap);
+            overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getCoordinatesByUserIdModel.getCoordinateX()), Double.valueOf( getCoordinatesByUserIdModel.getCoordinateY())), bitmap);
             BalloonItem balloonItem = new BalloonItem(this, overlayItem.getGeoPoint());
             balloonItem.setOnBalloonListener(this);
             overlayItem.setBalloonItem(balloonItem);
@@ -204,7 +210,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     public void getCoordinates () {
         final RestService restService = new RestService();
         try {
-            getListUsers = (restService.getUserById(String.valueOf(20)));
+            getCoordinatesByUserIdModel = (restService.getCoordinatesByUserIdModel(userId));
         } catch (IOException e) {
             e.printStackTrace();
         }

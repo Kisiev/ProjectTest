@@ -5,6 +5,7 @@ import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
+import com.example.a1.projecttest.rest.Models.GetCoordinatesByUserIdModel;
 import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
@@ -32,8 +33,8 @@ public interface ProjectTestApi {
     Call<GetListUsers> validUser (@Query("login") String login,
                                   @Query("password") String password);
 
-    @POST("/api/updateUserCoordinatesById.php")
-    Call<String> setCoordinates (@Query("id") int id,
+    @POST("/api/updateCoordinatesByUserId.php")
+    Call<String> setCoordinates (@Query("userId") int id,
                                @Query("coordinateX") String coordinateX,
                                @Query("coordinateY") String coordinateY);
 
@@ -133,4 +134,7 @@ public interface ProjectTestApi {
 
     @GET ("/api/getAllDays.php")
     Call<List<GetAllDaysModel>> getAllDay();
+
+    @GET ("/api/getCoordinatesByUserId.php")
+    Call<GetCoordinatesByUserIdModel> getCoordinates (@Query("userId") String id);
 }

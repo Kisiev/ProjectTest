@@ -23,14 +23,7 @@ public class GetListUsers implements Serializable {
     private String roleId;
     @SerializedName("isActivated")
     private String isActivated;
-    @SerializedName("userId")
-    private String userId;
-    @SerializedName("coordinateX")
-    private String coordinateX;
-    @SerializedName("coordinateY")
-    private String coordinateY;
-    @SerializedName("radius")
-    private String radius;
+
 
     public String getId() {
         return id;
@@ -94,38 +87,6 @@ public class GetListUsers implements Serializable {
 
     public void setIsActivated(String isActivated) {
         this.isActivated = isActivated;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getCoordinateX() {
-        return coordinateX;
-    }
-
-    public void setCoordinateX(String coordinateX) {
-        this.coordinateX = coordinateX;
-    }
-
-    public String getCoordinateY() {
-        return coordinateY;
-    }
-
-    public void setCoordinateY(String coordinateY) {
-        this.coordinateY = coordinateY;
-    }
-
-    public String getRadius() {
-        return radius;
-    }
-
-    public void setRadius(String radius) {
-        this.radius = radius;
     }
 
 }

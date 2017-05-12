@@ -42,6 +42,8 @@ public class StandardWindowDialog extends DialogFragment {
         }
     }
 
+    public StandardWindowDialog (){}
+
     public StandardWindowDialog (String login, String password, GetUserData getUserData){
         this.login = login;
         this.password = password;

@@ -44,5 +44,6 @@ public class ConstantsManager {
     final public static String SAVE_INSTAANTS_COORDINATES= "save_coordinates_user";
     final public static String SAVE_KID_ID= "kid_id";
     final public static String USER_ID_AND_COORDINATES= "user_id_and_coordinates";
+    final public static String USER_ID_UPDATES= "user_id_updates";
 
 }

@@ -282,19 +282,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (item.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
                         threadGetUserData(getAllKidsModels.get(i).getId());
                         if (getUserData != null)
-                            if (!getUserData.getEmail().equals("")) {
-                                UserLoginSession userLoginSession = new UserLoginSession(this);
-                                threadGetGroup(getAllKidsModels.get(i).getId());
-                                if (getScheduleByKidIdModel != null)
-                                    userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId());
-                                VospitannikFragment vs = new VospitannikFragment();
-                                replaceFragment(vs, R.id.content_main);
-                                updateToolbarTitle(vs);
-                            } else {
-                                Intent intent = new Intent(this, YandexMapActivity_.class);
-                                intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, getUserData.getId());
-                                startActivity(intent);
-                            }
+                            if (getUserData.getEmail() == null){
+                                    UserLoginSession userLoginSession = new UserLoginSession(this);
+                                    threadGetGroup(getAllKidsModels.get(i).getId());
+                                    if (getScheduleByKidIdModel != null)
+                                        userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId());
+                                    VospitannikFragment vs = new VospitannikFragment();
+                                    replaceFragment(vs, R.id.content_main);
+                                    updateToolbarTitle(vs);
+                                } else {
+                                    Intent intent = new Intent(this, YandexMapActivity_.class);
+                                    intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, getUserData.getId());
+                                    startActivity(intent);
+                                }
                     }
 
                 }
@@ -306,8 +306,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 boolean enabled = service
                         .isProviderEnabled(LocationManager.GPS_PROVIDER);
                 if (enabled) {
-                    Intent intent = new Intent(MainActivity.this, MapActivity_.class);
-                    startActivity(intent);
+                   // Intent intent = new Intent(MainActivity.this, MapActivity_.class);
+                    //startActivity(intent);
                 }
                 break;
             case 3:
