@@ -96,10 +96,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
         try {
-            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(day - 1));
+            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(Calendar.DAY_OF_WEEK));
         } catch (IOException e) {
             e.printStackTrace();
         }

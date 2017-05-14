@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 } else {
                                     Intent intent = new Intent(this, YandexMapActivity_.class);
                                     intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, getUserData.getId());
+                                    intent.putExtra(ConstantsManager.NAME_CHILD, getUserData.getName());
                                     startActivity(intent);
                                 }
                     }

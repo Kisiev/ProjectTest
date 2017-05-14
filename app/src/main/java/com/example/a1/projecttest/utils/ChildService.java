@@ -50,9 +50,11 @@ public class ChildService extends Service {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000 * 5, 1, locationListener);
-        locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER, 1000 * 5, 1,
-                locationListener);
+        if (Build.VERSION.SDK_INT > 20) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 1000 * 5, 1,
+                    locationListener);
+        }
     }
 
     @Override

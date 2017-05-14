@@ -3,6 +3,7 @@ package com.example.a1.projecttest;
 
 import android.*;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -11,11 +12,14 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -58,6 +62,7 @@ import ru.yandex.yandexmapkit.overlay.drag.DragAndDropOverlay;
 import ru.yandex.yandexmapkit.overlay.location.MyLocationOverlay;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
+
 @EActivity(R.layout.activity_map_yandex)
 public class YandexMapActivity extends Activity implements OnBalloonListener{
 
@@ -73,6 +78,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     private OverlayItem overlayItem;
     private Overlay overlay;
     private String userId;
+    private String nameChildBalloon;
     @AfterViews
     void main () {
 
@@ -94,8 +100,10 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
         }
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
+        if (bundle != null) {
             userId = bundle.getString(ConstantsManager.USER_ID_AND_COORDINATES);
+            nameChildBalloon = bundle.getString(ConstantsManager.NAME_CHILD);
+        }
     }
 
     @Override
@@ -107,9 +115,11 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     1000 * 15, 1, locationListener);
-            locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 1000 * 15, 1,
-                    locationListener);
+            if (Build.VERSION.SDK_INT > 20) {
+                locationManager.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER, 1000 * 15, 1,
+                        locationListener);
+            }
 
             handler = new Handler();
             setPeriodicTime();
@@ -161,10 +171,9 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
 
             OverlayManager overlayManager = mapController.getOverlayManager();
             overlay = new Overlay(mapController);
-           // Overlay overlay1 = new Overlay(mapController);
-            Resources res = getResources();
 
-            Drawable bitmap = getResources().getDrawable(R.drawable.ic_person_pin_circle_black_24dp);
+            Drawable bitmap =  ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person_pin_circle_black_24dp, null);
+
             overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getCoordinatesByUserIdModel.getCoordinateX()), Double.valueOf( getCoordinatesByUserIdModel.getCoordinateY())), bitmap);
             BalloonItem balloonItem = new BalloonItem(this, overlayItem.getGeoPoint());
             balloonItem.setOnBalloonListener(this);
@@ -223,7 +232,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
 
     @Override
     public void onBalloonShow(BalloonItem balloonItem) {
-        balloonItem.setText("Мой ребенок");
+        balloonItem.setText(nameChildBalloon);
     }
 
     @Override
