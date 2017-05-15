@@ -20,13 +20,11 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/all_group_of_kindergarten"
-            android:layout_margin="@dimen/standard_margin"/>
+            android:id="@+id/all_group_of_kindergarten" />
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/day_of_week_spinner"
-            android:layout_margin="@dimen/standard_margin"/>
+            android:id="@+id/day_of_week_spinner" />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

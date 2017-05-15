@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.evernote.android.job.JobManager;
+import com.example.a1.projecttest.sync.MyChildJobCreator;
 import com.facebook.stetho.Stetho;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -17,6 +19,7 @@ public class ChildApplication extends Application{
     public void onCreate() {
         super.onCreate();
         FlowManager.init(new FlowConfig.Builder(this).build());
+        JobManager.create(this).addJobCreator(new MyChildJobCreator());
         Stetho.initializeWithDefaults(this);
         childApplication = this;
     }

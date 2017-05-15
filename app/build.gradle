@@ -62,4 +62,6 @@ dependencies {
     compile 'cn.zhaiyifan:rememberedittext:0.9.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.android.support:multidex:1.0.1'
+
+    compile 'com.evernote:android-job:1.1.10'
 }

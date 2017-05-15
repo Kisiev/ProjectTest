@@ -448,7 +448,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         textChange(timeIn);
         textChange(timeOut);
         if (isReduction){
-            headerDialog.setText(R.string.registration);
+            headerDialog.setText(R.string.edit);
             PositionSaveSession saveSession = new PositionSaveSession(getActivity());
             saveSession.savePositionSession(position);
             spinner.setSelection(findServiceListModels(position));

@@ -1,13 +1,16 @@
 package com.example.a1.projecttest;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,7 +23,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +43,7 @@ import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.RestService;
+import com.example.a1.projecttest.sync.MyChildSyncJob;
 import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.facebook.stetho.Stetho;
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<GetAllKidsModel> getAllKidsModels;
     GetScheduleByKidIdModel getScheduleByKidIdModel;
     GetListUsers getUserData;
+    NotificationManager mNotificationManager;
 
     public void beginThread(){
         Thread thread = new Thread(new Runnable() {
@@ -127,11 +134,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else  getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS);
     }
 
+    public void clearSync(){
+        int idJob = MyChildSyncJob.schedulePeriodicJob();
+                for (int i = 1; i < idJob; i++)
+                    MyChildSyncJob.cancelJob(i);
+    }
 
     @AfterViews
     public void main() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        clearSync();
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
