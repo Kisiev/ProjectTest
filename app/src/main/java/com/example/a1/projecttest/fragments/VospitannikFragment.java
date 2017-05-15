@@ -168,9 +168,11 @@ public class VospitannikFragment extends Fragment {
     public void getScheduleList(){
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
         try {
             if (!userLoginSession.getKidIdSchedule().equals(""))
-                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidIdSchedule(), String.valueOf(Calendar.DAY_OF_WEEK));
+                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidIdSchedule(), String.valueOf(day == 1?7:day - 1));
         } catch (IOException e) {
             e.printStackTrace();
         }

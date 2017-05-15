@@ -91,6 +91,8 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
 
     public void loadUsersByRole(){
         RestService restService = new RestService();
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
         try {
             getKidsByGroupIdModels = restService.getKidsByGroupIdModels(userLoginSession.getTutorGroupId());
         } catch (IOException e) {
@@ -98,7 +100,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }
 
         try {
-            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(Calendar.DAY_OF_WEEK));
+            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(day == 1?7:day - 1));
         } catch (IOException e) {
             e.printStackTrace();
         }
