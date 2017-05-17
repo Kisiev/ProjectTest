@@ -18,6 +18,7 @@ import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
+import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.util.List;
@@ -137,4 +138,7 @@ public interface ProjectTestApi {
 
     @GET ("/api/getCoordinatesByUserId.php")
     Call<GetCoordinatesByUserIdModel> getCoordinates (@Query("userId") String id);
+
+    @GET ("/api/getScheduleStatusesByKidId.php?KidId=365")
+    Call<List<GetStatusKidModel>> getStatusKid(@Query("KidId") String kidId);
 }

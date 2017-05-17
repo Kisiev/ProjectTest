@@ -19,6 +19,7 @@ import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
+import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.io.IOException;
@@ -191,5 +192,9 @@ public final class RestService {
 
     public GetCoordinatesByUserIdModel getCoordinatesByUserIdModel (String userId) throws IOException {
         return restClient.getProjectTestApiEdu().getCoordinates(userId).execute().body();
+    }
+
+    public List<GetStatusKidModel> getStatusKidModels (String kidId) throws IOException {
+        return restClient.getProjectTestApiEdu().getStatusKid(kidId).execute().body();
     }
 }
