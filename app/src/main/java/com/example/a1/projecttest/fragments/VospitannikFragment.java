@@ -24,6 +24,7 @@ import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
@@ -44,6 +45,7 @@ import java.util.Random;
 public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
     Thread getScheduleThread;
+    List<GetStatusKidModel> getStatusKidModels;
     List<DayOfWeek> getDays;
     List<GetScheduleListModel> getScheduleListModels;
     public static String getDateString(int hours, int mins, int sec){
@@ -77,7 +79,7 @@ public class VospitannikFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getStatusKidModels, getActivity()));
         //  loadEntity();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
@@ -171,8 +173,13 @@ public class VospitannikFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         try {
-            if (!userLoginSession.getKidIdSchedule().equals(""))
-                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidIdSchedule(), String.valueOf(day == 1?7:day - 1));
+            if (!userLoginSession.getKidGroupSchedule().equals(""))
+                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidGroupSchedule(), String.valueOf(day == 1?7:day - 1));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            getStatusKidModels = restService.getStatusKidModels(userLoginSession.getKidId());
         } catch (IOException e) {
             e.printStackTrace();
         }

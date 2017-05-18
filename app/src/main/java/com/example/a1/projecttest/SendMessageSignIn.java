@@ -21,6 +21,7 @@ import java.io.IOException;
 public class SendMessageSignIn extends Activity implements View.OnClickListener{
     String status;
     Button sendMessageButton;
+    Button backButton;
     EditText mailEdit;
     ImageView imageView;
     @AfterViews
@@ -32,9 +33,12 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
         loginActivity.createImage(R.mipmap.background, imageView);
         mailEdit = (EditText) findViewById(R.id.mail_editET);
         sendMessageButton = (Button) findViewById(R.id.send_message_button);
+        backButton = (Button) findViewById(R.id.back_press_button);
         sendMessageButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
         mailEdit.setTypeface(typeface);
         sendMessageButton.setTypeface(typeface);
+        backButton.setTypeface(typeface);
         header.setTypeface(typeface);
 
     }
@@ -65,6 +69,10 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
                     e.printStackTrace();
                 }
                 Toast.makeText(this, R.string.successful, Toast.LENGTH_LONG).show();
+                onBackPressed();
+                break;
+            case R.id.back_press_button:
+                onBackPressed();
                 break;
         }
     }

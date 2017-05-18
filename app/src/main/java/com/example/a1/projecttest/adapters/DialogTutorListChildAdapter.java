@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
+import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
 import java.util.List;

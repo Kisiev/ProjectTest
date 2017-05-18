@@ -139,6 +139,11 @@ public interface ProjectTestApi {
     @GET ("/api/getCoordinatesByUserId.php")
     Call<GetCoordinatesByUserIdModel> getCoordinates (@Query("userId") String id);
 
-    @GET ("/api/getScheduleStatusesByKidId.php?KidId=365")
+    @GET ("/api/getScheduleStatusesByKidId.php")
     Call<List<GetStatusKidModel>> getStatusKid(@Query("KidId") String kidId);
+
+    @GET ("/api/createScheduleStatus.php")
+    Call<GetStatusCode> setStatusForKid(@Query("scheduleId") String scheduleId,
+                                              @Query("statusId") String statusId,
+                                              @Query("userId") String userId);
 }

@@ -28,6 +28,11 @@ import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.GroupsFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.RegisterChildFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.TutorFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -48,6 +53,16 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
     Typeface typeface;
     UserLoginSession session;
     GetGroupByTutorModel getGroupByTutorModel;
+
+
+    private void updateToolbarTitle(Fragment fragment) {
+        String fragmentClassName = fragment.getClass().getName();
+
+        if (fragmentClassName.equals(RaspisanieFragment.class.getName())) {
+            setTitle(getString(R.string.list_rasp));
+        }
+    }
+
     @AfterViews
     void main(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,7 +90,15 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
         MainActivity.saveGlideParam(imageView, this, null, R.mipmap.avatar);
         setNavigationViewItem();
-
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                if (f != null) {
+                    updateToolbarTitle(f);
+                } else finish();
+            }
+        });
         //ArrivingFragment arrivingFragment = new ArrivingFragment();
         //replaceFragment(arrivingFragment, R.id.content_main);
     }
@@ -149,6 +172,7 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
             case 1:
                 RaspisanieFragment raspisanieFragment = new RaspisanieFragment();
                 replaceFragment(raspisanieFragment, R.id.content_main);
+                updateToolbarTitle(raspisanieFragment);
                 break;
             case 2:
 

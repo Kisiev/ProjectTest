@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -30,12 +31,13 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm:ss");
     UserLoginSession userLoginSession;
     Typeface typeface;
+    List<GetStatusKidModel> getStatusKidModels;
     Context context;
-    public VospitannikAdapter (List<GetScheduleListModel> services, Context context) {
+    public VospitannikAdapter (List<GetScheduleListModel> services, List<GetStatusKidModel> getStatusKidModels, Context context) {
         this.services = services;
         this.context = context;
         userLoginSession = new UserLoginSession(context);
-
+        this.getStatusKidModels = getStatusKidModels;
     }
 
     @Override
@@ -73,23 +75,27 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
             holder.deleteButton.setVisibility(View.GONE);
         }
 
-       /* if (userLoginSession.getRoleId() == 1){
-            switch (services.get(position).getSmile()){
-                case 0:
+        if (userLoginSession.getRoleId() == 1){
+            if (getStatusKidModels != null)
+            for (GetStatusKidModel i : getStatusKidModels){
+                if (i.getScheduleId().equals(services.get(position).getId())){
+                    switch (i.getStatusId()){
+                        case "1":
+                            holder.imageView.setImageResource(R.drawable.ic_sentiment_dissatisfied_red_24dp);
+                            break;
+                        case "2":
+                            holder.imageView.setImageResource(R.drawable.ic_sentiment_satisfied_yellow_24dp);
+                            break;
+                        case "3":
+                            holder.imageView.setImageResource(R.drawable.ic_sentiment_very_satisfied_green_24dp);
+                            break;
+                    }
 
-                    break;
-                case 1:
-                    holder.imageView.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
-                    break;
-                case 2:
-                    holder.imageView.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
-                    break;
-                case 3:
-                    holder.imageView.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
-                    break;
+                }
             }
 
-        }*/
+
+        }
 
         Calendar now = Calendar.getInstance();
         Time date = Time.valueOf(dfDate_day_time.format(now.getTime()));

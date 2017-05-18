@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     UserLoginSession userLoginSession = new UserLoginSession(this);
                                     threadGetGroup(getAllKidsModels.get(i).getId());
                                     if (getScheduleByKidIdModel != null)
-                                        userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId());
+                                        userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId(), getScheduleByKidIdModel.getUserId());
                                     VospitannikFragment vs = new VospitannikFragment();
                                     replaceFragment(vs, R.id.content_main);
                                     updateToolbarTitle(vs);

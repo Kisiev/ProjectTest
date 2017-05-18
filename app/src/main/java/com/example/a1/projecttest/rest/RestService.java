@@ -197,4 +197,8 @@ public final class RestService {
     public List<GetStatusKidModel> getStatusKidModels (String kidId) throws IOException {
         return restClient.getProjectTestApiEdu().getStatusKid(kidId).execute().body();
     }
+
+    public GetStatusCode getStatusForSetStatus(String scheduleId, String statusId, String userId) throws IOException{
+        return restClient.getProjectTestApiEdu().setStatusForKid(scheduleId, statusId, userId).execute().body();
+    }
 }

@@ -273,7 +273,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 threadServiceList();
-                recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
             }
 
             @Override
@@ -313,7 +313,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 threadServiceList();
-                recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
             }
 
             @Override
@@ -321,8 +321,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
 
             }
         });
-        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
-
+        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -342,7 +341,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                     @Override
                     public void onClick(View v) {
                         deleteSchedule(getScheduleListModels.get(position).getId());
-                        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
                         if (statusCodeDelete != null) {
                             if (statusCodeDelete.getCode().equals("200")) {
                                 Toast.makeText(getActivity(), R.string.delete_item_status, Toast.LENGTH_SHORT).show();
@@ -480,14 +479,14 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
                                     Integer.valueOf(timeOut.getText().toString().substring(3, 5)), 0)))) {
                         if (!isReduction) {
                             createScheduleThread(getServicesByServiceTypeModel.getId(), dayOfWeek.getId(), timeIn.getText().toString(), timeOut.getText().toString(), ((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId());
-                            recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                            recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
                             if (setScheduleStatus.getCode().equals("200"))
                                 Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
                             else
                                 Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();
                         } else if (isReduction){
                             updateSchedule(getScheduleListModels.get(position).getId(), getServicesByServiceTypeModel.getId(), dayOfWeek.getId(), timeIn.getText().toString(), timeOut.getText().toString(), ((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId());
-                            recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getActivity()));
+                            recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
                             if (statusCodeUpdate.getCode().equals("200")){
                                 Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
                             } else Toast.makeText(getActivity(), "Ошибка добавления", Toast.LENGTH_SHORT).show();

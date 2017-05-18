@@ -46,16 +46,30 @@
                     android:inputType="text"
                     app:rememberCount="3"
                     app:rememberId="username" />
-
-                <Button
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/send_message"
-                    android:id="@+id/send_message_button"
-                    android:background="@color/colorAlphaNULL"
-                    android:textColor="@color/whiteColor"
-                    android:layout_gravity="end"
-                    />
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/back"
+                        android:id="@+id/back_press_button"
+                        android:layout_weight="1"
+                        android:background="@color/colorAlphaNULL"
+                        android:textColor="@color/whiteColor" />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/send_message"
+                        android:layout_weight="1"
+                        android:id="@+id/send_message_button"
+                        android:background="@color/colorAlphaNULL"
+                        android:textColor="@color/whiteColor" />
+
+
+                </LinearLayout>
+
 
             </LinearLayout>
         </LinearLayout>

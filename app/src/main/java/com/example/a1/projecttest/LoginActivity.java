@@ -260,7 +260,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 Thread thread1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        getValidToken("kisivaleri@gmail.com", "aQO6O4rzBg");
+                        getValidToken("kisivaleri@gmail.com", "CAaiTj0Jl4");
                     }
                 });
                 thread1.start();
