@@ -67,7 +67,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         session = new PositionSaveSession(getActivity());
 
         thread.start();
-
+        dialog.setContentView(R.layout.list_child_for_tutor_dialog);
         recyclerView = (RecyclerView) view.findViewById(R.id.raspisanie_RV);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         try {
@@ -175,7 +175,6 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        dialog.setContentView(R.layout.list_child_for_tutor_dialog);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         Button backButton = (Button) dialog.findViewById(R.id.back_button_dialog);
 
