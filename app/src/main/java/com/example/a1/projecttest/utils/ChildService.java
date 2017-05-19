@@ -118,7 +118,7 @@ public class ChildService extends Service {
         try {
             RestService restService = new RestService();
             UserLoginSession session = new UserLoginSession(getApplication());
-            status = restService.setCoordinates(Integer.parseInt(session.getID()), coordinateX, coordinateY);
+            status = restService.setCoordinates(Integer.parseInt(session.getID().equals("")? "366" : session.getID()), coordinateX, coordinateY);
         } catch (IOException e) {
             e.printStackTrace();
         }

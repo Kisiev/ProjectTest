@@ -8,9 +8,11 @@ import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.provider.Settings;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,6 +23,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
@@ -58,7 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity (R.layout.activity_main)
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
     DrawerLayout drawer;
     NavigationView navigationView;
     ImageView imageView;
@@ -70,7 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     GetScheduleByKidIdModel getScheduleByKidIdModel;
     GetListUsers getUserData;
     NotificationManager mNotificationManager;
-
+    String refreshingFragment;
+    SwipeRefreshLayout swipeRefreshLayout;
+    MenuItem menuItem;
     public void beginThread(){
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -158,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerView = navigationView.getHeaderView(0);
         session = new UserLoginSession(getApplicationContext());
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
@@ -176,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onBackStackChanged() {
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_main);
                 if (f != null) {
+                    refreshingFragment = f.getClass().getName();
                     updateToolbarTitle(f);
                 } else finish();
             }
@@ -224,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void replaceFragment(Fragment fragment, int id) {
         String backStackName = fragment.getClass().getName();
+        refreshingFragment = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
         boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
         if (!fragmentPopped) {
@@ -283,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
+        menuItem = item;
         int id = item.getOrder();
         switch (id){
             case 0:
@@ -291,27 +301,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 updateToolbarTitle(feedFragment);
                 break;
             case ConstantsManager.ID_MENU_ITEM:
-                for (int i = 0; i < getAllKidsModels.size(); i ++) {
-                    if (item.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
-                        threadGetUserData(getAllKidsModels.get(i).getId());
-                        if (getUserData != null)
-                            if (getUserData.getEmail() == null){
-                                    UserLoginSession userLoginSession = new UserLoginSession(this);
-                                    threadGetGroup(getAllKidsModels.get(i).getId());
-                                    if (getScheduleByKidIdModel != null)
-                                        userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId(), getScheduleByKidIdModel.getUserId());
-                                    VospitannikFragment vs = new VospitannikFragment();
-                                    replaceFragment(vs, R.id.content_main);
-                                    updateToolbarTitle(vs);
-                                } else {
-                                    Intent intent = new Intent(this, YandexMapActivity_.class);
-                                    intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, getUserData.getId());
-                                    intent.putExtra(ConstantsManager.NAME_CHILD, getUserData.getName());
-                                    startActivity(intent);
-                                }
-                    }
-
-                }
+                takeKidFragment();
                 break;
             case 2:
               //  ShcolnilFragment shcolnilFragment = new ShcolnilFragment();
@@ -342,6 +332,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public void takeKidFragment(){
+        if (menuItem != null)
+        for (int i = 0; i < getAllKidsModels.size(); i ++) {
+            if (menuItem.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
+                threadGetUserData(getAllKidsModels.get(i).getId());
+                if (getUserData != null)
+                    if (getUserData.getEmail() == null){
+                        UserLoginSession userLoginSession = new UserLoginSession(this);
+                        threadGetGroup(getAllKidsModels.get(i).getId());
+                        if (getScheduleByKidIdModel != null)
+                            userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId(), getScheduleByKidIdModel.getUserId());
+                        VospitannikFragment vs = new VospitannikFragment();
+                        replaceFragment(vs, R.id.content_main);
+                        updateToolbarTitle(vs);
+                    } else {
+                        Intent intent = new Intent(this, YandexMapActivity_.class);
+                        intent.putExtra(ConstantsManager.USER_ID_AND_COORDINATES, getUserData.getId());
+                        intent.putExtra(ConstantsManager.NAME_CHILD, getUserData.getName());
+                        startActivity(intent);
+                    }
+            }
+
+        }
+    }
+
     public void threadGetUserData(final String id){
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -366,5 +381,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (JsonSyntaxException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        if (refreshingFragment.equals(FeedFragment.class.getName())) {
+            replaceFragment(new FeedFragment(), R.id.content_main);
+            setTitle(getString(R.string.life_feed));
+        } else if (refreshingFragment.equals(VospitannikFragment.class.getName())){
+            takeKidFragment();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
