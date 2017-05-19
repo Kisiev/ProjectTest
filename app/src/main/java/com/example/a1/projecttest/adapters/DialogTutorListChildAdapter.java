@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
+import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
@@ -24,9 +25,11 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
     List<GetKidsByGroupIdModel> users;
     Typeface typeface;
     Context context;
-    public DialogTutorListChildAdapter (List<GetKidsByGroupIdModel> users, Context context){
+    List<GetScheduleStatusesByGroupIdModel> getScheduleStatusesByGroupIdModels;
+    public DialogTutorListChildAdapter (List<GetKidsByGroupIdModel> users, List<GetScheduleStatusesByGroupIdModel> getScheduleStatusesByGroupIdModels, Context context){
         this.users = users;
         this.context = context;
+        this.getScheduleStatusesByGroupIdModels = getScheduleStatusesByGroupIdModels;
     }
 
     @Override
@@ -46,6 +49,25 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
         holder.mediumSmile.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
         holder.highSmile.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
         holder.nameChild.setTypeface(typeface);
+
+        if (getScheduleStatusesByGroupIdModels != null) {
+            for (GetScheduleStatusesByGroupIdModel i : getScheduleStatusesByGroupIdModels) {
+                if (i.getUserId().equals(users.get(position).getId())){
+                    switch (i.getStatusId()){
+                        case "1":
+                            holder.lowSmile.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sentiment_dissatisfied_red_24dp));
+                            break;
+                        case "2":
+                            holder.mediumSmile.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sentiment_satisfied_yellow_24dp));
+                            break;
+                        case "3":
+                            holder.highSmile.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sentiment_very_satisfied_green_24dp));
+                            break;
+                    }
+                }
+            }
+        }
+
     }
 
     @Override

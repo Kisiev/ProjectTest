@@ -25,6 +25,18 @@ public class GetStatusKidModel implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("scheduleName")
+    @Expose
+    private String scheduleName;
+
+    public String getScheduleName() {
+        return scheduleName;
+    }
+
+    public void setScheduleName(String scheduleName) {
+        this.scheduleName = scheduleName;
+    }
+
 
     public String getId() {
         return id;

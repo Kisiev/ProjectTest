@@ -29,4 +29,12 @@
     <color name="colorYellow">#FFD10E</color>
     <color name="colorGreen">#BED63A</color>
     <color name="colorLightBlue">#44C2EA</color>
+
+    <color name="colorBlueOpacity">#140273b2</color>
+    <color name="colorRedOpacity">#14b2020e</color>
+    <color name="colorVioletOpacity">#14bc75b0</color>
+    <color name="colorOrangeOpacity">#14f6921e</color>
+    <color name="colorYellowOpacity">#14ffd10e</color>
+    <color name="colorGreenOpacity">#14bed63a</color>
+    <color name="colorLightBlueOpacity">#1444c2ea</color>
 </resources>

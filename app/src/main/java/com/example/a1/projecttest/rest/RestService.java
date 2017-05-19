@@ -15,6 +15,7 @@ import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
@@ -198,7 +199,14 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().getStatusKid(kidId).execute().body();
     }
 
+    public List<GetStatusKidModel> getStatusKidForFeedModels (String kidId) throws IOException {
+        return restClient.getProjectTestApiEdu().getStatusKidForFeed(kidId).execute().body();
+    }
     public GetStatusCode getStatusForSetStatus(String scheduleId, String statusId, String userId) throws IOException{
         return restClient.getProjectTestApiEdu().setStatusForKid(scheduleId, statusId, userId).execute().body();
+    }
+
+    public List<GetScheduleStatusesByGroupIdModel> getGroupStatuses(String groupId, String schedule) throws IOException{
+        return restClient.getProjectTestApiEdu().getGroupStatuses(groupId, schedule).execute().body();
     }
 }

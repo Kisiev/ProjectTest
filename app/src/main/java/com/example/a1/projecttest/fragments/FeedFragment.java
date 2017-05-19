@@ -30,8 +30,12 @@ import android.widget.Toast;
 import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.FeedAdapter;
+import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
+import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
@@ -40,6 +44,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,14 +59,16 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     FloatingActionButton actionButton;
     Uri selectedImage;
     NavigationView navigationView;
+    List<GetStatusKidModel> getStatusKidModels;
+    List<GetStatusKidModel> getAllKidStatuses;
+    List<GetAllKidsModel> getAllKidsModels;
     int pos = -1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_fragment, container, false);
-        List<String> listService = new ArrayList<>();
-        listService.add("Иванов А.В");
-        listService.add("Иванов В.П");
+        getAllKidStatuses = new ArrayList<>();
+        threadFeed();
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -73,7 +80,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
-        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), listService));
+        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses,getAllKidsModels));
         Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);
@@ -153,6 +160,40 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void threadFeed(){
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    getFeed();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getFeed(){
+        RestService restService = new RestService();
+        UserLoginSession userLoginSession = new UserLoginSession(getActivity());
+        try {
+            getAllKidsModels = restService.getKidByParentId(userLoginSession.getID());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < getAllKidsModels.size(); i ++) {
+            try {
+                getStatusKidModels = restService.getStatusKidForFeedModels(getAllKidsModels.get(i).getId());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (int j = 0; j < getStatusKidModels.size(); j ++) {
+                getAllKidStatuses.add(getStatusKidModels.get(j));
+            }
+        }
+    }
 
     public void showDialog(final boolean isRediction, final int position) {
 

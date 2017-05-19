@@ -22,6 +22,7 @@ import com.example.a1.projecttest.adapters.VospitannikAdapter;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 
+import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.RestService;
@@ -48,7 +49,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     ImageView medium;
     ImageView high;
     List<GetStatusKidModel> getStatusKidModels;
-    List<GetStatusKidModel> setStatuses;
+    List<GetScheduleStatusesByGroupIdModel> getStatusesGroup;
     int positionSchedule = 0;
     UserLoginSession userLoginSession;
     private Thread thread = new Thread(new Runnable() {
@@ -80,8 +81,8 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View view, int position) {
                 if (!dialog.isShowing()) {
-                   // session.saveRecyclerViewPositions(position, ChildStatusEntity.selectChilds().get(position).getId(), 0, 0);
                     positionSchedule = position;
+                    threadStatuses();
                     showDialog();
                 }
             }
@@ -95,6 +96,30 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    public void threadStatuses(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getStatuses();
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getStatuses(){
+        RestService restService = new RestService();
+        UserLoginSession session = new UserLoginSession(getActivity());
+        try {
+            getStatusesGroup = restService.getGroupStatuses(session.getTutorGroupId(), getScheduleListModels.get(positionSchedule).getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void loadUsersByRole(){
         RestService restService = new RestService();
@@ -111,6 +136,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
   /*  @Background
@@ -156,7 +182,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         backButton.setOnClickListener(this);
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recycler_list_child_for_tutor);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new DialogTutorListChildAdapter(getKidsByGroupIdModels, getActivity()));
+        recyclerView.setAdapter(new DialogTutorListChildAdapter(getKidsByGroupIdModels, getStatusesGroup, getActivity()));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(final View view, final int position) {

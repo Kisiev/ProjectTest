@@ -14,6 +14,7 @@ import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
+import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetServiceListModel;
 import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
@@ -142,8 +143,15 @@ public interface ProjectTestApi {
     @GET ("/api/getScheduleStatusesByKidId.php")
     Call<List<GetStatusKidModel>> getStatusKid(@Query("KidId") String kidId);
 
+    @GET ("/api/getAllScheduleStatusesByKidId.php")
+    Call<List<GetStatusKidModel>> getStatusKidForFeed(@Query("KidId") String kidId);
+
     @GET ("/api/createScheduleStatus.php")
     Call<GetStatusCode> setStatusForKid(@Query("scheduleId") String scheduleId,
                                               @Query("statusId") String statusId,
                                               @Query("userId") String userId);
+
+    @GET ("/api/getScheduleStatusesByGroupIdAndScheduleId.php")
+    Call<List<GetScheduleStatusesByGroupIdModel>> getGroupStatuses(@Query("groupId") String groupId,
+                                                                   @Query("scheduleId") String schedule);
 }
