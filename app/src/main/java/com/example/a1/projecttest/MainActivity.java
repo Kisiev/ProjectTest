@@ -165,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         session = new UserLoginSession(getApplicationContext());
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorGreen),
+                getResources().getColor(R.color.colorYellow),
+                getResources().getColor(R.color.colorBlue),
+                getResources().getColor(R.color.colorOrange),
+                getResources().getColor(R.color.colorViolet));
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
@@ -385,12 +390,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
         if (refreshingFragment.equals(FeedFragment.class.getName())) {
             replaceFragment(new FeedFragment(), R.id.content_main);
             setTitle(getString(R.string.life_feed));
         } else if (refreshingFragment.equals(VospitannikFragment.class.getName())){
             takeKidFragment();
         }
-        swipeRefreshLayout.setRefreshing(false);
+
     }
 }
