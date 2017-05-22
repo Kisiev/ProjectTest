@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.ChildEntity;
 import com.example.a1.projecttest.LoginActivity;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;

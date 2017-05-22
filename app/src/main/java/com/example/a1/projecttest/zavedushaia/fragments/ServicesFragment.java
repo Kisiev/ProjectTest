@@ -20,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.DayOfWeek;
 import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;

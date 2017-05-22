@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.example.a1.projecttest.Entities.ServiceListEntity;
 import com.example.a1.projecttest.LoginActivity;
 import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.MainActivity;
@@ -121,11 +120,6 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     @AfterViews
     void main () {
         typeface = Typeface.createFromAsset(this.getAssets(), "font/opensans.ttf");
-    if (ServiceListEntity.select().size() == 0) {
-        SQLite.insert(ServiceListEntity.class).columns("id", "name").values(-1, "Вид деятельности..").execute();
-        SQLite.insert(ServiceListEntity.class).columns("id", "name").values(1, "Уход").execute();
-        SQLite.insert(ServiceListEntity.class).columns("id", "name").values(2, "Развитие").execute();
-    }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

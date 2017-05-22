@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -27,11 +26,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.ChildEntity;
-import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
-import com.example.a1.projecttest.adapters.CircleImageAdapter;
 import com.example.a1.projecttest.adapters.FeedAdapter;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
@@ -74,7 +70,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
       //  recyclerView.setAdapter(new CircleImageAdapter(listService, getActivity()));
-        loadChildList();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
@@ -123,7 +119,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             case ConstantsManager.DELETE_CONTEXT_ITEM:
                 if (pos != -1) {
                    // ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
-                    loadChildList();
+
                     //MainActivity.setMenu(navigationView);
                     pos = -1;
                 }
@@ -206,26 +202,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         Button addButton = (Button) dialog.findViewById(R.id.add_child_buttonBT);
         final Button photoButton = (Button) dialog.findViewById(R.id.add_photo_buttonBT);
         final Button cancelButton = (Button) dialog.findViewById(R.id.cancel_buttonBT);
-        if (isRediction){
-            List<ChildEntity> item = ChildEntity.selectChild();
-            nameEdit.setText(item.get(position).getName());
-            path.setText(item.get(position).getPhoto());
-        }
-        photoButton.setOnClickListener(this);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isRediction) {
-                    ChildEntity.insertChild(nameEdit.getText().toString(), selectedImage.toString());
-                    dialog.dismiss();
-                } else {
-                    ChildEntity.updateItem(ChildEntity.selectChild().get(position).getId(), nameEdit.getText().toString(), selectedImage.toString() == null ? path.getText().toString():selectedImage.toString());
-                    dialog.dismiss();
-                }
-                loadChildList();
-              //  MainActivity.setMenu(navigationView);
-            }
-        });
+
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,34 +227,5 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Background
-    public void loadChildList() {
-        getLoaderManager().restartLoader(ConstantsManager.ID_LOADER, null, new LoaderManager.LoaderCallbacks<List<ChildEntity>>() {
-
-            @Override
-            public Loader<List<ChildEntity>> onCreateLoader(int id, Bundle args) {
-                final AsyncTaskLoader<List<ChildEntity>> loader = new AsyncTaskLoader<List<ChildEntity>>(getActivity()) {
-                    @Override
-                    public List<ChildEntity> loadInBackground() {
-                        return ChildEntity.selectChild();
-                    }
-                };
-                loader.forceLoad();
-                return loader;
-            }
-
-            @Override
-            public void onLoadFinished(Loader<List<ChildEntity>> loader, List<ChildEntity> data) {
-                CircleImageAdapter adapter = new CircleImageAdapter(data, getActivity());
-                adapter.notifyDataSetChanged();
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<List<ChildEntity>> loader) {
-
-            }
-        });
-    }
 
 }

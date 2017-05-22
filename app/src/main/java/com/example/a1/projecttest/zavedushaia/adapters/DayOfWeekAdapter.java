@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.example.a1.projecttest.Entities.DayOfWeek;
+
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;

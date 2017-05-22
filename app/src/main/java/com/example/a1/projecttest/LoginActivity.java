@@ -22,7 +22,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a1.projecttest.Entities.DayOfWeek;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 import com.example.a1.projecttest.rest.RestService;
@@ -82,15 +81,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     @AfterViews
     protected void main() {
-        if(DayOfWeek.selectDays().size() == 0) {
-            DayOfWeek.insertDay("Понедельник");
-            DayOfWeek.insertDay("Вторник");
-            DayOfWeek.insertDay("Среда");
-            DayOfWeek.insertDay("Четверг");
-            DayOfWeek.insertDay("Пятница");
-            DayOfWeek.insertDay("Суббота");
-            DayOfWeek.insertDay("Воскресенье");
-        }
+
         zav = (RadioButton) findViewById(R.id.zaveduushi);
         vospitatel = (RadioButton) findViewById(R.id.vospitatel);
         rebenok = (RadioButton) findViewById(R.id.rebenok);

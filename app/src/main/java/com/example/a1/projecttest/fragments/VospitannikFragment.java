@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.a1.projecttest.Entities.DayOfWeek;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
@@ -46,7 +45,7 @@ public class VospitannikFragment extends Fragment {
     RecyclerView recyclerView;
     Thread getScheduleThread;
     List<GetStatusKidModel> getStatusKidModels;
-    List<DayOfWeek> getDays;
+
     List<GetScheduleListModel> getScheduleListModels;
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
