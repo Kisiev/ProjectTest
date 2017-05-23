@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.vospitatel.fragments;
 
 import android.app.Dialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     ImageView low;
     ImageView medium;
     ImageView high;
+    ImageView commentImageSend;
+    Typeface typeface;
+    String statusForComment;
     List<GetStatusKidModel> getStatusKidModels;
     List<GetScheduleStatusesByGroupIdModel> getStatusesGroup;
     int positionSchedule = 0;
@@ -65,7 +70,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         userLoginSession = new UserLoginSession(getActivity());
         dialog = new Dialog(getActivity());
         session = new PositionSaveSession(getActivity());
-
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/OpenSans-Regular.ttf");
         thread.start();
         dialog.setContentView(R.layout.list_child_for_tutor_dialog);
         recyclerView = (RecyclerView) view.findViewById(R.id.raspisanie_RV);
@@ -177,8 +182,12 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         Button backButton = (Button) dialog.findViewById(R.id.back_button_dialog);
-
+        TextView header = (TextView) dialog.findViewById(R.id.header_text_dialog);
+        header.setTypeface(typeface);
         backButton.setOnClickListener(this);
+
+        backButton.setTypeface(typeface);
+
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recycler_list_child_for_tutor);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new DialogTutorListChildAdapter(getKidsByGroupIdModels, getStatusesGroup, getActivity()));
@@ -189,13 +198,15 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                 low = (ImageView) view.findViewById(R.id.low_smile_image_dialog);
                 medium = (ImageView) view.findViewById(R.id.medium_smile_image_dialog);
                 high = (ImageView) view.findViewById(R.id.high_smile_image_dialog);
+                commentImageSend = (ImageView) view.findViewById(R.id.send_message_to_parent);
                 low.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         low.setImageResource(R.drawable.ic_sentiment_dissatisfied_red_24dp);
                         medium.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
                         high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
-                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "1", getKidsByGroupIdModels.get(position).getId());
+                        statusForComment = "1";
+                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "1", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                     }
@@ -206,7 +217,8 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                         medium.setImageResource(R.drawable.ic_sentiment_satisfied_yellow_24dp);
                         low.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
                         high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
-                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "2", getKidsByGroupIdModels.get(position).getId());
+                        statusForComment = "2";
+                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "2", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                     }
@@ -217,9 +229,16 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                         high.setImageResource(R.drawable.ic_sentiment_very_satisfied_green_24dp);
                         low.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
                         medium.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
-                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "3", getKidsByGroupIdModels.get(position).getId());
+                        statusForComment = "3";
+                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "3", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                commentImageSend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showCommentDialog(statusForComment, position);
                     }
                 });
             }
@@ -241,11 +260,11 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public void threadStatus(final String scheduleId, final String statusId, final String userId){
+    public void threadStatus(final String scheduleId, final String statusId, final String userId, final String comment){
         Thread statusThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                getStatus(scheduleId, statusId, userId);
+                getStatus(scheduleId, statusId, userId, comment);
             }
         });
         statusThread.start();
@@ -256,12 +275,44 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public void getStatus(String scheduleId, String statusId, String userId){
+    public void getStatus(String scheduleId, String statusId, String userId, String comment){
         RestService restService = new RestService();
         try {
-            getStatusCode = restService.getStatusForSetStatus(scheduleId, statusId, userId);
+            getStatusCode = restService.getStatusForSetStatus(scheduleId, statusId, userId, comment);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showCommentDialog(final String status, final int pos){
+        final Dialog commentDialog = new Dialog(getActivity());
+        commentDialog.setContentView(R.layout.comments_for_status_dialog);
+        commentDialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        Button okButton = (Button) commentDialog.findViewById(R.id.ok_button_comment);
+        Button cancelButton = (Button) commentDialog.findViewById(R.id.cancel_comment_dialog);
+        final EditText commentEdit = (EditText) commentDialog.findViewById(R.id.comment_edit);
+        TextView header = (TextView) commentDialog.findViewById(R.id.header_comments_status);
+        okButton.setTypeface(typeface);
+        cancelButton.setTypeface(typeface);
+        commentEdit.setTypeface(typeface);
+        header.setTypeface(typeface);
+
+        commentDialog.show();
+        dialog.dismiss();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                threadStatus(getScheduleListModels.get(positionSchedule).getId(), status, getKidsByGroupIdModels.get(pos).getId(), commentEdit.getText().toString());
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentDialog.dismiss();
+                dialog.show();
+            }
+        });
     }
 }

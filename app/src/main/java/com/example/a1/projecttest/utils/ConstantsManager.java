@@ -46,5 +46,7 @@ public class ConstantsManager {
     final public static String SAVE_KID_GROUP= "kid_group";
     final public static String USER_ID_AND_COORDINATES= "user_id_and_coordinates";
     final public static String NAME_CHILD= "name_child";
+    final public static String FEED_ALL_KID= "feed_all_kid";
+    final public static String FEED_ALL_STATUSES= "feed_all_statuses";
 
 }

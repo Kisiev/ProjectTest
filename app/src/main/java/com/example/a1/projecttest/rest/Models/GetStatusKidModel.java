@@ -28,6 +28,17 @@ public class GetStatusKidModel implements Serializable {
     @SerializedName("scheduleName")
     @Expose
     private String scheduleName;
+    @SerializedName("comment")
+    @Expose
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getScheduleName() {
         return scheduleName;

@@ -47,7 +47,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         for (int j = 0; j < getAllKidsModels.size(); j ++) {
             if (getStatusKidModels.get(position).getUserId().equals(getAllKidsModels.get(j).getId())) {
                 holder.nameChildTV.setText(getAllKidsModels.get(j).getName());
-                holder.serviceNameTV.setText(getStatusKidModels.get(position).getScheduleName() + " " + getStatusKidModels.get(position).getName());
+                holder.serviceNameTV.setText("Закончил ''" + getStatusKidModels.get(position).getScheduleName() + "'' со статусом ''" + getStatusKidModels.get(position).getName() + "''");
                 holder.nameChildTV.setTypeface(typeface);
                 holder.serviceNameTV.setTypeface(typeface);
                 switch (getStatusKidModels.get(position).getStatusId()){

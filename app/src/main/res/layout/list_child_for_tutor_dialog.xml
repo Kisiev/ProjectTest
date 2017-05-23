@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ist_child_header"
         android:id="@+id/header_text_dialog"
-        android:textSize="11pt"
+        android:textSize="12pt"
         android:textAlignment="center"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 <android.support.v7.widget.RecyclerView

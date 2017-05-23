@@ -31,6 +31,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm:ss");
     UserLoginSession userLoginSession;
     Typeface typeface;
+    Typeface typefaceItalic;
     List<GetStatusKidModel> getStatusKidModels;
     Context context;
     public VospitannikAdapter (List<GetScheduleListModel> services, List<GetStatusKidModel> getStatusKidModels, Context context) {
@@ -50,6 +51,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
         typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typefaceItalic = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Italic.ttf");
         holder.textView.setText(services.get(holder.getAdapterPosition()).getName());
         holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeFrom().substring(0, 5))
                 + " - "
@@ -66,7 +68,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         holder.timeTv.setTypeface(typeface);
         holder.editButton.setTypeface(typeface);
         holder.deleteButton.setTypeface(typeface);
-        holder.false_tv.setTypeface(typeface);
+        holder.false_tv.setTypeface(typefaceItalic);
         if (userLoginSession.getRoleId() == 2){
             holder.editButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.VISIBLE);
@@ -82,12 +84,18 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
                     switch (i.getStatusId()){
                         case "1":
                             holder.imageView.setImageResource(R.drawable.ic_sentiment_dissatisfied_red_24dp);
+                            if (!i.getComment().equals(""))
+                                holder.false_tv.setText("Комментарий: " + i.getComment());
                             break;
                         case "2":
                             holder.imageView.setImageResource(R.drawable.ic_sentiment_satisfied_yellow_24dp);
+                            if (!i.getComment().equals(""))
+                                holder.false_tv.setText("Комментарий: " + i.getComment());
                             break;
                         case "3":
                             holder.imageView.setImageResource(R.drawable.ic_sentiment_very_satisfied_green_24dp);
+                            if (!i.getComment().equals(""))
+                                holder.false_tv.setText("Комментарий: " + i.getComment());
                             break;
                     }
 

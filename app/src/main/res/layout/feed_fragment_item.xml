@@ -13,12 +13,20 @@
         android:layout_height="match_parent"
         android:padding="@dimen/activity_vertical_margin"
         android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="10pt"
         android:textColor="@color/black"
+        android:layout_marginBottom="@dimen/standard_margin"
         android:id="@+id/name_childTV"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/standard_margin"
+            android:background="@color/black"
+            />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

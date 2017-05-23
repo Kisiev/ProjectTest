@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity (R.layout.activity_main)
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
     NavigationView navigationView;
     ImageView imageView;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String refreshingFragment;
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem menuItem;
+    int fragmentName = 0;
     public void beginThread(){
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -157,13 +159,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        replaceFragment(new FeedFragment(), R.id.content_main);
-        setTitle(getString(R.string.life_feed));
 
         View headerView = navigationView.getHeaderView(0);
         session = new UserLoginSession(getApplicationContext());
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2000);
+                if (refreshingFragment.equals(FeedFragment.class.getName())) {
+                    replaceFragment(new FeedFragment(), R.id.content_main);
+                    setTitle(getString(R.string.life_feed));
+                } else if (refreshingFragment.equals(VospitannikFragment.class.getName())){
+                    takeKidFragment();
+                }
+            }
+        });
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorGreen),
                 getResources().getColor(R.color.colorYellow),
                 getResources().getColor(R.color.colorBlue),
@@ -192,6 +209,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else finish();
             }
         });
+        replaceFragment(new FeedFragment(), R.id.content_main);
+        setTitle(getString(R.string.life_feed));
     }
 
     private void setNavigationViewItem(){
@@ -211,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragmentClassName.equals(FeedFragment.class.getName())) {
             setTitle(getString(R.string.life_feed));
         } else if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
-            setTitle(getString(R.string.list_rasp));
+            setTitle(getAllKidsModels.get(fragmentName).getName());
         }
     }
 
@@ -349,6 +368,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId(), getScheduleByKidIdModel.getUserId());
                         VospitannikFragment vs = new VospitannikFragment();
                         replaceFragment(vs, R.id.content_main);
+                        fragmentName = i;
                         updateToolbarTitle(vs);
                     } else {
                         Intent intent = new Intent(this, YandexMapActivity_.class);
@@ -387,21 +407,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(true);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, 2000);
-        if (refreshingFragment.equals(FeedFragment.class.getName())) {
-            replaceFragment(new FeedFragment(), R.id.content_main);
-            setTitle(getString(R.string.life_feed));
-        } else if (refreshingFragment.equals(VospitannikFragment.class.getName())){
-            takeKidFragment();
-        }
 
-    }
 }

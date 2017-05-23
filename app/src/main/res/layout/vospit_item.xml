@@ -69,9 +69,8 @@
             android:id="@+id/false_tv"
             android:textColor="@color/black"
             android:layout_weight="1"
-            android:textSize="10pt"
+            android:textSize="7pt"
             android:textStyle="italic|bold"
-            android:visibility="gone"
             android:gravity="center|top" />
 
 </LinearLayout>

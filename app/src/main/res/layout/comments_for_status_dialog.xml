@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/header_comments_status"
+    android:text="@string/add_comment"
+    android:textSize="12pt"
+    android:textAlignment="center"
+    android:layout_marginBottom="@dimen/standard_margin"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/comment"
+        android:layout_below="@id/header_comments_status"
+        android:id="@+id/comment_edit"
+        android:layout_marginBottom="@dimen/standard_margin"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/standard_margin"
+        android:layout_below="@id/comment_edit">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:background="@color/colorAlphaNULL"
+            android:id="@+id/cancel_comment_dialog"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_service"
+            android:background="@color/colorAlphaNULL"
+            android:id="@+id/ok_button_comment"/>
+    </LinearLayout>
+</RelativeLayout>

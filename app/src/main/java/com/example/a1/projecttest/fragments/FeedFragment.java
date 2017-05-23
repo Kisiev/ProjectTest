@@ -41,6 +41,7 @@ import org.androidannotations.annotations.EFragment;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_fragment, container, false);
         getAllKidStatuses = new ArrayList<>();
-        threadFeed();
+
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -76,7 +77,15 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
-        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses,getAllKidsModels));
+        if (savedInstanceState == null) {
+            threadFeed();
+            recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses, getAllKidsModels));
+        }
+        else {
+            getAllKidStatuses = (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES);
+            getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID);
+            recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES),(List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID)));
+        }
         Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);
@@ -189,6 +198,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 getAllKidStatuses.add(getStatusKidModels.get(j));
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(ConstantsManager.FEED_ALL_KID, (Serializable) getAllKidsModels);
+        outState.putSerializable(ConstantsManager.FEED_ALL_STATUSES, (Serializable) getAllKidStatuses);
     }
 
     public void showDialog(final boolean isRediction, final int position) {
