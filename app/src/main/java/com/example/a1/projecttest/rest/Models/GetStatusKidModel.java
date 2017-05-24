@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-/**
- * Created by User on 17.05.2017.
- */
 
 public class GetStatusKidModel implements Serializable {
     @SerializedName("id")
@@ -31,23 +28,6 @@ public class GetStatusKidModel implements Serializable {
     @SerializedName("comment")
     @Expose
     private String comment;
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getScheduleName() {
-        return scheduleName;
-    }
-
-    public void setScheduleName(String scheduleName) {
-        this.scheduleName = scheduleName;
-    }
-
 
     public String getId() {
         return id;
@@ -89,4 +69,19 @@ public class GetStatusKidModel implements Serializable {
         this.name = name;
     }
 
+    public String getScheduleName() {
+        return scheduleName;
+    }
+
+    public void setScheduleName(String scheduleName) {
+        this.scheduleName = scheduleName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

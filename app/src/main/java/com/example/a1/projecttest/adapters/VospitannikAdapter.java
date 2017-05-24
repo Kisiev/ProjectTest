@@ -84,18 +84,21 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
                     switch (i.getStatusId()){
                         case "1":
                             holder.imageView.setImageResource(R.drawable.ic_sentiment_dissatisfied_red_24dp);
-                            if (!i.getComment().equals(""))
-                                holder.false_tv.setText("Комментарий: " + i.getComment());
+                            if (i.getComment() != null)
+                                if (!i.getComment().equals(""))
+                                    holder.false_tv.setText("Комментарий: " + i.getComment());
                             break;
                         case "2":
                             holder.imageView.setImageResource(R.drawable.ic_sentiment_satisfied_yellow_24dp);
-                            if (!i.getComment().equals(""))
-                                holder.false_tv.setText("Комментарий: " + i.getComment());
+                            if (i.getComment() != null)
+                                if (!i.getComment().equals(""))
+                                    holder.false_tv.setText("Комментарий: " + i.getComment());
                             break;
                         case "3":
                             holder.imageView.setImageResource(R.drawable.ic_sentiment_very_satisfied_green_24dp);
-                            if (!i.getComment().equals(""))
-                                holder.false_tv.setText("Комментарий: " + i.getComment());
+                            if (i.getComment() != null)
+                                if (!i.getComment().equals(""))
+                                    holder.false_tv.setText("Комментарий: " + i.getComment());
                             break;
                     }
 

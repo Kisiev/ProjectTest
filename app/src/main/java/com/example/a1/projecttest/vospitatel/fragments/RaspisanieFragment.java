@@ -206,6 +206,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                         medium.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
                         high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
                         statusForComment = "1";
+
                         threadStatus(getScheduleListModels.get(positionSchedule).getId(), "1", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
@@ -303,7 +304,10 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                threadStatus(getScheduleListModels.get(positionSchedule).getId(), status, getKidsByGroupIdModels.get(pos).getId(), commentEdit.getText().toString());
+                threadStatus(getScheduleListModels.get(positionSchedule).getId(), status == null ? getStatusesGroup.get(pos).getStatusId():status, getKidsByGroupIdModels.get(pos).getId(), commentEdit.getText().toString());
+                if (getStatusCode.getCode().equals("200")){
+                    Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
