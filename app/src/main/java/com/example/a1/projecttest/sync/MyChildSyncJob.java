@@ -22,6 +22,7 @@ import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.RestService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,31 +51,40 @@ public class MyChildSyncJob extends Job {
     public void beginThread() {
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getContext());
+        getAllKidStatuses = new ArrayList<>();
         try {
             getAllKidsModels = restService.getKidByParentId(userLoginSession.getID());
         } catch (IOException e) {
             e.printStackTrace();
         }
         if (getAllKidsModels != null)
-        for (int i = 0; i < getAllKidsModels.size(); i++) {
-            try {
-                getStatusKidModels = restService.getStatusKidForFeedModels(getAllKidsModels.get(i).getId());
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (int i = 0; i < getAllKidsModels.size(); i++) {
+                try {
+                    getStatusKidModels = restService.getStatusKidForFeedModels(getAllKidsModels.get(i).getId());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (getStatusKidModels != null)
+                    for (int j = 0; j < getStatusKidModels.size(); j++) {
+                        getAllKidStatuses.add(getStatusKidModels.get(j));
+                    }
             }
-            for (int j = 0; j < getStatusKidModels.size(); j++) {
-                getAllKidStatuses.add(getStatusKidModels.get(j));
-            }
-        }
         if (getAllKidStatuses != null) {
             List<FeedEntity> getBaseFeed = FeedEntity.selectAllNotification();
             if (getAllKidStatuses.size() != getBaseFeed.size()) {
-
-            } else {
                 sendNotification();
+            } else {
+                for (int i = 0; i < getAllKidStatuses.size(); i++) {
+                    if (!getAllKidStatuses.get(i).getUserId().equals(getBaseFeed.get(i).getUserId())
+                            || (!getAllKidStatuses.get(i).getStatusId().equals(getBaseFeed.get(i).getStatusId())
+                            || (!getAllKidStatuses.get(i).getComment().equals(getBaseFeed.get(i).getComment()))))
+                        sendNotification();
+
+                }
             }
         }
     }
+
 
 
     public void sendNotification(){
