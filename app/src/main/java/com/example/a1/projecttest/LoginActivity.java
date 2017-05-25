@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -52,11 +54,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public GetListUsers validUser;
     public GetUserData getUserData;
     public Typeface typeface;
-
+    public ProgressBar progressBar;
     private RadioButton vospitatel;
     private RadioButton roditel;
     private RadioButton zav;
     private RadioButton rebenok;
+    private Handler handler = new Handler();
+
+
 
 
     private void startActivityOnRole (){
@@ -86,55 +91,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         vospitatel = (RadioButton) findViewById(R.id.vospitatel);
         rebenok = (RadioButton) findViewById(R.id.rebenok);
         roditel = (RadioButton) findViewById(R.id.roditel);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         zav.setOnClickListener(this);
         vospitatel.setOnClickListener(this);
         rebenok.setOnClickListener(this);
         roditel.setOnClickListener(this);
         userLoginSession = new UserLoginSession(getApplicationContext());
-        if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty())){
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    getValidToken(userLoginSession.getLogin(), userLoginSession.getPassword());
-                }
-            });
-            thread.start();
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (getUserData != null) {
-                switch (userLoginSession.getRoleId()) {
-                    case 1:
-                        startActivity(new Intent(LoginActivity.this, MainActivity_.class));
-                        finish();
-                        break;
-                    case 2:
-                        startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
-                        finish();
-                        break;
-                    case 3:
-                        startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
-                        finish();
-                        break;
-                    case 4:
 
-                        break;
-                    case 5:
-                        startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
-                        finish();
-                        break;
-                    case 0:
-
-                        break;
-                }
-            } else {
-                userLoginSession.clear();
-                startActivity(new Intent(this, LoginActivity_.class));
-                finish();
-            }
-        }
 
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
         createImage(R.mipmap.background, imageView);
@@ -156,8 +119,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginBT.setTypeface(typeface);
 
         loginTV.addTextChangedListener(textWatcher);
+        if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty()))
+            getValidToken(userLoginSession.getLogin(), userLoginSession.getPassword());
+        else {
+            userLoginSession.clear();
+            //startActivity(new Intent(this, LoginActivity_.class));
+            //finish();
+        }
 
     }
+
 
     public TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -184,8 +155,15 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         imageView.setImageResource(imageResource);
     }
 
+    @UiThread
+    public void gg(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Background()
     public void getValidToken (String login, String password) {
         RestService restService = new RestService();
+        gg();
         try {
             getUserData = restService.getUserData(login, password);
         } catch (JsonSyntaxException e) {
@@ -198,6 +176,32 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             getUserData = null;
             e.printStackTrace();
         }
+
+        if (getUserData == null){
+            Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+        } else {
+            userLoginSession.setUseName(getUserData.getEmail(),
+                    passwordTV.getText().toString(),
+                    getUserData.getId(),
+                    getUserData.getName(),
+                    getUserData.getSurname(),
+                    getUserData.getPatronymic(),
+                    Integer.valueOf(getUserData.getRoleId()),
+                    Integer.valueOf(getUserData.getIsActivated()));
+            if (getUserData.getIsActivated().equals("0"))
+                startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+            else if (getUserData.getIsActivated().equals("1")) {
+                UserLoginSession session = new UserLoginSession(this);
+                if (!session.getSaveLogin().equals(loginTV.getText().toString()) || (!session.getSavePassword().equals(passwordTV.getText().toString()))){
+                    StandardWindowDialog dialog = new StandardWindowDialog(loginTV.getText().toString(), passwordTV.getText().toString(), getUserData);
+                    dialog.show(getFragmentManager(), "dialog");
+                } else {
+                    startActivityOnRole();
+                }
+            }
+            getUserData = null;
+        }
+
     }
 
 
@@ -205,199 +209,24 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.signIn:
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getValidToken(loginTV.getText().toString(), passwordTV.getText().toString());
-                    }
-                });
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (getUserData == null){
-                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
-                } else {
-                    userLoginSession.setUseName(getUserData.getEmail(),
-                            passwordTV.getText().toString(),
-                            getUserData.getId(),
-                            getUserData.getName(),
-                            getUserData.getSurname(),
-                            getUserData.getPatronymic(),
-                            Integer.valueOf(getUserData.getRoleId()),
-                            Integer.valueOf(getUserData.getIsActivated()));
-                    if (getUserData.getIsActivated().equals("0"))
-                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
-                    else if (getUserData.getIsActivated().equals("1")) {
-                        UserLoginSession session = new UserLoginSession(this);
-                        if (!session.getSaveLogin().equals(loginTV.getText().toString()) || (!session.getSavePassword().equals(passwordTV.getText().toString()))){
-                                StandardWindowDialog dialog = new StandardWindowDialog(loginTV.getText().toString(), passwordTV.getText().toString(), getUserData);
-                                dialog.show(getFragmentManager(), "dialog");
-                            } else {
-                                startActivityOnRole();
-                            }
-                    }
-                    getUserData = null;
-
-                }
+                getValidToken(loginTV.getText().toString(), passwordTV.getText().toString());
                 break;
             case R.id.registrationBT:
                 Intent intent = new Intent(LoginActivity.this, SendMessageSignIn_.class);
                 startActivity(intent);
                 break;
             case R.id.zaveduushi:
-                Thread thread1 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getValidToken("kisivaleri@gmail.com", "CAaiTj0Jl4");
-                    }
-                });
-                thread1.start();
-                try {
-                    thread1.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (getUserData == null){
-                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
-                } else {
-                    userLoginSession.setUseName(getUserData.getEmail(),
-                            passwordTV.getText().toString(),
-                            getUserData.getId(),
-                            getUserData.getName(),
-                            getUserData.getSurname(),
-                            getUserData.getPatronymic(),
-                            Integer.valueOf(getUserData.getRoleId()),
-                            Integer.valueOf(getUserData.getIsActivated()));
-                    if (getUserData.getIsActivated().equals("0"))
-                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
-                    else if (getUserData.getIsActivated().equals("1")) {
-                        switch (getUserData.getRoleId()) {
-                            case "1":
-                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
-                                break;
-                            case "2":
-                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
-                                break;
-                            case "3":
-                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
-                                break;
-                            case "4":
-
-                                break;
-                            case "5":
-                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
-                                break;
-                        }
-                    }
-                    getUserData = null;
-                    finish();
-                }
-
+                getValidToken("kisivaleri@gmail.com", "CAaiTj0Jl4");
                 break;
             case R.id.vospitatel:
-                Thread thread2 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getValidToken("v_stronger@mail.ru", "NNhGleFSGB");
-                    }
-                });
-                thread2.start();
-                try {
-                    thread2.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (getUserData == null){
-                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
-                } else {
-                    userLoginSession.setUseName(getUserData.getEmail(),
-                            passwordTV.getText().toString(),
-                            getUserData.getId(),
-                            getUserData.getName(),
-                            getUserData.getSurname(),
-                            getUserData.getPatronymic(),
-                            Integer.valueOf(getUserData.getRoleId()),
-                            Integer.valueOf(getUserData.getIsActivated()));
-                    if (getUserData.getIsActivated().equals("0"))
-                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
-                    else if (getUserData.getIsActivated().equals("1")) {
-                        switch (getUserData.getRoleId()) {
-                            case "1":
-                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
-                                break;
-                            case "2":
-                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
-                                break;
-                            case "3":
-                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
-                                break;
-                            case "4":
-
-                                break;
-                            case "5":
-                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
-                                break;
-                        }
-                    }
-                    getUserData = null;
-                    finish();
-                }
+                getValidToken("v_stronger@mail.ru", "NNhGleFSGB");
                 break;
             case R.id.rebenok:
                 startActivity(new Intent(this, ChildActivity_.class));
                 finish();
                 break;
             case R.id.roditel:
-                Thread thread3 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getValidToken("v.kisiev@asa.guru", "Wg9xsP8flq");
-                    }
-                });
-                thread3.start();
-                try {
-                    thread3.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (getUserData == null){
-                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
-                } else {
-                    userLoginSession.setUseName(getUserData.getEmail(),
-                            passwordTV.getText().toString(),
-                            getUserData.getId(),
-                            getUserData.getName(),
-                            getUserData.getSurname(),
-                            getUserData.getPatronymic(),
-                            Integer.valueOf(getUserData.getRoleId()),
-                            Integer.valueOf(getUserData.getIsActivated()));
-                    if (getUserData.getIsActivated().equals("0"))
-                        startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
-                    else if (getUserData.getIsActivated().equals("1")) {
-                        switch (getUserData.getRoleId()) {
-                            case "1":
-                                startActivity(new Intent(LoginActivity.this, MainActivity_.class));
-                                break;
-                            case "2":
-                                startActivity(new Intent(LoginActivity.this, MainZavDetSad_.class));
-                                break;
-                            case "3":
-                                startActivity(new Intent(LoginActivity.this, ChildActivity_.class));
-                                break;
-                            case "4":
-
-                                break;
-                            case "5":
-                                startActivity(new Intent(LoginActivity.this, VospitatelMainActivity_.class));
-                                break;
-                        }
-                    }
-                    getUserData = null;
-                    finish();
-                }
+                getValidToken("v.kisiev@asa.guru", "Wg9xsP8flq");
                 break;
         }
     }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.a1.projecttest.FeedEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.FeedAdapter;
@@ -38,6 +40,7 @@ import com.example.a1.projecttest.utils.RecyclerTouchListener;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +50,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-@EFragment
+@EFragment(R.layout.feed_fragment)
 public class FeedFragment extends Fragment implements View.OnClickListener {
     File directory;
     Dialog dialog;
@@ -60,6 +63,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     List<GetStatusKidModel> getAllKidStatuses;
     List<GetAllKidsModel> getAllKidsModels;
     int pos = -1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,7 +81,9 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
-        if (savedInstanceState == null) {
+        threadFeed();
+
+       /* if (savedInstanceState == null) {
             threadFeed();
             recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses, getAllKidsModels));
         }
@@ -85,7 +91,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             getAllKidStatuses = (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES);
             getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID);
             recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES),(List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID)));
-        }
+        }*/
         Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);
@@ -106,6 +112,14 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
 
             }
         }));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (GetStatusKidModel i: getAllKidStatuses)
+                    FeedEntity.insertIn(i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment());
+            }
+        }).start();
 
         return view;
     }
@@ -169,7 +183,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                    getFeed();
+                getFeed();
             }
         });
         thread.start();
@@ -178,6 +192,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        setRecyclerView();
     }
 
     public void getFeed(){
@@ -198,6 +213,10 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 getAllKidStatuses.add(getStatusKidModels.get(j));
             }
         }
+
+    }
+    public void setRecyclerView(){
+        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses, getAllKidsModels));
     }
 
     @Override

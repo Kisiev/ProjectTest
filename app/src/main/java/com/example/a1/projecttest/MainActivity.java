@@ -53,6 +53,7 @@ import com.facebook.stetho.Stetho;
 import com.google.gson.JsonSyntaxException;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
