@@ -14,7 +14,7 @@ import android.util.Log;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
-import com.example.a1.projecttest.FeedEntity;
+import com.example.a1.projecttest.entities.FeedEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
@@ -89,9 +89,11 @@ public class MyChildSyncJob extends Job {
 
     public void sendNotification(){
         Log.d("УВЕДОМЛЕНИЕ", "dfsfdsf dsf ");
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.logomychild);
         NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(getContext())
-                .setSmallIcon(R.drawable.ic_sentiment_very_satisfied_black_24dp)
+                .setSmallIcon(R.mipmap.logomychild)
                 .setContentTitle(getContext().getString(R.string.app_name))
+                .setLargeIcon(bitmap)
                 .setContentText(getContext().getString(R.string.notification_message));
         builder.setLights(Color.BLUE, LED_LIGHTS_TIME_ON, LED_LIGHTS_TIME_OFF);
         builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);

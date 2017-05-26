@@ -1,8 +1,6 @@
-package com.example.a1.projecttest;
+package com.example.a1.projecttest.entities;
 
-import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.a1.projecttest.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -92,5 +90,9 @@ public class FeedEntity extends BaseModel {
         SQLite.insert(FeedEntity.class).columns("scheduleId", "statusId", "userId", "name", "scheduleName", "comment")
                 .values(scheduleId, statusId, userId, name, scheduleName, comment)
                 .execute();
+    }
+
+    public static void deleteAll(){
+        SQLite.delete().from(FeedEntity.class).execute();
     }
 }

@@ -119,8 +119,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginBT.setTypeface(typeface);
 
         loginTV.addTextChangedListener(textWatcher);
-        if ((!userLoginSession.getLogin().isEmpty())&&(!userLoginSession.getPassword().isEmpty()))
-            getValidToken(userLoginSession.getLogin(), userLoginSession.getPassword());
+        if ((!userLoginSession.getSaveLogin().isEmpty())&&(!userLoginSession.getSavePassword().isEmpty()))
+            getValidToken(userLoginSession.getSaveLogin(), userLoginSession.getSavePassword());
         else {
             userLoginSession.clear();
             //startActivity(new Intent(this, LoginActivity_.class));
@@ -192,8 +192,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
             else if (getUserData.getIsActivated().equals("1")) {
                 UserLoginSession session = new UserLoginSession(this);
-                if (!session.getSaveLogin().equals(loginTV.getText().toString()) || (!session.getSavePassword().equals(passwordTV.getText().toString()))){
-                    StandardWindowDialog dialog = new StandardWindowDialog(loginTV.getText().toString(), passwordTV.getText().toString(), getUserData);
+                if (!session.getSaveLogin().equals(login) || (!session.getSavePassword().equals(password))){
+                    StandardWindowDialog dialog = new StandardWindowDialog(login, password, getUserData);
                     dialog.show(getFragmentManager(), "dialog");
                 } else {
                     startActivityOnRole();
@@ -219,7 +219,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 getValidToken("kisivaleri@gmail.com", "CAaiTj0Jl4");
                 break;
             case R.id.vospitatel:
-                getValidToken("v_stronger@mail.ru", "NNhGleFSGB");
+                getValidToken("khaidurovdisk@yandex.ru", "dOAwkypR1J");
                 break;
             case R.id.rebenok:
                 startActivity(new Intent(this, ChildActivity_.class));

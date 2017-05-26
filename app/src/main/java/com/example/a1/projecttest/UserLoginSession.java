@@ -130,6 +130,8 @@ public class UserLoginSession {
         prefs.edit().putString(ConstantsManager.PATRONIMYC_USER, "").apply();
         prefs.edit().putInt(ConstantsManager.ROLE_ID_USER, -1).apply();
         prefs.edit().putInt(ConstantsManager.ISACTIVATED_USER, -1).apply();
+        prefs.edit().putString(ConstantsManager.SAVE_LOGIN_FOR_SIGN_UP, "").apply();
+        prefs.edit().putString(ConstantsManager.SAVE_PASSWORD_FOR_SIGN_UP, "").apply();
         prefs.edit().apply();
     }
 }
