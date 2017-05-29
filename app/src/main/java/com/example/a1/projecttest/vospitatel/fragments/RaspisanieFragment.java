@@ -180,6 +180,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy hh:mm");
+        String d = sdf.format(calendar.getTimeInMillis());
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         Button backButton = (Button) dialog.findViewById(R.id.back_button_dialog);
         TextView header = (TextView) dialog.findViewById(R.id.header_text_dialog);
@@ -279,7 +282,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     public void getStatus(String scheduleId, String statusId, String userId, String comment){
         RestService restService = new RestService();
         try {
-            getStatusCode = restService.getStatusForSetStatus(scheduleId, statusId, userId, comment);
+            getStatusCode = restService.getStatusForSetStatus(scheduleId, statusId, userId, comment, "");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,9 @@
 package com.example.a1.projecttest.sync;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.util.Log;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
+import com.example.a1.projecttest.MainActivity_;
 import com.example.a1.projecttest.entities.FeedEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
@@ -44,7 +47,6 @@ public class MyChildSyncJob extends Job {
     @Override
     protected Result onRunJob(Params params) {
         beginThread();
-        Log.d("НАЧАЛООО", " dfdf fds fds fds fds fsdfsd ");
         return Result.SUCCESS;
     }
 
@@ -72,6 +74,7 @@ public class MyChildSyncJob extends Job {
         if (getAllKidStatuses != null) {
             List<FeedEntity> getBaseFeed = FeedEntity.selectAllNotification();
             if (getAllKidStatuses.size() != getBaseFeed.size()) {
+                for (int i = 0; i < getAllKidStatuses.size() - getBaseFeed.size(); i ++)
                 sendNotification();
             } else {
                 for (int i = 0; i < getAllKidStatuses.size(); i++) {
@@ -82,19 +85,24 @@ public class MyChildSyncJob extends Job {
 
                 }
             }
+            for (GetStatusKidModel i: getAllKidStatuses){
+                FeedEntity.insertIn(i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment());
+            }
         }
     }
 
 
 
     public void sendNotification(){
-        Log.d("УВЕДОМЛЕНИЕ", "dfsfdsf dsf ");
         Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.logomychild);
+        Intent intent = new Intent(getContext(), MainActivity_.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
         NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(getContext())
                 .setSmallIcon(R.mipmap.logomychild)
                 .setContentTitle(getContext().getString(R.string.app_name))
                 .setLargeIcon(bitmap)
-                .setContentText(getContext().getString(R.string.notification_message));
+                .setContentText(getContext().getString(R.string.notification_message))
+                .setContentIntent(pendingIntent);
         builder.setLights(Color.BLUE, LED_LIGHTS_TIME_ON, LED_LIGHTS_TIME_OFF);
         builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         builder.setVibrate(VIBRATE_PATTERN);

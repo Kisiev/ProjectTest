@@ -148,9 +148,10 @@ public interface ProjectTestApi {
 
     @GET ("/api/createScheduleStatus.php")
     Call<GetStatusCode> setStatusForKid(@Query("scheduleId") String scheduleId,
-                                              @Query("statusId") String statusId,
-                                              @Query("userId") String userId,
-                                        @Query("comment") String comment);
+                                        @Query("statusId") String statusId,
+                                        @Query("userId") String userId,
+                                        @Query("comment") String comment,
+                                        @Query("completion") String data);
 
     @GET ("/api/getScheduleStatusesByGroupIdAndScheduleId.php")
     Call<List<GetScheduleStatusesByGroupIdModel>> getGroupStatuses(@Query("groupId") String groupId,

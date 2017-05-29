@@ -202,8 +202,8 @@ public final class RestService {
     public List<GetStatusKidModel> getStatusKidForFeedModels (String kidId) throws IOException {
         return restClient.getProjectTestApiEdu().getStatusKidForFeed(kidId).execute().body();
     }
-    public GetStatusCode getStatusForSetStatus(String scheduleId, String statusId, String userId, String comment) throws IOException{
-        return restClient.getProjectTestApiEdu().setStatusForKid(scheduleId, statusId, userId, comment).execute().body();
+    public GetStatusCode getStatusForSetStatus(String scheduleId, String statusId, String userId, String comment, String date) throws IOException{
+        return restClient.getProjectTestApiEdu().setStatusForKid(scheduleId, statusId, userId, comment, date).execute().body();
     }
 
     public List<GetScheduleStatusesByGroupIdModel> getGroupStatuses(String groupId, String schedule) throws IOException{

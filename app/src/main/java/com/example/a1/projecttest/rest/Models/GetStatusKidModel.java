@@ -7,6 +7,9 @@ import java.io.Serializable;
 
 
 public class GetStatusKidModel implements Serializable {
+    @SerializedName("completion")
+    @Expose
+    private String completion;
     @SerializedName("id")
     @Expose
     private String id;
@@ -28,6 +31,14 @@ public class GetStatusKidModel implements Serializable {
     @SerializedName("comment")
     @Expose
     private String comment;
+
+    public String getCompletion() {
+        return completion;
+    }
+
+    public void setCompletion(String completion) {
+        this.completion = completion;
+    }
 
     public String getId() {
         return id;
@@ -84,4 +95,5 @@ public class GetStatusKidModel implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
 }
