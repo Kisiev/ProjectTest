@@ -111,7 +111,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         if (difference[0] != 0 || difference[1] != 0 )
             return date;
         else if (difference[2] == 1)
-            return "вчера";
+            return date;
         else if (difference[2] > 1)
             return date;
         else if (difference[3] != 0)
