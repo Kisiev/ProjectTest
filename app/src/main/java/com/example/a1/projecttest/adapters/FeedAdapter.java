@@ -100,27 +100,35 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         String now = df2.format(calendar.getTime());
         String [] parsebleDate = date.split("[-\\ \\:]");
         String [] parsebleNow = now.split("[-\\ \\:]");
-        int[] difference = new int[parsebleDate.length];
-        for (int i = 0; i < parsebleDate.length; i ++){
-            difference[i] = Integer.valueOf(parsebleNow[i]) - Integer.valueOf(parsebleDate[i]);
-            if ((i == 4)||(i == 5)){
-                if (difference[i] < 0)
-                    difference[i] = difference[i] + 60;
-            }
-        }
-        if (difference[0] != 0 || difference[1] != 0 )
-            return date;
-        else if (difference[2] == 1)
-            return date;
-        else if (difference[2] > 1)
-            return date;
-        else if (difference[3] != 0)
-            return difference[3] + getWordMinutes(String.valueOf(difference[3]), 3);
-        else if (difference[4] != 0)
-            return difference[4] + getWordMinutes(String.valueOf(difference[4]), 4);
-        else if (difference[5] != 0)
-            return difference[5] + getWordMinutes(String.valueOf(difference[5]), 5);
-        else return date;
+        long sumSecondNow = 0;
+        long sumSecondDate = 0;
+        long differenceSum = 0;
+        String returnObject = "";
+
+        sumSecondNow += Integer.valueOf(parsebleNow[2]) * 60 * 60 * 24;
+        sumSecondNow += Integer.valueOf(parsebleNow[3]) * 60 * 60;
+        sumSecondNow += Integer.valueOf(parsebleNow[4]) * 60;
+        sumSecondNow += Integer.valueOf(parsebleNow[5]);
+
+        sumSecondDate += Integer.valueOf(parsebleDate[2]) * 60 * 60 * 24;
+        sumSecondDate += Integer.valueOf(parsebleDate[3]) * 60 * 60;
+        sumSecondDate += Integer.valueOf(parsebleDate[4]) * 60;
+        sumSecondDate += Integer.valueOf(parsebleDate[5]);
+
+        differenceSum = sumSecondNow - sumSecondDate;
+
+        if (differenceSum / 60/ 60 /24 > 0)
+            returnObject = date;
+        else if (differenceSum / 60 /60 > 0 && differenceSum / 60 /60 < 24)
+            returnObject = differenceSum / 60 /60 + getWordMinutes(String.valueOf(differenceSum / 60 /60), 3);
+        else if (differenceSum / 60 > 0 && differenceSum / 60 < 60)
+            returnObject = differenceSum / 60 + getWordMinutes(String.valueOf(differenceSum / 60), 4);
+        else if (differenceSum >= 0 && differenceSum < 60)
+            returnObject = differenceSum + getWordMinutes(String.valueOf(differenceSum), 5);
+        else returnObject = date;
+        if (!parsebleDate[0].equals(parsebleNow[0]) || !parsebleDate[1].equals(parsebleNow[1]))
+            returnObject = date;
+        return returnObject;
     }
 
     public FeedAdapter (Context context, List<GetStatusKidModel> getStatusKidModels, List<GetAllKidsModel> getAllKidsModels) {

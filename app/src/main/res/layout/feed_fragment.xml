@@ -38,11 +38,26 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycler_feed_item">
-            </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/recycler_feed_item">
+                    </android.support.v7.widget.RecyclerView>
+                    <ProgressBar
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/loadingRecyclerBar"
+                        android:visibility="gone"
+                        android:progressDrawable="@drawable/circular_progress_bar" />
+                </LinearLayout>
+
             </ScrollView>
+
     </LinearLayout>
     </RelativeLayout>

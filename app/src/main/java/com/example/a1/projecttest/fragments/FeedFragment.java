@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.entities.FeedEntity;
@@ -40,14 +42,18 @@ import org.androidannotations.annotations.EFragment;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
 @EFragment(R.layout.feed_fragment)
-public class FeedFragment extends Fragment implements View.OnClickListener {
+public class FeedFragment extends Fragment implements View.OnClickListener{
     File directory;
     Dialog dialog;
     RecyclerView recyclerView;
@@ -58,6 +64,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     List<GetStatusKidModel> getStatusKidModels;
     List<GetStatusKidModel> getAllKidStatuses;
     List<GetAllKidsModel> getAllKidsModels;
+    ProgressBar loadingBar;
     int pos = -1;
 
     @Nullable
@@ -65,7 +72,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_fragment, container, false);
         getAllKidStatuses = new ArrayList<>();
-
+        loadingBar = (ProgressBar) view.findViewById(R.id.loadingRecyclerBar);
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -109,6 +116,28 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
 
             }
         }));
+
+
+        recyclerViewFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Toast.makeText(getContext(), "adfadfa", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = verticalLayoutManager.getChildCount();//смотрим сколько элементов на экране
+                int totalItemCount = verticalLayoutManager.getItemCount();//сколько всего элементов
+                int firstVisibleItems = verticalLayoutManager.findFirstVisibleItemPosition();//какая позиция первого элемента
+                if (visibleItemCount + firstVisibleItems - 5 >= totalItemCount){
+                    loadingBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(), "Пошел", Toast.LENGTH_SHORT).show();
+                } else loadingBar.setVisibility(View.GONE);
+
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
@@ -212,6 +241,47 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        for (int i = 0; i < getAllKidStatuses.size(); i ++){
+            for (int j = 0; j < getAllKidStatuses.size()-1; j ++){
+                try {
+                    if (df2.parse(getAllKidStatuses.get(j).getCompletion()).before(df2.parse(getAllKidStatuses.get(j+1).getCompletion()))){
+                        String setId = getAllKidStatuses.get(j).getId();
+                        String setComment = getAllKidStatuses.get(j).getComment();
+                        String setCompletion = getAllKidStatuses.get(j).getCompletion();
+                        String setName = getAllKidStatuses.get(j).getName();
+                        String setScheduleId = getAllKidStatuses.get(j).getScheduleId();
+                        String setScheduleName = getAllKidStatuses.get(j).getScheduleName();
+                        String setStatusId = getAllKidStatuses.get(j).getStatusId();
+                        String setUserId = getAllKidStatuses.get(j).getUserId();
+
+                        getAllKidStatuses.get(j).setId(getAllKidStatuses.get(j+1).getId());
+                        getAllKidStatuses.get(j).setComment(getAllKidStatuses.get(j+1).getComment());
+                        getAllKidStatuses.get(j).setCompletion(getAllKidStatuses.get(j+1).getCompletion());
+                        getAllKidStatuses.get(j).setName(getAllKidStatuses.get(j+1).getName());
+                        getAllKidStatuses.get(j).setScheduleId(getAllKidStatuses.get(j+1).getScheduleId());
+                        getAllKidStatuses.get(j).setScheduleName(getAllKidStatuses.get(j+1).getScheduleName());
+                        getAllKidStatuses.get(j).setStatusId(getAllKidStatuses.get(j+1).getStatusId());
+                        getAllKidStatuses.get(j).setUserId(getAllKidStatuses.get(j+1).getUserId());
+
+                        getAllKidStatuses.get(j+1).setId(setId);
+                        getAllKidStatuses.get(j+1).setComment(setComment);
+                        getAllKidStatuses.get(j+1).setCompletion(setCompletion);
+                        getAllKidStatuses.get(j+1).setName(setName);
+                        getAllKidStatuses.get(j+1).setScheduleId(setScheduleId);
+                        getAllKidStatuses.get(j+1).setScheduleName(setScheduleName);
+                        getAllKidStatuses.get(j+1).setStatusId(setStatusId);
+                        getAllKidStatuses.get(j+1).setUserId(setUserId);
+
+                    }
+                } catch (ParseException e) {
+                e.printStackTrace();
+                }
+
+            }
+        }
+
+
     }
     public void setRecyclerView(){
         recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses, getAllKidsModels));
@@ -259,6 +329,5 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
 
 }
