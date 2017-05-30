@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.entities.FeedEntity;
@@ -36,6 +38,8 @@ import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.jcodecraeer.xrecyclerview.ArrowRefreshHeader;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import org.androidannotations.annotations.EFragment;
 
@@ -57,7 +61,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     File directory;
     Dialog dialog;
     RecyclerView recyclerView;
-    RecyclerView recyclerViewFeed;
+    XRecyclerView recyclerViewFeed;
     FloatingActionButton actionButton;
     Uri selectedImage;
     NavigationView navigationView;
@@ -72,7 +76,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_fragment, container, false);
         getAllKidStatuses = new ArrayList<>();
-        loadingBar = (ProgressBar) view.findViewById(R.id.loadingRecyclerBar);
+
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -81,11 +85,39 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recycler_feed_item);
+        recyclerViewFeed = (XRecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
         threadFeed();
 
+        recyclerViewFeed.setRefreshProgressStyle(0);
+        recyclerViewFeed.setLoadingMoreProgressStyle(0);
+
+        recyclerViewFeed.setLoadingListener(new XRecyclerView.LoadingListener() {
+           @Override
+           public void onRefresh() {
+               new Handler().postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       threadFeed();
+                       setRecyclerView();
+                       recyclerViewFeed.refreshComplete();
+                   }
+               }, 1000);
+
+           }
+
+           @Override
+           public void onLoadMore() {
+               new Handler().postDelayed(new Runnable() {
+                   @Override
+                   public void run() {
+                       recyclerViewFeed.loadMoreComplete();
+                   }
+               }, 1000);
+
+           }
+       });
        /* if (savedInstanceState == null) {
             threadFeed();
             recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses, getAllKidsModels));
@@ -117,27 +149,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
             }
         }));
 
-
-        recyclerViewFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Toast.makeText(getContext(), "adfadfa", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = verticalLayoutManager.getChildCount();//смотрим сколько элементов на экране
-                int totalItemCount = verticalLayoutManager.getItemCount();//сколько всего элементов
-                int firstVisibleItems = verticalLayoutManager.findFirstVisibleItemPosition();//какая позиция первого элемента
-                if (visibleItemCount + firstVisibleItems - 5 >= totalItemCount){
-                    loadingBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "Пошел", Toast.LENGTH_SHORT).show();
-                } else loadingBar.setVisibility(View.GONE);
-
-            }
-        });
 
         new Thread(new Runnable() {
             @Override
@@ -225,6 +236,9 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     public void getFeed(){
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
+        getAllKidStatuses = new ArrayList<>();
+        getAllKidsModels = null;
+        getStatusKidModels = null;
         try {
             getAllKidsModels = restService.getKidByParentId(userLoginSession.getID());
         } catch (IOException e) {

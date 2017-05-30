@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -31,7 +32,7 @@ import static ru.yandex.core.CoreApplication.getActivity;
 import static ru.yandex.core.CoreApplication.readRootForSharedFromGlobalSettings;
 
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
+public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     Context context;
     Typeface typeface;
@@ -179,7 +180,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedHolder> {
         return getStatusKidModels.size();
     }
 
-    class FeedHolder extends RecyclerView.ViewHolder {
+    class FeedHolder extends XRecyclerView.ViewHolder {
         TextView nameChildTV;
         TextView serviceNameTV;
         TextView dateTV;

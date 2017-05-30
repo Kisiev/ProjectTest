@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerView = navigationView.getHeaderView(0);
         session = new UserLoginSession(getApplicationContext());
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+/*        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getResources().getColor(R.color.colorYellow),
                 getResources().getColor(R.color.colorBlue),
                 getResources().getColor(R.color.colorOrange),
-                getResources().getColor(R.color.colorViolet));
+                getResources().getColor(R.color.colorViolet));*/
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
         emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);

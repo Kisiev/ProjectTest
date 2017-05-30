@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/liner_layout"
+    android:layout_marginTop="?attr/actionBarSize"
     xmlns:android="http://schemas.android.com/apk/res/android">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -11,7 +13,7 @@
                 <android.support.design.widget.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
+                    android:textAlignment="center"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_add_black_24dp"
                     android:clickable="true"
@@ -21,43 +23,24 @@
                     />
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="75dp"
                 android:id="@+id/recycler_circle_item">
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_below="@id/liner_names_child"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:id="@+id/liner_service_child">
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="15dp"
-                        android:id="@+id/recycler_feed_item">
-                    </android.support.v7.widget.RecyclerView>
-                    <ProgressBar
-                        style="?android:attr/progressBarStyleSmall"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/loadingRecyclerBar"
-                        android:visibility="gone"
-                        android:progressDrawable="@drawable/circular_progress_bar" />
-                </LinearLayout>
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/liner_names_child">
+              <com.jcodecraeer.xrecyclerview.XRecyclerView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/recycler_feed_item">
+              </com.jcodecraeer.xrecyclerview.XRecyclerView>
+          </RelativeLayout>
 
-            </ScrollView>
 
-    </LinearLayout>
+
+
     </RelativeLayout>
