@@ -14,6 +14,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
+import com.example.a1.projecttest.entities.FeedEntity;
+import com.example.a1.projecttest.entities.GetAllKidEntity;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -36,8 +38,8 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     Context context;
     Typeface typeface;
-    List<GetStatusKidModel> getStatusKidModels;
-    List<GetAllKidsModel> getAllKidsModels;
+    List<FeedEntity> getStatusKidModels;
+    List<GetAllKidEntity> getAllKidsModels;
 
     @NonNull
     private String getWordMinutes(String difference, int i){
@@ -132,7 +134,7 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
         return returnObject;
     }
 
-    public FeedAdapter (Context context, List<GetStatusKidModel> getStatusKidModels, List<GetAllKidsModel> getAllKidsModels) {
+    public FeedAdapter (Context context, List<FeedEntity> getStatusKidModels, List<GetAllKidEntity> getAllKidsModels) {
         this.getStatusKidModels = getStatusKidModels;
         this.getAllKidsModels = getAllKidsModels;
         this.context = context;
@@ -150,7 +152,7 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
         typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
 
         for (int j = 0; j < getAllKidsModels.size(); j ++) {
-            if (getStatusKidModels.get(position).getUserId().equals(getAllKidsModels.get(j).getId())) {
+            if (getStatusKidModels.get(position).getUserId().equals(getAllKidsModels.get(j).get_id())) {
                 holder.nameChildTV.setText(getAllKidsModels.get(j).getName());
                 holder.serviceNameTV.setText("Закончил ''" + getStatusKidModels.get(position).getScheduleName() + "'' со статусом ''" + getStatusKidModels.get(position).getName() + "''");
                 holder.nameChildTV.setTypeface(typeface);

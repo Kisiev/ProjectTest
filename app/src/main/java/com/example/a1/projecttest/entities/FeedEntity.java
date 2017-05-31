@@ -14,6 +14,8 @@ public class FeedEntity extends BaseModel {
     @PrimaryKey
     private long id;
     @Column()
+    private String _id;
+    @Column()
     private String scheduleId;
     @Column()
     private String statusId;
@@ -25,6 +27,26 @@ public class FeedEntity extends BaseModel {
     private String scheduleName;
     @Column()
     private String comment;
+    @Column()
+    private String completion;
+
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+
+    public String getCompletion() {
+        return completion;
+    }
+
+    public void setCompletion(String completion) {
+        this.completion = completion;
+    }
 
     public long getId() {
         return id;
@@ -86,9 +108,9 @@ public class FeedEntity extends BaseModel {
         return SQLite.select().from(FeedEntity.class).queryList();
     }
 
-    public static void insertIn(String scheduleId, String statusId, String userId, String name, String scheduleName, String comment){
-        SQLite.insert(FeedEntity.class).columns("scheduleId", "statusId", "userId", "name", "scheduleName", "comment")
-                .values(scheduleId, statusId, userId, name, scheduleName, comment)
+    public static void insertIn(String _id, String scheduleId, String statusId, String userId, String name, String scheduleName, String comment, String completion){
+        SQLite.insert(FeedEntity.class).columns("_id", "scheduleId", "statusId", "userId", "name", "scheduleName", "comment", "completion")
+                .values(_id, scheduleId, statusId, userId, name, scheduleName, comment, completion)
                 .execute();
     }
 

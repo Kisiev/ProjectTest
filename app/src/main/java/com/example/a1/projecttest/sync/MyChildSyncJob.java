@@ -76,20 +76,24 @@ public class MyChildSyncJob extends Job {
             if (getAllKidStatuses.size() != getBaseFeed.size()) {
                 FeedEntity.deleteAll();
                 for (GetStatusKidModel i : getAllKidStatuses)
-                    FeedEntity.insertIn(i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment());
+                    FeedEntity.insertIn(i.getId(), i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment(), i.getCompletion());
                 sendNotification();
             } else {
                 for (int i = 0; i < getAllKidStatuses.size(); i++) {
                     if (!getAllKidStatuses.get(i).getUserId().equals(getBaseFeed.get(i).getUserId())
                             || (!getAllKidStatuses.get(i).getStatusId().equals(getBaseFeed.get(i).getStatusId())
-                            || (!getAllKidStatuses.get(i).getComment().equals(getBaseFeed.get(i).getComment()))))
+                            || (!getAllKidStatuses.get(i).getComment().equals(getBaseFeed.get(i).getComment())))){
                         sendNotification();
+                        FeedEntity.deleteAll();
+                        for (GetStatusKidModel j: getAllKidStatuses){
+                            FeedEntity.insertIn(j.getId(), j.getScheduleId(), j.getStatusId(), j.getUserId(), j.getName(), j.getScheduleName(), j.getComment(), j.getCompletion());
+                        }
+                    }
+
 
                 }
             }
-            for (GetStatusKidModel i: getAllKidStatuses){
-                FeedEntity.insertIn(i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment());
-            }
+
         }
     }
 
