@@ -28,13 +28,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.entities.FeedEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.FeedAdapter;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.example.a1.projecttest.rest.ProjectTestApi;
 import com.example.a1.projecttest.rest.RestService;
+import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
@@ -53,6 +58,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import rx.internal.util.RxThreadFactory;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -161,6 +168,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
 
         return view;
     }
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

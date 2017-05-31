@@ -103,5 +103,6 @@
     <string name="back">Назад</string>
     <string name="comment">Комментарий</string>
     <string name="add_comment">Добавить комментарий</string>
+    <string name="input_key">Введите ключ</string>
 
 </resources>

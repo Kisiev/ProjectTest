@@ -74,7 +74,9 @@ public class MyChildSyncJob extends Job {
         if (getAllKidStatuses != null) {
             List<FeedEntity> getBaseFeed = FeedEntity.selectAllNotification();
             if (getAllKidStatuses.size() != getBaseFeed.size()) {
-                for (int i = 0; i < getAllKidStatuses.size() - getBaseFeed.size(); i ++)
+                FeedEntity.deleteAll();
+                for (GetStatusKidModel i : getAllKidStatuses)
+                    FeedEntity.insertIn(i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment());
                 sendNotification();
             } else {
                 for (int i = 0; i < getAllKidStatuses.size(); i++) {
@@ -94,11 +96,11 @@ public class MyChildSyncJob extends Job {
 
 
     public void sendNotification(){
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.logomychild);
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.logotype);
         Intent intent = new Intent(getContext(), MainActivity_.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
         NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(getContext())
-                .setSmallIcon(R.mipmap.logomychild)
+                .setSmallIcon(R.mipmap.logotype)
                 .setContentTitle(getContext().getString(R.string.app_name))
                 .setLargeIcon(bitmap)
                 .setContentText(getContext().getString(R.string.notification_message))
