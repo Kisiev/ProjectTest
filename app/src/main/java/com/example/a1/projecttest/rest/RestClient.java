@@ -18,7 +18,6 @@ public class RestClient {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(httpLoggingInterceptor)
@@ -28,12 +27,12 @@ public class RestClient {
                 .baseUrl(BASE_NAME)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
-                .addCallAdapterFactory(rxAdapter)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         Retrofit retrofit1 = new Retrofit.Builder()
                 .baseUrl(BASE_NAME_EDU)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(rxAdapter)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
 

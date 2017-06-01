@@ -45,6 +45,12 @@ import org.androidannotations.annotations.UiThread;
 import java.io.IOException;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 @EActivity (R.layout.login_activity)
 public class LoginActivity extends Activity implements View.OnClickListener {
 
@@ -52,7 +58,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public TextView loginTV, passwordTV;
     public TextView header;
     public GetListUsers validUser;
-    public GetUserData getUserData;
+    public GetUserData getUserDataOn;
     public Typeface typeface;
     public ProgressBar progressBar;
     private RadioButton vospitatel;
@@ -60,12 +66,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private RadioButton zav;
     private RadioButton rebenok;
     private Handler handler = new Handler();
-
+    Observable<GetUserData> observable;
 
 
 
     private void startActivityOnRole (){
-        switch (getUserData.getRoleId()) {
+        switch (getUserDataOn.getRoleId()) {
             case "1":
                 startActivity(new Intent(LoginActivity.this, MainActivity_.class));
                 break;
@@ -160,47 +166,65 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    @Background()
-    public void getValidToken (String login, String password) {
+
+    public void getValidToken (final String login, final String password) {
         RestService restService = new RestService();
         gg();
         try {
-            getUserData = restService.getUserData(login, password);
+            observable = restService.getUserData(login, password);
+            observable.subscribeOn(Schedulers.io())
+                    .subscribe(new Observer<GetUserData>() {
+                        @Override
+                        public void onCompleted() {
+                            if (getUserDataOn == null){
+                                Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+                            } else {
+                                userLoginSession.setUseName(getUserDataOn.getEmail(),
+                                        passwordTV.getText().toString(),
+                                        getUserDataOn.getId(),
+                                        getUserDataOn.getName(),
+                                        getUserDataOn.getSurname(),
+                                        getUserDataOn.getPatronymic(),
+                                        Integer.valueOf(getUserDataOn.getRoleId()),
+                                        Integer.valueOf(getUserDataOn.getIsActivated()));
+                                if (getUserDataOn.getIsActivated().equals("0"))
+                                    startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+                                else if (getUserDataOn.getIsActivated().equals("1")) {
+                                    UserLoginSession session = new UserLoginSession(getApplication());
+                                    if (!session.getSaveLogin().equals(login) || (!session.getSavePassword().equals(password))){
+                                        StandardWindowDialog dialog = new StandardWindowDialog(login, password, getUserDataOn);
+                                        dialog.show(getFragmentManager(), "dialog");
+                                    } else {
+                                        startActivityOnRole();
+                                    }
+                                }
+                                getUserDataOn = null;
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(GetUserData getUserData) {
+                            getUserDataOn = getUserData;
+                        }
+                    });
+
         } catch (JsonSyntaxException e) {
-            getUserData = null;
+            getUserDataOn = null;
             e.printStackTrace();
         } catch (IOException e) {
-            getUserData = null;
+            getUserDataOn = null;
             e.printStackTrace();
         } catch (RuntimeException e){
-            getUserData = null;
+            getUserDataOn = null;
             e.printStackTrace();
         }
 
-        if (getUserData == null){
-            Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
-        } else {
-            userLoginSession.setUseName(getUserData.getEmail(),
-                    passwordTV.getText().toString(),
-                    getUserData.getId(),
-                    getUserData.getName(),
-                    getUserData.getSurname(),
-                    getUserData.getPatronymic(),
-                    Integer.valueOf(getUserData.getRoleId()),
-                    Integer.valueOf(getUserData.getIsActivated()));
-            if (getUserData.getIsActivated().equals("0"))
-                startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
-            else if (getUserData.getIsActivated().equals("1")) {
-                UserLoginSession session = new UserLoginSession(this);
-                if (!session.getSaveLogin().equals(login) || (!session.getSavePassword().equals(password))){
-                    StandardWindowDialog dialog = new StandardWindowDialog(login, password, getUserData);
-                    dialog.show(getFragmentManager(), "dialog");
-                } else {
-                    startActivityOnRole();
-                }
-            }
-            getUserData = null;
-        }
+
 
     }
 

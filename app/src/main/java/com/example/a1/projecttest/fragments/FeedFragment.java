@@ -49,6 +49,7 @@ import com.jcodecraeer.xrecyclerview.ArrowRefreshHeader;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +65,8 @@ import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -78,10 +81,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     NavigationView navigationView;
     List<GetStatusKidModel> getStatusKidModels;
     List<GetStatusKidModel> getAllKidStatuses;
-    List<GetAllKidsModel> getAllKidsModels;
+    List<GetAllKidsModel> getAllKidsModelsOn;
     Observable<GetStatusKidModel> getStatusKidModelObservable;
     Observer<GetStatusKidModel> observer;
-    ProgressBar loadingBar;
+    Observable<List<FeedEntity>> feedObserver;
+    Observable<List<GetAllKidsModel>> getAllKidsObserver;
+    Observable<List<GetStatusKidModel>> getAllStatusesObserver;
+
     int pos = -1;
 
     @Nullable
@@ -101,8 +107,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         recyclerViewFeed = (XRecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
-        threadFeed();
-        observe();
+        getFeed();
         recyclerViewFeed.setRefreshProgressStyle(0);
         recyclerViewFeed.setLoadingMoreProgressStyle(0);
 
@@ -112,8 +117,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                new Handler().postDelayed(new Runnable() {
                    @Override
                    public void run() {
-                       threadFeed();
-                       observe();
+                       getFeed();
                        recyclerViewFeed.refreshComplete();
                    }
                }, 1000);
@@ -162,6 +166,12 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
             }
         }));
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setRecyclerView();
+            }
+        }, 1000);
 
        /* new Thread(new Runnable() {
             @Override
@@ -175,43 +185,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    public void observe(){
-        getStatusKidModelObservable = Observable.from(getAllKidStatuses);
-        observer = new Observer<GetStatusKidModel>() {
-            @Override
-            public void onCompleted() {
-                GetAllKidEntity.deleteAll();
-                for (GetAllKidsModel i: getAllKidsModels){
-                    GetAllKidEntity.insertIn(i.getId(), i.getName(), i.getSurname(), i.getPatronymic());
-                }
-                FeedEntity.deleteAll();
-                for (GetStatusKidModel i: getAllKidStatuses){
-                    FeedEntity.insertIn(i.getId(),
-                            i.getScheduleId(),
-                            i.getStatusId(),
-                            i.getUserId(),
-                            i.getName(),
-                            i.getScheduleName(),
-                            i.getComment(),
-                            i.getCompletion());
-                }
-                setRecyclerView();
-                Log.d("OBSERVER", "COMPL");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(GetStatusKidModel getStatusKidModel) {
-
-            }
-        };
-        getStatusKidModelObservable.subscribe(observer);
-
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -268,44 +241,50 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void threadFeed(){
-        final Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getFeed();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void getFeed(){
-        RestService restService = new RestService();
+        final RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         getAllKidStatuses = new ArrayList<>();
-        getAllKidsModels = null;
+        getAllKidsModelsOn = null;
         getStatusKidModels = null;
 
         try {
-            getAllKidsModels = restService.getKidByParentId(userLoginSession.getID());
+            getAllKidsObserver = restService.getKidByParentId(userLoginSession.getID());
+            getAllKidsObserver.subscribeOn(Schedulers.io())
+                    .subscribe(new Observer<List<GetAllKidsModel>>() {
+                        @Override
+                        public void onCompleted() {
+                            sortByDate();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(List<GetAllKidsModel> getAllKidsModels) {
+                            getAllKidsModelsOn = getAllKidsModels;
+                            for (int i = 0; i < getAllKidsModels.size(); i ++) {
+                                try {
+                                    getStatusKidModels = restService.getStatusKidForFeedModels(getAllKidsModels.get(i).getId());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                for (int j = 0; j < getStatusKidModels.size(); j ++) {
+                                    getAllKidStatuses.add(getStatusKidModels.get(j));
+                                }
+                            }
+                        }
+                    });
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < getAllKidsModels.size(); i ++) {
-            try {
-                getStatusKidModels = restService.getStatusKidForFeedModels(getAllKidsModels.get(i).getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            for (int j = 0; j < getStatusKidModels.size(); j ++) {
-                getAllKidStatuses.add(getStatusKidModels.get(j));
-            }
-        }
 
+
+    }
+
+    public void sortByDate(){
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0; i < getAllKidStatuses.size(); i ++){
             for (int j = 0; j < getAllKidStatuses.size()-1; j ++){
@@ -340,13 +319,21 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
 
                     }
                 } catch (ParseException e) {
-                e.printStackTrace();
+                    e.printStackTrace();
                 }
 
             }
         }
-        Log.d("THREAD", "COM");
+        FeedEntity.deleteAll();
+        GetAllKidEntity.deleteAll();
+        for (GetStatusKidModel i : getAllKidStatuses)
+            FeedEntity.insertIn(i.getId(), i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment(), i.getCompletion());
+        for (GetAllKidsModel i: getAllKidsModelsOn)
+            GetAllKidEntity.insertIn(i.getId(), i.getName(), i.getSurname(), i.getPatronymic());
+
     }
+
+    @UiThread()
     public void setRecyclerView(){
         recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), FeedEntity.selectAllNotification(), GetAllKidEntity.selectAll()));
     }
@@ -354,7 +341,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(ConstantsManager.FEED_ALL_KID, (Serializable) getAllKidsModels);
+        outState.putSerializable(ConstantsManager.FEED_ALL_KID, (Serializable) getAllKidsModelsOn);
         outState.putSerializable(ConstantsManager.FEED_ALL_STATUSES, (Serializable) getAllKidStatuses);
     }
 
@@ -390,7 +377,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.child_add_action_button:
                 //showDialog(false, -1);
-                observe();
+                setRecyclerView();
                 break;
         }
     }

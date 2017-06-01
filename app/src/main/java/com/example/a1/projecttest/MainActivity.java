@@ -61,6 +61,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
+import rx.schedulers.Schedulers;
+
 @EActivity (R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
@@ -70,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView emailTextNavView;
     TextView idTextNavView;
     UserLoginSession session;
-    List<GetAllKidsModel> getAllKidsModels;
+    List<GetAllKidsModel> getAllKidsModelsOn;
+    Observable<List<GetAllKidsModel>> getAllKidsObserver;
     GetScheduleByKidIdModel getScheduleByKidIdModel;
     GetListUsers getUserData;
     NotificationManager mNotificationManager;
@@ -78,26 +83,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem menuItem;
     int fragmentName = 0;
-    public void beginThread(){
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getAllKid();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public void getAllKid(){
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(this);
         try {
-            getAllKidsModels = restService.getKidByParentId(userLoginSession.getID());
+            getAllKidsObserver = restService.getKidByParentId(userLoginSession.getID());
+            getAllKidsObserver.subscribeOn(Schedulers.io())
+                    .subscribe(new Observer<List<GetAllKidsModel>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(List<GetAllKidsModel> getAllKidsModels) {
+                                getAllKidsModelsOn = getAllKidsModels;
+                        }
+                    });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,15 +139,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-            outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS, (Serializable) getAllKidsModels);
+            outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS, (Serializable) getAllKidsModelsOn);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null || !savedInstanceState.containsKey(ConstantsManager.SAVE_INSTAANTS_GET_KIDS)){
-            beginThread();
-        } else  getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS);
+            getAllKid();
+
     }
 
     public void clearSync(){
@@ -231,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragmentClassName.equals(FeedFragment.class.getName())) {
             setTitle(getString(R.string.life_feed));
         } else if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
-            setTitle(getAllKidsModels.get(fragmentName).getName());
+            setTitle(getAllKidsModelsOn.get(fragmentName).getName());
         }
     }
 
@@ -242,8 +250,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menu.add(Menu.NONE, 223, 0, "Живая лента");
         menu.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
         menu = menu.addSubMenu("Дети");
-        for (int i = 0; i < getAllKidsModels.size(); i ++){
-            menu.add(Menu.NONE, Integer.parseInt(getAllKidsModels.get(i).getId()), ConstantsManager.ID_MENU_ITEM, getAllKidsModels.get(i).getName());
+        for (int i = 0; i < getAllKidsModelsOn.size(); i ++){
+            menu.add(Menu.NONE, Integer.parseInt(getAllKidsModelsOn.get(i).getId()), ConstantsManager.ID_MENU_ITEM, getAllKidsModelsOn.get(i).getName());
             menu.getItem(i).setIcon(R.drawable.ic_person_black_24dp);
         }
         Menu chatParentsMenu = navigationView.getMenu();
@@ -358,13 +366,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void takeKidFragment(){
         if (menuItem != null)
-        for (int i = 0; i < getAllKidsModels.size(); i ++) {
-            if (menuItem.getItemId() == Integer.valueOf(getAllKidsModels.get(i).getId())){
-                threadGetUserData(getAllKidsModels.get(i).getId());
+        for (int i = 0; i < getAllKidsModelsOn.size(); i ++) {
+            if (menuItem.getItemId() == Integer.valueOf(getAllKidsModelsOn.get(i).getId())){
+                threadGetUserData(getAllKidsModelsOn.get(i).getId());
                 if (getUserData != null)
                     if (getUserData.getEmail() == null){
                         UserLoginSession userLoginSession = new UserLoginSession(this);
-                        threadGetGroup(getAllKidsModels.get(i).getId());
+                        threadGetGroup(getAllKidsModelsOn.get(i).getId());
                         if (getScheduleByKidIdModel != null)
                             userLoginSession.saveKidId(getScheduleByKidIdModel.getGroupId(), getScheduleByKidIdModel.getUserId());
                         VospitannikFragment vs = new VospitannikFragment();

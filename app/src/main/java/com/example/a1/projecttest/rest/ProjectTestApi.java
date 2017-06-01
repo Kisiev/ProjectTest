@@ -27,6 +27,8 @@ import retrofit2.Call;
         import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import rx.Observable;
+
 public interface ProjectTestApi {
     @GET("/api/getUserById.php")
     Call<GetListUsers> getUserById (@Query("id") String id);
@@ -47,8 +49,8 @@ public interface ProjectTestApi {
     Call<String> getPassByEmail (@Query("email") String email);
 
     @GET("/api/signing_in.php")
-    Call<GetUserData> getUserData (@Query("email") String email,
-                                   @Query("password") String password);
+    Observable<GetUserData> getUserData (@Query("email") String email,
+                                         @Query("password") String password);
     @POST("/api/activation.php")
     Call<GetStatusCode> setUserData (@Query("id") String id,
                                      @Query("patronymic") String patronymic,
@@ -126,7 +128,7 @@ public interface ProjectTestApi {
                                       @Query("patronymic") String patronymic,
                                       @Query("groupId") String groupId);
     @GET("/api/getAllKidsByParentId.php")
-    Call<List<GetAllKidsModel>> getKidByParentId(@Query("parentId") String parentId);
+    Observable<List<GetAllKidsModel>> getKidByParentId(@Query("parentId") String parentId);
 
     @GET("/api/getKindergartenGroupByTutorId.php")
     Call<GetGroupByTutorModel> getTutorGroup(@Query("tutorId") String tutorId);

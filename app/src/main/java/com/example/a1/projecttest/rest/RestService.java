@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 import retrofit2.http.Query;
+import rx.Observable;
 
 
 public final class RestService {
@@ -71,10 +72,9 @@ public final class RestService {
                 .execute().body();
     }
 
-    public GetUserData getUserData (String email, String password) throws IOException {
+    public Observable<GetUserData> getUserData (String email, String password) throws IOException {
         return restClient.getProjectTestApiEdu()
-                .getUserData(email, password)
-                .execute().body();
+                .getUserData(email, password);
     }
 
     public List<GetUserData> getUsersByRole (String id) throws IOException {
@@ -175,8 +175,8 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().addKidInGroup(parentId, name, surname, patronymic, groupId).execute().body();
     }
 
-    public List<GetAllKidsModel> getKidByParentId(String parentId)throws IOException{
-        return restClient.getProjectTestApiEdu().getKidByParentId(parentId).execute().body();
+    public Observable<List<GetAllKidsModel>> getKidByParentId(String parentId)throws IOException{
+        return restClient.getProjectTestApiEdu().getKidByParentId(parentId);
     }
 
     public GetGroupByTutorModel getGroupByTutorModel (String tutorId) throws IOException{

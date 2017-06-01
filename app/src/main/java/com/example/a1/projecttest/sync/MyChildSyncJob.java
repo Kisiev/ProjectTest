@@ -46,11 +46,11 @@ public class MyChildSyncJob extends Job {
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
-        beginThread();
+       // beginThread();
         return Result.SUCCESS;
     }
 
-    public void beginThread() {
+   /* public void beginThread() {
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getContext());
         getAllKidStatuses = new ArrayList<>();
@@ -97,7 +97,7 @@ public class MyChildSyncJob extends Job {
         }
     }
 
-
+*/
 
     public void sendNotification(){
         Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.mipmap.logotype);
