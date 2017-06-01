@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .subscribe(new Observer<List<GetAllKidsModel>>() {
                         @Override
                         public void onCompleted() {
-
+                            setMenu(navigationView);
                         }
 
                         @Override
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         idTextNavView.setTypeface(typeface);
         setNavigationViewItem();
         saveGlideParam(imageView, MainActivity.this, null, R.mipmap.avatar);
-        setMenu(navigationView);
+
 
         initStetho();
 

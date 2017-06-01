@@ -82,8 +82,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     List<GetStatusKidModel> getStatusKidModels;
     List<GetStatusKidModel> getAllKidStatuses;
     List<GetAllKidsModel> getAllKidsModelsOn;
-    Observable<GetStatusKidModel> getStatusKidModelObservable;
-    Observer<GetStatusKidModel> observer;
+    Observable<FeedEntity> getStatusKidModelObservable;
+    Observer<FeedEntity> observer;
     Observable<List<FeedEntity>> feedObserver;
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
     Observable<List<GetStatusKidModel>> getAllStatusesObserver;
@@ -110,18 +110,28 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         getFeed();
         recyclerViewFeed.setRefreshProgressStyle(0);
         recyclerViewFeed.setLoadingMoreProgressStyle(0);
+        getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification()).observeOn(AndroidSchedulers.mainThread());
+        observer = new Observer<FeedEntity>() {
+            @Override
+            public void onCompleted() {
+                setRecyclerView();
+                recyclerViewFeed.refreshComplete();
+            }
 
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(FeedEntity feedEntity) {
+
+            }
+        };
         recyclerViewFeed.setLoadingListener(new XRecyclerView.LoadingListener() {
            @Override
            public void onRefresh() {
-               new Handler().postDelayed(new Runnable() {
-                   @Override
-                   public void run() {
-                       getFeed();
-                       recyclerViewFeed.refreshComplete();
-                   }
-               }, 1000);
-
+               getFeed();
            }
 
            @Override
@@ -165,13 +175,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
 
             }
         }));
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setRecyclerView();
-            }
-        }, 1000);
 
        /* new Thread(new Runnable() {
             @Override
@@ -255,6 +258,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void onCompleted() {
                             sortByDate();
+                            getStatusKidModelObservable.subscribe(observer);
                         }
 
                         @Override
