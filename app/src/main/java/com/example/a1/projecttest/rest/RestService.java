@@ -28,6 +28,7 @@ import java.util.List;
 
 import retrofit2.http.Query;
 import rx.Observable;
+import rx.Observer;
 
 
 public final class RestService {
@@ -98,10 +99,14 @@ public final class RestService {
                 .execute().body();
     }
 
-    public List<GetScheduleListModel> getScheduleListModel (String groupId, String dayId) throws IOException{
+    public Observable<List<GetScheduleListModel>> getScheduleListModel (String groupId, String dayId) throws IOException{
         return restClient.getProjectTestApiEdu()
-                .getSchedule(groupId, dayId)
-                .execute().body();
+                .getSchedule(groupId, dayId);
+    }
+
+    public List<GetScheduleListModel> getScheduleListModelWithoutRx (String groupId, String dayId) throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getScheduleWithoutRx (groupId, dayId).execute().body();
     }
 
     public List<GetServiceListModel> getServiceList () throws IOException{
@@ -195,8 +200,8 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().getCoordinates(userId).execute().body();
     }
 
-    public List<GetStatusKidModel> getStatusKidModels (String kidId) throws IOException {
-        return restClient.getProjectTestApiEdu().getStatusKid(kidId).execute().body();
+    public Observable<List<GetStatusKidModel>> getStatusKidModels (String kidId) throws IOException {
+        return restClient.getProjectTestApiEdu().getStatusKid(kidId);
     }
 
     public List<GetStatusKidModel> getStatusKidForFeedModels (String kidId) throws IOException {

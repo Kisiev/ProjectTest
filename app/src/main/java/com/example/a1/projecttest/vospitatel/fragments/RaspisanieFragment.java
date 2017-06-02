@@ -21,6 +21,7 @@ import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
+import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 
@@ -38,6 +39,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
+
 @EFragment
 public class RaspisanieFragment extends Fragment implements View.OnClickListener{
 
@@ -45,7 +49,8 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     Dialog dialog;
     GetStatusCode getStatusCode;
     List<GetKidsByGroupIdModel> getKidsByGroupIdModels;
-    List<GetScheduleListModel> getScheduleListModels;
+    List<GetScheduleListModel> getScheduleListModelsOn;
+    Observable<List<GetScheduleListModel>> getScheduleListObserver;
     PositionSaveSession session;
     ImageView low;
     ImageView medium;
@@ -80,7 +85,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, null, getActivity()));
+        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModelsOn, null, getActivity()));
         // loadServicesForTutor();
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -120,7 +125,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         RestService restService = new RestService();
         UserLoginSession session = new UserLoginSession(getActivity());
         try {
-            getStatusesGroup = restService.getGroupStatuses(session.getTutorGroupId(), getScheduleListModels.get(positionSchedule).getId());
+            getStatusesGroup = restService.getGroupStatuses(session.getTutorGroupId(), getScheduleListModelsOn.get(positionSchedule).getId());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,7 +142,23 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         }
 
         try {
-            getScheduleListModels = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(day == 1?7:day - 1));
+            getScheduleListObserver = restService.getScheduleListModel(userLoginSession.getTutorGroupId(), String.valueOf(day == 1?7:day - 1));
+            getScheduleListObserver.subscribe(new Observer<List<GetScheduleListModel>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(List<GetScheduleListModel> getScheduleListModels) {
+                    getScheduleListModelsOn = getScheduleListModels;
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -210,7 +231,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                         high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
                         statusForComment = "1";
 
-                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "1", getKidsByGroupIdModels.get(position).getId(), "");
+                        threadStatus(getScheduleListModelsOn.get(positionSchedule).getId(), "1", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                     }
@@ -222,7 +243,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                         low.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
                         high.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
                         statusForComment = "2";
-                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "2", getKidsByGroupIdModels.get(position).getId(), "");
+                        threadStatus(getScheduleListModelsOn.get(positionSchedule).getId(), "2", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                     }
@@ -234,7 +255,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                         low.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_24dp);
                         medium.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
                         statusForComment = "3";
-                        threadStatus(getScheduleListModels.get(positionSchedule).getId(), "3", getKidsByGroupIdModels.get(position).getId(), "");
+                        threadStatus(getScheduleListModelsOn.get(positionSchedule).getId(), "3", getKidsByGroupIdModels.get(position).getId(), "");
                         if (getStatusCode != null)
                             Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                     }
@@ -307,7 +328,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                threadStatus(getScheduleListModels.get(positionSchedule).getId(), status == null ? getStatusesGroup.get(pos).getStatusId():status, getKidsByGroupIdModels.get(pos).getId(), commentEdit.getText().toString());
+                threadStatus(getScheduleListModelsOn.get(positionSchedule).getId(), status == null ? getStatusesGroup.get(pos).getStatusId():status, getKidsByGroupIdModels.get(pos).getId(), commentEdit.getText().toString());
                 if (getStatusCode.getCode().equals("200")){
                     Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                 }

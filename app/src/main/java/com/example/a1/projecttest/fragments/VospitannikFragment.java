@@ -27,6 +27,7 @@ import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.androidannotations.annotations.EFragment;
@@ -41,13 +42,20 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 @EFragment(R.layout.vospitanik_fragment)
 public class VospitannikFragment extends Fragment {
-    RecyclerView recyclerView;
+    XRecyclerView recyclerView;
     Thread getScheduleThread;
     List<GetStatusKidModel> getStatusKidModels;
-
     List<GetScheduleListModel> getScheduleListModels;
+    Observable<List<GetStatusKidModel>> getStatusKidObserver;
+    Observable<List<GetScheduleListModel>> getScheduleListObserver;
+
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
         return String.valueOf(time);
@@ -64,23 +72,23 @@ public class VospitannikFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.vospit_recycler);
+        recyclerView = (XRecyclerView) view.findViewById(R.id.vospit_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        getScheduleThread = new Thread(new Runnable() {
+        getScheduleList();
+
+        recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
-            public void run() {
+            public void onRefresh() {
                 getScheduleList();
+                recyclerView.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                recyclerView.loadMoreComplete();
             }
         });
-        getScheduleThread.start();
-        try {
-            getScheduleThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getStatusKidModels, getActivity()));
-        //  loadEntity();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -168,18 +176,55 @@ public class VospitannikFragment extends Fragment {
 */
 
     public void getScheduleList(){
-        RestService restService = new RestService();
-        UserLoginSession userLoginSession = new UserLoginSession(getActivity());
+        final RestService restService = new RestService();
+        final UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         try {
-            if (!userLoginSession.getKidGroupSchedule().equals(""))
-                getScheduleListModels = restService.getScheduleListModel(userLoginSession.getKidGroupSchedule(), String.valueOf(day == 1?7:day - 1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            getStatusKidModels = restService.getStatusKidModels(userLoginSession.getKidId());
+            if (!userLoginSession.getKidGroupSchedule().equals("")) {
+                getScheduleListObserver = restService.getScheduleListModel(userLoginSession.getKidGroupSchedule(), String.valueOf(day == 1 ? 7 : day - 1));
+                getScheduleListObserver.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<List<GetScheduleListModel>>() {
+                            @Override
+                            public void onCompleted() {
+                                try {
+                                    getStatusKidObserver = restService.getStatusKidModels(userLoginSession.getKidId());
+                                    getStatusKidObserver.subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new Observer<List<GetStatusKidModel>>() {
+                                                @Override
+                                                public void onCompleted() {
+                                                    recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getStatusKidModels, getActivity()));
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onNext(List<GetStatusKidModel> getStatusKidModels) {
+                                                    VospitannikFragment.this.getStatusKidModels = getStatusKidModels;
+                                                }
+                                            });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(List<GetScheduleListModel> getScheduleListModels) {
+                                VospitannikFragment.this.getScheduleListModels = getScheduleListModels;
+                            }
+                        });
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

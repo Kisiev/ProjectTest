@@ -28,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
+import rx.Observer;
 
 public interface ProjectTestApi {
     @GET("/api/getUserById.php")
@@ -63,9 +64,11 @@ public interface ProjectTestApi {
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
 
     @GET("/api/getScheduleByGroupIdAndDayId.php")
-    Call<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id,
-                                                  @Query("dayId") String dayId);
-
+    Observable<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id,
+                                                      @Query("dayId") String dayId);
+    @GET("/api/getScheduleByGroupIdAndDayId.php")
+    Call<List<GetScheduleListModel>> getScheduleWithoutRx (@Query("groupId") String id,
+                                                        @Query("dayId") String dayId);
     @GET("/api/getServiceList.php")
     Call<List<GetServiceListModel>> getServiceList();
 
@@ -143,7 +146,7 @@ public interface ProjectTestApi {
     Call<GetCoordinatesByUserIdModel> getCoordinates (@Query("userId") String id);
 
     @GET ("/api/getScheduleStatusesByKidId.php")
-    Call<List<GetStatusKidModel>> getStatusKid(@Query("KidId") String kidId);
+    Observable<List<GetStatusKidModel>> getStatusKid(@Query("KidId") String kidId);
 
     @GET ("/api/getAllScheduleStatusesByKidId.php")
     Call<List<GetStatusKidModel>> getStatusKidForFeed(@Query("KidId") String kidId);

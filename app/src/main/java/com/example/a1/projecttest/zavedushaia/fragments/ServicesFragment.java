@@ -55,6 +55,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import rx.Observable;
+
 import static ru.yandex.core.CoreApplication.getActivity;
 
 
@@ -71,9 +73,11 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     GetStatusCode statusCodeDelete;
     Thread getServiceListThread;
     List<GetKinderGartenGroup> getKinderGartenGroups;
+    Observable<List<GetKinderGartenGroup>> getKinderGartenGroupsObserver;
     Typeface typeface;
     Spinner allGroupsSpinner;
     GetKinderGarten getKinderGarten;
+    Observable<GetKinderGarten> getKinderGartenObservable;
     List<GetAllDaysModel> getAllDaysModels;
     List<GetScheduleListModel> getScheduleListModels;
     Spinner dayOfWeekSpinner;
@@ -198,7 +202,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         RestService restService = new RestService();
 
         try {
-            getScheduleListModels = restService.getScheduleListModel(((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId(),   ((GetAllDaysModel) dayOfWeekSpinner.getSelectedItem()).getId());
+            getScheduleListModels = restService.getScheduleListModelWithoutRx(((GetKinderGartenGroup)allGroupsSpinner.getSelectedItem()).getGroupId(),   ((GetAllDaysModel) dayOfWeekSpinner.getSelectedItem()).getId());
         } catch (IOException e) {
             e.printStackTrace();
         }

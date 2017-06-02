@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.a1.projecttest.entities.GetAllKidEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
@@ -63,6 +65,9 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 @EActivity (R.layout.activity_main)
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem menuItem;
     int fragmentName = 0;
-
+    ProgressBar progressBar;
 
     public void getAllKid(){
         RestService restService = new RestService();
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             getAllKidsObserver = restService.getKidByParentId(userLoginSession.getID());
             getAllKidsObserver.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<List<GetAllKidsModel>>() {
                         @Override
                         public void onCompleted() {
@@ -99,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         @Override
                         public void onError(Throwable e) {
-
+                            Toast.makeText(getApplication(), "Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -140,13 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
             outState.putSerializable(ConstantsManager.SAVE_INSTAANTS_GET_KIDS, (Serializable) getAllKidsModelsOn);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-            getAllKid();
-
     }
 
     public void clearSync(){
@@ -220,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         replaceFragment(new FeedFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
+        getAllKid();
     }
 
     private void setNavigationViewItem(){

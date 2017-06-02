@@ -65,7 +65,9 @@ import java.util.List;
 import rx.Observable;
 import rx.Observer;
 import rx.Scheduler;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
@@ -87,7 +89,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     Observable<List<FeedEntity>> feedObserver;
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
     Observable<List<GetStatusKidModel>> getAllStatusesObserver;
-
+    Subscription subscription;
+    int limit = 10;
     int pos = -1;
 
     @Nullable
@@ -108,19 +111,17 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
         getFeed();
-        recyclerViewFeed.setRefreshProgressStyle(0);
-        recyclerViewFeed.setLoadingMoreProgressStyle(0);
-        getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification()).observeOn(AndroidSchedulers.mainThread());
+        getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification(limit)).observeOn(AndroidSchedulers.mainThread());
         observer = new Observer<FeedEntity>() {
             @Override
             public void onCompleted() {
-                setRecyclerView();
+                setRecyclerView(limit);
                 recyclerViewFeed.refreshComplete();
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Toast.makeText(getActivity(), "Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -131,18 +132,18 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         recyclerViewFeed.setLoadingListener(new XRecyclerView.LoadingListener() {
            @Override
            public void onRefresh() {
+               limit = 10;
                getFeed();
            }
 
            @Override
            public void onLoadMore() {
-               new Handler().postDelayed(new Runnable() {
-                   @Override
-                   public void run() {
-                       recyclerViewFeed.loadMoreComplete();
-                   }
-               }, 1000);
-
+               limit += 10;
+               if (FeedEntity.selectAllNotification(limit).size() < limit){
+                   limit = FeedEntity.selectAllNotification(limit).size();
+                   subscription = getStatusKidModelObservable.subscribe(observer);
+               } else subscription = getStatusKidModelObservable.subscribe(observer);
+               recyclerViewFeed.loadMoreComplete();
            }
        });
        /* if (savedInstanceState == null) {
@@ -154,7 +155,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
             getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID);
             recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES),(List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID)));
         }*/
-        Toast.makeText(getActivity(), "Вы зашли как пользователь: " + sharedPreferences.getString(ConstantsManager.LOGIN, ""), Toast.LENGTH_LONG).show();
         actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
         actionButton.setOnClickListener(this);
 
@@ -252,18 +252,19 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         getStatusKidModels = null;
 
         try {
+
             getAllKidsObserver = restService.getKidByParentId(userLoginSession.getID());
             getAllKidsObserver.subscribeOn(Schedulers.io())
                     .subscribe(new Observer<List<GetAllKidsModel>>() {
                         @Override
                         public void onCompleted() {
                             sortByDate();
-                            getStatusKidModelObservable.subscribe(observer);
+                            subscription = getStatusKidModelObservable.subscribe(observer);
                         }
 
                         @Override
                         public void onError(Throwable e) {
-
+                            Toast.makeText(getActivity(), "Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -338,8 +339,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     }
 
     @UiThread()
-    public void setRecyclerView(){
-        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), FeedEntity.selectAllNotification(), GetAllKidEntity.selectAll()));
+    public void setRecyclerView(int limit){
+        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), FeedEntity.selectAllNotification(limit), GetAllKidEntity.selectAll()));
+        if (!subscription.isUnsubscribed()){
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -380,8 +384,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                 startActivityForResult(i, ConstantsManager.TYPE_PHOTO);
                 break;
             case R.id.child_add_action_button:
-                //showDialog(false, -1);
-                setRecyclerView();
+                recyclerViewFeed.setVerticalScrollbarPosition(7);
                 break;
         }
     }

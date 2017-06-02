@@ -16,6 +16,7 @@ import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import static ru.yandex.core.CoreApplication.getActivity;
 
-public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
+public class VospitannikAdapter extends XRecyclerView.Adapter<VospitannikAdapter.VospitannikHolder> {
 
     List<GetScheduleListModel> services;
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm:ss");
@@ -52,10 +53,10 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
         typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         typefaceItalic = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Italic.ttf");
-        holder.textView.setText(services.get(holder.getAdapterPosition()).getName());
-        holder.timeTv.setText((services.get(holder.getAdapterPosition()).getTimeFrom().substring(0, 5))
+        holder.textView.setText(services.get(position).getName());
+        holder.timeTv.setText((services.get(position).getTimeFrom().substring(0, 5))
                 + " - "
-                + (services.get(holder.getAdapterPosition()).getTimeTo().substring(0, 5)));
+                + (services.get(position).getTimeTo().substring(0, 5)));
 
        // holder.cardView.setCardBackgroundColor(services.get(holder.getAdapterPosition()).getColor());
        // holder.false_tv.setText(services.get(holder.getAdapterPosition()).getComments());
@@ -133,7 +134,7 @@ public class VospitannikAdapter extends RecyclerView.Adapter<VospitannikAdapter.
         return services.size();
     }
 
-    public class VospitannikHolder extends RecyclerView.ViewHolder{
+    public class VospitannikHolder extends XRecyclerView.ViewHolder{
         TextView textView;
         RecyclerView recyclerView;
         TextView timeTv;
