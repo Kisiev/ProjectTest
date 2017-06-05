@@ -47,6 +47,7 @@ import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 import com.jcodecraeer.xrecyclerview.ArrowRefreshHeader;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.mindorks.placeholderview.SmoothLinearLayoutManager;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
@@ -111,11 +112,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
         getFeed();
-        getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification(limit)).observeOn(AndroidSchedulers.mainThread());
+        getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification()).observeOn(AndroidSchedulers.mainThread());
         observer = new Observer<FeedEntity>() {
             @Override
             public void onCompleted() {
-                setRecyclerView(limit);
+                setRecyclerView();
                 recyclerViewFeed.refreshComplete();
             }
 
@@ -132,17 +133,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         recyclerViewFeed.setLoadingListener(new XRecyclerView.LoadingListener() {
            @Override
            public void onRefresh() {
-               limit = 10;
                getFeed();
            }
 
            @Override
            public void onLoadMore() {
-               limit += 10;
-               if (FeedEntity.selectAllNotification(limit).size() < limit){
-                   limit = FeedEntity.selectAllNotification(limit).size();
-                   subscription = getStatusKidModelObservable.subscribe(observer);
-               } else subscription = getStatusKidModelObservable.subscribe(observer);
                recyclerViewFeed.loadMoreComplete();
            }
        });
@@ -339,8 +334,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     }
 
     @UiThread()
-    public void setRecyclerView(int limit){
-        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), FeedEntity.selectAllNotification(limit), GetAllKidEntity.selectAll()));
+    public void setRecyclerView(){
+        recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), FeedEntity.selectAllNotification(), GetAllKidEntity.selectAll()));
         if (!subscription.isUnsubscribed()){
             subscription.unsubscribe();
         }

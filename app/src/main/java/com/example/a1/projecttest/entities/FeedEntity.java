@@ -104,8 +104,8 @@ public class FeedEntity extends BaseModel {
         this.comment = comment;
     }
 
-    public static List<FeedEntity> selectAllNotification(int limit){
-        return SQLite.select().from(FeedEntity.class).limit(limit).queryList();
+    public static List<FeedEntity> selectAllNotification(){
+        return SQLite.select().from(FeedEntity.class).queryList();
     }
 
     public static void insertIn(String _id, String scheduleId, String statusId, String userId, String name, String scheduleName, String comment, String completion){

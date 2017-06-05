@@ -23,23 +23,16 @@ import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
-import com.example.a1.projecttest.fragments.ArrivingFragment;
 import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.vospitatel.fragments.AttendanceFragment;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
-import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
-import com.example.a1.projecttest.zavedushaia.fragments.GroupsFragment;
-import com.example.a1.projecttest.zavedushaia.fragments.RegisterChildFragment;
-import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
-import com.example.a1.projecttest.zavedushaia.fragments.TutorFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
-
-import static ru.yandex.core.CoreApplication.getActivity;
 
 @EActivity(R.layout.vospitatel_activity)
 public class VospitatelMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -166,8 +159,9 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         int id = item.getOrder();
         switch (id){
             case 0:
-             //   ArrivingFragment arrivingFragment = new ArrivingFragment();
-                //replaceFragment(arrivingFragment, R.id.content_main);
+                AttendanceFragment attendanceFragment = new AttendanceFragment();
+                replaceFragment(attendanceFragment, R.id.content_main);
+                updateToolbarTitle(attendanceFragment);
                 break;
             case 1:
                 RaspisanieFragment raspisanieFragment = new RaspisanieFragment();
