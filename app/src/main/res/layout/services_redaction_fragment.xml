@@ -17,23 +17,26 @@
             android:background="@drawable/shape_button"
             android:id="@+id/add_serviceBT"/>
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/all_group_of_kindergarten" />
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/day_of_week_spinner" />
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.RecyclerView
+            <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycler_service">
-            </android.support.v7.widget.RecyclerView>
-        </ScrollView>
+                android:layout_height="wrap_content"
+                android:id="@+id/all_group_of_kindergarten" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/day_of_week_spinner" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scrollView"
+                android:layout_below="@+id/day_of_week_spinner">
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recycler_service">
+                </android.support.v7.widget.RecyclerView>
+            </ScrollView>
 
     </LinearLayout>
 </RelativeLayout>

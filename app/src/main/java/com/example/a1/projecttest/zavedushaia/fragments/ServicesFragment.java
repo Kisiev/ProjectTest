@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -81,6 +82,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
     List<GetAllDaysModel> getAllDaysModels;
     List<GetScheduleListModel> getScheduleListModels;
     Spinner dayOfWeekSpinner;
+
     DateFormat dfDate_day_time= new SimpleDateFormat("HH:mm");
     private void notifyInputError(String error){
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();

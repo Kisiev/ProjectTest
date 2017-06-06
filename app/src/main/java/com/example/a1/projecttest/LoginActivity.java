@@ -237,7 +237,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.registrationBT:
                 Intent intent = new Intent(LoginActivity.this, SendMessageSignIn_.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
                 break;
             case R.id.zaveduushi:
                 getValidToken("kisivaleri@gmail.com", "CAaiTj0Jl4");

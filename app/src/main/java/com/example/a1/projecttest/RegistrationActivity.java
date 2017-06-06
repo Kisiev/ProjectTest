@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -181,6 +182,21 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         contactRb.setTypeface(typeface);
         registrationButton.setTypeface(typeface);
         header.setTypeface(typeface);
+
+        zavRb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (zavRb.isChecked()){
+                    regionSpinner.setVisibility(View.VISIBLE);
+                    citySpinner.setVisibility(View.VISIBLE);
+                    kinderGartenSpinner.setVisibility(View.VISIBLE);
+                } else {
+                    regionSpinner.setVisibility(View.GONE);
+                    citySpinner.setVisibility(View.GONE);
+                    kinderGartenSpinner.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -216,12 +232,14 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                 SpinnerRegionsAndCitiesAdapter spinnerRegionsAndCitiesAdapter = new SpinnerRegionsAndCitiesAdapter(this, getAllCities);
                 spinnerRegionsAndCitiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 citySpinner.setAdapter(spinnerRegionsAndCitiesAdapter);
+                citySpinner.setVisibility(View.VISIBLE);
                 break;
             case R.id.city_spinner_registration:
                 threadBegin("kinder");
                 SpinnerKinderGartenadapter spinnerKinderGartenadapter = new SpinnerKinderGartenadapter(this, getKinderGartensByCityCodes);
                 spinnerKinderGartenadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 kinderGartenSpinner.setAdapter(spinnerKinderGartenadapter);
+                kinderGartenSpinner.setVisibility(View.VISIBLE);
                 break;
             case R.id.kinder_garten_spinner_registration:
                 break;

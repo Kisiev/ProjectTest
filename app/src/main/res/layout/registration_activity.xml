@@ -64,16 +64,19 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:id="@+id/region_spinner_registration">
 
         </Spinner>
         <Spinner
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:id="@+id/city_spinner_registration" />
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:id="@+id/kinder_garten_spinner_registration" />
         <RadioGroup
             android:layout_width="wrap_content"

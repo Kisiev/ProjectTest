@@ -24,7 +24,7 @@ public class AttendanceFragment extends Fragment {
         View view = inflater.inflate(R.layout.attendance_layout, container, false);
         recyclerView = (XRecyclerView) view.findViewById(R.id.kid_present_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new AttendanceAdapter());
+        recyclerView.setAdapter(new AttendanceAdapter(getActivity()));
         return view;
     }
 }

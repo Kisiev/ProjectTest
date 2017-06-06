@@ -2,54 +2,58 @@
 <android.support.v7.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/attendance_card"
-
-    app:cardElevation="2dp"
     app:cardUseCompatPadding="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/relative_attendance"
-        android:layout_margin="@dimen/activity_vertical_margin">
+        android:layout_margin="@dimen/standard_margin"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:layout_toLeftOf="@+id/linear_attendance"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:layout_weight="1"
                 android:text="dasfasf"
                 android:id="@+id/attendance_fio_text_view" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_weight="9"
+                android:layout_height="wrap_content"
+                android:id="@+id/is_present_icon"
+                app:srcCompat="@drawable/ic_send_black_24dp">
+
+            </ImageView>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:id="@+id/linear_attendance">
+            android:gravity="end"
+            android:orientation="horizontal">
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/present_in_button"
-                android:background="@color/colorAlphaNULL"
-                android:text="Пришел"
-                android:gravity="center" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/present_out_button"
+                android:textColor="@color/colorOrange"
                 android:background="@color/colorAlphaNULL"
                 android:text="Не пришел"
                 android:gravity="center" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/present_in_button"
+                android:textColor="@color/colorOrange"
+                android:background="@color/colorAlphaNULL"
+                android:text="Пришел"
+                android:gravity="center" />
         </LinearLayout>
-
-    </RelativeLayout>
-
+    </LinearLayout>
 
 
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
