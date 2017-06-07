@@ -48,5 +48,6 @@ public class ConstantsManager {
     final public static String NAME_CHILD= "name_child";
     final public static String FEED_ALL_KID= "feed_all_kid";
     final public static String FEED_ALL_STATUSES= "feed_all_statuses";
+    final public static String USER_ROLE= "user_role";
 
 }

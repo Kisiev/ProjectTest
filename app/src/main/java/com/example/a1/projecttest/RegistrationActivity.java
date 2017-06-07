@@ -108,7 +108,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     userSurname.getText().toString(),
                     userName.getText().toString(),
                     String.valueOf(roleId),
-                    ((GetKinderGartensByCityCode)kinderGartenSpinner.getSelectedItem()).getId());
+                    roleId == 2 ?((GetKinderGartensByCityCode)kinderGartenSpinner.getSelectedItem()).getId():"");
         } catch (IOException e) {
             e.printStackTrace();
         }

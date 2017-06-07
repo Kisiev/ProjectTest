@@ -6,6 +6,7 @@ import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
+import com.example.a1.projecttest.rest.Models.GetAttendanceModel;
 import com.example.a1.projecttest.rest.Models.GetCoordinatesByUserIdModel;
 import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
@@ -156,6 +157,10 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().getKidsByGroup(groupId).execute().body();
     }
 
+    public Observable<List<GetKidsByGroupIdModel>> getKidsByGroupIdObserber (String groupId) throws IOException {
+        return restClient.getProjectTestApiEdu().getKidsByGroupObserver(groupId);
+    }
+
     public List<GetAllRegionsModel> getAllRegionsModels () throws IOException {
         return restClient.getProjectTestApiEdu().getAllRegions().execute().body();
     }
@@ -213,5 +218,13 @@ public final class RestService {
 
     public List<GetScheduleStatusesByGroupIdModel> getGroupStatuses(String groupId, String schedule) throws IOException{
         return restClient.getProjectTestApiEdu().getGroupStatuses(groupId, schedule).execute().body();
+    }
+
+    public Observable<List<GetAttendanceModel>> getAttendance (String groupId, String date) throws IOException {
+        return restClient.getProjectTestApiEdu().getAttendance(groupId, date);
+    }
+
+    public Observable<GetStatusCode> createAttendance (String userId, String isPresent) throws IOException {
+        return restClient.getProjectTestApiEdu().createAttendance(userId, isPresent);
     }
 }

@@ -53,6 +53,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
         if (fragmentClassName.equals(RaspisanieFragment.class.getName())) {
             setTitle(getString(R.string.list_rasp));
+        } else if (fragmentClassName.equals(AttendanceFragment.class.getName())){
+            setTitle(getString(R.string.attendance_text));
         }
     }
 
@@ -92,6 +94,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
                 } else finish();
             }
         });
+        replaceFragment(new AttendanceFragment(), R.id.content_main);
+        updateToolbarTitle(new AttendanceFragment());
         //ArrivingFragment arrivingFragment = new ArrivingFragment();
         //replaceFragment(arrivingFragment, R.id.content_main);
     }

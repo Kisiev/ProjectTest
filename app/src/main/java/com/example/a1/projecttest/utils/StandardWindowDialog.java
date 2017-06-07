@@ -41,7 +41,6 @@ public class StandardWindowDialog extends DialogFragment {
                 break;
         }
     }
-
     public StandardWindowDialog (){}
 
     public StandardWindowDialog (String login, String password, GetUserData getUserData){
@@ -53,6 +52,7 @@ public class StandardWindowDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final Bundle bundle = new Bundle();
         builder.setMessage(R.string.ask_save_pass)
                 .setPositiveButton(R.string.cast_tracks_chooser_dialog_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

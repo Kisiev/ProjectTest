@@ -5,6 +5,7 @@ import com.example.a1.projecttest.rest.Models.GetAllDaysModel;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetAllRegionsModel;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
+import com.example.a1.projecttest.rest.Models.GetAttendanceModel;
 import com.example.a1.projecttest.rest.Models.GetCoordinatesByUserIdModel;
 import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
@@ -111,6 +112,9 @@ public interface ProjectTestApi {
     @GET ("/api/getAllKidsByGroupId.php")
     Call<List<GetKidsByGroupIdModel>> getKidsByGroup (@Query("groupId") String groupId);
 
+    @GET ("/api/getAllKidsByGroupId.php")
+    Observable<List<GetKidsByGroupIdModel>> getKidsByGroupObserver (@Query("groupId") String groupId);
+
     @GET ("/api/getAllRegions.php")
     Call<List<GetAllRegionsModel>> getAllRegions ();
 
@@ -161,4 +165,12 @@ public interface ProjectTestApi {
     @GET ("/api/getScheduleStatusesByGroupIdAndScheduleId.php")
     Call<List<GetScheduleStatusesByGroupIdModel>> getGroupStatuses(@Query("groupId") String groupId,
                                                                    @Query("scheduleId") String schedule);
+
+    @GET("/api/getAttendanceByGroupId.php")
+    Observable<List<GetAttendanceModel>> getAttendance (@Query("groupId") String groupId,
+                                                        @Query("date") String date);
+
+    @GET("/api/createAttendance.php")
+    Observable<GetStatusCode> createAttendance (@Query("userId") String userId,
+                                                        @Query("isPresent") String isPresent);
 }

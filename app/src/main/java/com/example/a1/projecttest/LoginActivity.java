@@ -193,6 +193,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     UserLoginSession session = new UserLoginSession(getApplication());
                                     if (!session.getSaveLogin().equals(login) || (!session.getSavePassword().equals(password))){
                                         StandardWindowDialog dialog = new StandardWindowDialog(login, password, getUserDataOn);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString(ConstantsManager.LOGIN, login);
+                                        bundle.putString(ConstantsManager.PASSWORD, password);
+                                        bundle.putSerializable(ConstantsManager.USER_ROLE, getUserDataOn);
+                                        dialog.setArguments(bundle);
                                         dialog.show(getFragmentManager(), "dialog");
                                     } else {
                                         startActivityOnRole();
@@ -237,7 +242,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.registrationBT:
                 Intent intent = new Intent(LoginActivity.this, SendMessageSignIn_.class);
-                startActivity(new Intent(LoginActivity.this, RegistrationActivity_.class));
+                startActivity(intent);
                 break;
             case R.id.zaveduushi:
                 getValidToken("kisivaleri@gmail.com", "CAaiTj0Jl4");

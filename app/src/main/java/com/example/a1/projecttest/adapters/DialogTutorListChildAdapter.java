@@ -3,6 +3,8 @@ package com.example.a1.projecttest.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,13 +64,13 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
                 if (i.getUserId().equals(users.get(position).getId())){
                     switch (i.getStatusId()){
                         case "1":
-                            holder.lowSmile.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sentiment_dissatisfied_red_24dp));
+                            holder.lowSmile.setImageDrawable( AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_sentiment_dissatisfied_red_24dp));
                             break;
                         case "2":
-                            holder.mediumSmile.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sentiment_satisfied_yellow_24dp));
+                            holder.mediumSmile.setImageDrawable( AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_sentiment_satisfied_yellow_24dp));
                             break;
                         case "3":
-                            holder.highSmile.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_sentiment_very_satisfied_green_24dp));
+                            holder.highSmile.setImageDrawable(AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_sentiment_very_satisfied_green_24dp));
                             break;
                     }
                 }
