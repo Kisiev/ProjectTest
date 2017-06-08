@@ -131,6 +131,11 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
             }
         });
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getTutorGroup(){

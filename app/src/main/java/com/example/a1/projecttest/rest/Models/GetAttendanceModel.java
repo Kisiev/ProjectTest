@@ -47,6 +47,18 @@ public class GetAttendanceModel implements Serializable {
     @Expose
     private String groupId;
 
+    public GetAttendanceModel (){}
+    public GetAttendanceModel(GetAttendanceModel getAttendanceModel) {
+        this.name = getAttendanceModel.getName();
+        this.surname = getAttendanceModel.getSurname();
+        this.patronymic = getAttendanceModel.getPatronymic();
+        this.time = getAttendanceModel.getTime();
+        this.date = getAttendanceModel.getDate();
+        this.groupId = getAttendanceModel.getGroupId();
+        this.isPresent = getAttendanceModel.getIsPresent();
+        this.userId = getAttendanceModel.getUserId();
+    }
+
     public String getId() {
         return id;
     }
