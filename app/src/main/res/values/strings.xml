@@ -104,5 +104,7 @@
     <string name="comment">Комментарий</string>
     <string name="add_comment">Добавить комментарий</string>
     <string name="input_key">Введите ключ</string>
+    <string name="id_kid">Идентификатор ребенка</string>
+    <string name="add_child_header_dialog">Добавить ребенка</string>
 
 </resources>

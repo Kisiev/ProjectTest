@@ -3,12 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Spinner
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/date_spinner"
-        android:layout_margin="@dimen/activity_vertical_margin">
-    </Spinner>
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:inputType="date"
+        android:focusableInTouchMode="true"
+        android:id="@+id/attendance_date_edit_text"
+        android:hint="ГГГГ-ММ-ДД"/>
    <com.jcodecraeer.xrecyclerview.XRecyclerView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"

@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         Menu chatParentsMenu = navigationView.getMenu();
         chatParentsMenu = chatParentsMenu.addSubMenu("Родители");
-        chatParentsMenu.add(Menu.NONE, 123, 3, "Валерий Павлович");
+        chatParentsMenu.add(Menu.NONE, 123, 3, "Иванов Иван");
         chatParentsMenu.getItem(0).setIcon(R.drawable.ic_receipt_black_24dp);
         Menu exitMenu = navigationView.getMenu();
         exitMenu.add(Menu.NONE, 123, 4, "Выход");

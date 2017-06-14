@@ -76,21 +76,20 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                Button reductionButtonGroup = (Button) view.findViewById(R.id.edit_button_group);
-                reductionButtonGroup.setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.edit_button_group).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getActivity(), "РЕДАКТОР", Toast.LENGTH_SHORT).show();
                     }
                 });
-                CardView cardView = (CardView) view.findViewById(R.id.card_group_list_fragment);
-                cardView.setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.card_group_list_fragment).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         pos = position;
                         showDialogAddKid();
                     }
                 });
+
             }
 
             @Override
@@ -199,6 +198,9 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.cancel_button_add_group:
                 dialog.dismiss();
+                break;
+            case R.id.cancel_button_child_in_group:
+                addKidDialog.dismiss();
                 break;
             case R.id.add_button_child_in_group:
                 if (pos != -1){

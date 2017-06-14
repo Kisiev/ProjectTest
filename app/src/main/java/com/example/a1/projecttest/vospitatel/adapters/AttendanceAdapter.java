@@ -41,10 +41,11 @@ public class AttendanceAdapter extends XRecyclerView.Adapter<AttendanceAdapter.A
         if (getAttendanceModels.get(position).getTime() != null)
             holder.time.setText(getAttendanceModels.get(position).getTime());
         if (getAttendanceModels.get(position).getIsPresent() != null)
-        holder.imageView.setImageDrawable(getAttendanceModels.get(position).getIsPresent().equals("0")?
-                AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_clear_red_24dp):
-                AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_done_green_24dp));
-        else holder.imageView.setImageDrawable(AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_clear_red_24dp));
+            if (getAttendanceModels.get(position).getTime() != null) {
+                holder.imageView.setImageDrawable(getAttendanceModels.get(position).getIsPresent().equals("0") ?
+                        AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_clear_red_24dp) :
+                        AppCompatDrawableManager.get().getDrawable(context, R.drawable.ic_done_green_24dp));
+            }
     }
 
     @Override

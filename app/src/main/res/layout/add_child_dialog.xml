@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_horizontal_margin">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_child_header_dialog"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/standard_margin"
+        android:textSize="11pt"
+        android:id="@+id/text_add_kid_text_view"/>
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/standard_margin"
+    android:hint="@string/id_kid"
+    android:id="@+id/kid_id_edit_text"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAlphaNULL"
+            android:layout_weight="1"
+            android:textColor="@color/colorOrange"
+            android:id="@+id/cancel_bt_dialog"
+            android:text="@string/cancel"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorOrange"
+            android:background="@color/colorAlphaNULL"
+            android:id="@+id/send_bt_dialog"
+            android:text="@string/send_message"/>
+    </LinearLayout>
+
+</LinearLayout>

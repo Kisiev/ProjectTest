@@ -9,17 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/liner_names_child">
-                <android.support.design.widget.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textAlignment="center"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_add_black_24dp"
-                    android:clickable="true"
-                    app:backgroundTint="@color/colorBlue"
-                    android:id="@+id/child_add_action_button"
-                    android:layout_margin="16dp"
-                    />
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

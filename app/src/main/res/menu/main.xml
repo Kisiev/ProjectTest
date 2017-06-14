@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="Показать на карте"
+        android:title="Добавить ребенка"
         app:showAsAction="never" />
 </menu>

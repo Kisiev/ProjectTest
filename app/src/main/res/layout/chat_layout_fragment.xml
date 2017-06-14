@@ -11,8 +11,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_gravity="center"
             android:id="@+id/chat_liner">
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Находится в разработке"/>
         </LinearLayout>
     </ScrollView>
 
@@ -26,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:id="@+id/chat_text"
+            android:enabled="false"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/chat_button"
             android:hint="Введите текст"/>
@@ -33,6 +39,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/chat_button"
+            android:enabled="false"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_alignParentEnd="true"
             android:background="@drawable/ic_send_black_24dp"/>

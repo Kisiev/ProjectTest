@@ -79,7 +79,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     Dialog dialog;
     RecyclerView recyclerView;
     XRecyclerView recyclerViewFeed;
-    FloatingActionButton actionButton;
     Uri selectedImage;
     NavigationView navigationView;
     List<GetStatusKidModel> getStatusKidModels;
@@ -150,8 +149,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
             getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID);
             recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES),(List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID)));
         }*/
-        actionButton = (FloatingActionButton) view.findViewById(R.id.child_add_action_button);
-        actionButton.setOnClickListener(this);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -377,9 +374,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                 Intent i = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 startActivityForResult(i, ConstantsManager.TYPE_PHOTO);
-                break;
-            case R.id.child_add_action_button:
-                recyclerViewFeed.setVerticalScrollbarPosition(7);
                 break;
         }
     }
