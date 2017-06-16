@@ -75,7 +75,6 @@ import static android.app.Activity.RESULT_OK;
 
 @EFragment(R.layout.feed_fragment)
 public class FeedFragment extends Fragment implements View.OnClickListener{
-    File directory;
     Dialog dialog;
     RecyclerView recyclerView;
     XRecyclerView recyclerViewFeed;
@@ -86,37 +85,39 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     List<GetAllKidsModel> getAllKidsModelsOn;
     Observable<FeedEntity> getStatusKidModelObservable;
     Observer<FeedEntity> observer;
-    Observable<List<FeedEntity>> feedObserver;
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
-    Observable<List<GetStatusKidModel>> getAllStatusesObserver;
     Subscription subscription;
-    int limit = 10;
+    ProgressBar progressBar;
     int pos = -1;
+
+    private void senPreLoader(boolean isRefresh){
+        if (isRefresh){
+            progressBar.setVisibility(View.GONE);
+        } else  progressBar.setVisibility(View.VISIBLE);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.feed_fragment, container, false);
         getAllKidStatuses = new ArrayList<>();
-
+        progressBar = (ProgressBar) view.findViewById(R.id.feed_loading);
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
-      //  recyclerView.setAdapter(new CircleImageAdapter(listService, getActivity()));
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         recyclerViewFeed = (XRecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
-        getFeed();
+        getFeed(false);
         getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification()).observeOn(AndroidSchedulers.mainThread());
         observer = new Observer<FeedEntity>() {
             @Override
             public void onCompleted() {
                 setRecyclerView();
                 recyclerViewFeed.refreshComplete();
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -132,7 +133,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         recyclerViewFeed.setLoadingListener(new XRecyclerView.LoadingListener() {
            @Override
            public void onRefresh() {
-               getFeed();
+               getFeed(true);
            }
 
            @Override
@@ -140,15 +141,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                recyclerViewFeed.loadMoreComplete();
            }
        });
-       /* if (savedInstanceState == null) {
-            threadFeed();
-            recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), getAllKidStatuses, getAllKidsModels));
-        }
-        else {
-            getAllKidStatuses = (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES);
-            getAllKidsModels = (List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID);
-            recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), (List<GetStatusKidModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_STATUSES),(List<GetAllKidsModel>) savedInstanceState.getSerializable(ConstantsManager.FEED_ALL_KID)));
-        }*/
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -163,20 +155,10 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onLongClick(View view, int position) {
-                Calendar calendar = Calendar.getInstance();
 
             }
         }));
 
-       /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FeedEntity.deleteAll();
-                for (GetStatusKidModel i: getAllKidStatuses)
-                    FeedEntity.insertIn(i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment());
-            }
-        }).start();
-*/
         return view;
     }
 
@@ -198,9 +180,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         switch (item.getItemId()){
             case ConstantsManager.DELETE_CONTEXT_ITEM:
                 if (pos != -1) {
-                   // ChildEntity.deleteChild(ChildEntity.selectChild().get(pos).getId());
-
-                    //MainActivity.setMenu(navigationView);
                     pos = -1;
                 }
                 break;
@@ -236,13 +215,13 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void getFeed(){
+    public void getFeed(boolean isRefresh){
         final RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(getActivity());
         getAllKidStatuses = new ArrayList<>();
         getAllKidsModelsOn = null;
         getStatusKidModels = null;
-
+        senPreLoader(isRefresh);
         try {
 
             getAllKidsObserver = restService.getKidByParentId(userLoginSession.getID());
@@ -348,7 +327,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     public void showDialog(final boolean isRediction, final int position) {
 
         dialog = new Dialog(getActivity());
-
         dialog.setContentView(R.layout.add_child_in_parent_dialog);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         final EditText nameEdit = (EditText) dialog.findViewById(R.id.name_childET);

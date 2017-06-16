@@ -28,8 +28,18 @@
                   android:id="@+id/recycler_feed_item">
               </com.jcodecraeer.xrecyclerview.XRecyclerView>
           </RelativeLayout>
-
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feed_loading"
+            android:visibility="visible"
+            android:progressDrawable="@drawable/circular_progress_bar" />
+    </RelativeLayout>
 
 
     </RelativeLayout>

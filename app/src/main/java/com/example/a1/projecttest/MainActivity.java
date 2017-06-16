@@ -1,5 +1,6 @@
 package com.example.a1.projecttest;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
@@ -71,7 +74,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 @EActivity (R.layout.activity_main)
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     DrawerLayout drawer;
     NavigationView navigationView;
     ImageView imageView;
@@ -87,9 +90,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String refreshingFragment;
     SwipeRefreshLayout swipeRefreshLayout;
     MenuItem menuItem;
+    Typeface typeface;
     int fragmentName = 0;
-    ProgressBar progressBar;
-
+    Dialog dialog;
+    TextView headerChildTextView;
+    EditText idChildEditText;
+    Button cancelButton;
+    Button sendButton;
     public void getAllKid(){
         RestService restService = new RestService();
         UserLoginSession userLoginSession = new UserLoginSession(this);
@@ -159,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         clearSync();
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -303,14 +310,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, YandexMapActivity_.class));
+            showDialogAddChild();
             return true;
         }
 
@@ -416,5 +419,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void showDialogAddChild(){
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.add_child_dialog);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
+        headerChildTextView = (TextView) dialog.findViewById(R.id.text_add_kid_text_view);
+        idChildEditText = (EditText) dialog.findViewById(R.id.kid_id_edit_text);
+        cancelButton = (Button) dialog.findViewById(R.id.cancel_bt_dialog);
+        sendButton = (Button) dialog.findViewById(R.id.send_bt_dialog);
+        headerChildTextView.setTypeface(typeface);
+        idChildEditText.setTypeface(typeface);
+        cancelButton.setTypeface(typeface);
+        sendButton.setTypeface(typeface);
+        cancelButton.setOnClickListener(this);
+        sendButton.setOnClickListener(this);
+        dialog.show();
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.cancel_bt_dialog:
+                dialog.dismiss();
+                break;
+            case R.id.send_bt_dialog:
+                break;
+        }
+    }
 }
