@@ -230,7 +230,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void onCompleted() {
                             sortByDate();
-                            subscription = getStatusKidModelObservable.subscribe(observer);
+                            getStatusKidModelObservable.subscribe(observer);
                         }
 
                         @Override
@@ -312,9 +312,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     @UiThread()
     public void setRecyclerView(){
         recyclerViewFeed.setAdapter(new FeedAdapter(getActivity(), FeedEntity.selectAllNotification(), GetAllKidEntity.selectAll()));
-        if (!subscription.isUnsubscribed()){
-            subscription.unsubscribe();
-        }
     }
 
     @Override

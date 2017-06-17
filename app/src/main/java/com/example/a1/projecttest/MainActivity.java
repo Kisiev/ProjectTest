@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.addToBackStack(backStackName);
             ft.commit();
         }
+
     }
 
     public static void saveGlideParam(ImageView imageView, Context context, Uri imagePath, int image) {
