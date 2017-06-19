@@ -25,6 +25,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.example.a1.projecttest.rest.Models.GetCoordinatesByUserIdModel;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
@@ -80,9 +81,9 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     private Overlay overlay;
     private String userId;
     private String nameChildBalloon;
+
     @AfterViews
     void main () {
-
 
     }
 
@@ -95,6 +96,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState != null) {
             getCoordinatesByUserIdModel = (GetCoordinatesByUserIdModel) savedInstanceState.getSerializable(ConstantsManager.SAVE_INSTAANTS_COORDINATES);
             getCoordinates();
@@ -110,7 +112,6 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
     @Override
     protected void onResume() {
         super.onResume();
-
         if (calls > 1) finish();
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -131,7 +132,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
                     setPeriodicTime();
                 }
             };
-            handler.postDelayed(runnable, 5000);
+            handler.post(runnable);
         } else {
             calls++;
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, ConstantsManager.PERMISSION_REQUEST_CODE);
@@ -182,7 +183,6 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
             overlay.addOverlayItem(overlayItem);
             overlayManager.addOverlay(overlay);
         }
-
         handler.postDelayed(runnable, 5000);
     }
 

@@ -14,6 +14,7 @@ import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetNotificationAddToParent;
 import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
@@ -226,5 +227,14 @@ public final class RestService {
 
     public Observable<GetStatusCode> createAttendance (String userId, String isPresent) throws IOException {
         return restClient.getProjectTestApiEdu().createAttendance(userId, isPresent);
+    }
+    public Observable<String> addKidToParent (String kidId, String parentId) throws IOException {
+        return restClient.getProjectTestApiEdu().addKidToParent(kidId, parentId);
+    }
+    public Observable<List<GetNotificationAddToParent>> getNotificationAddToParent (String kidId) throws IOException {
+        return restClient.getProjectTestApiEdu().getNotificationAddToParent(kidId);
+    }
+    public Observable<String> acceptToAddKid (String url) throws IOException {
+        return restClient.getProjectTestApiEdu().acceptToAddKid(url);
     }
 }

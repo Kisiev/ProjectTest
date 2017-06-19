@@ -34,6 +34,7 @@
     <string name="add_service">Добавить</string>
     <string name="save_service">Сохранить</string>
     <string name="cancel">Отменить</string>
+    <string name="deny_text">Отклонить</string>
     <string name="name_activity">Название деятельности</string>
     <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
@@ -106,5 +107,7 @@
     <string name="input_key">Введите ключ</string>
     <string name="id_kid">Идентификатор ребенка</string>
     <string name="add_child_header_dialog">Добавить ребенка</string>
+    <string name="request_on_add">Запрос на добавление</string>
+    <string name="accept_text">Принять</string>
 
 </resources>

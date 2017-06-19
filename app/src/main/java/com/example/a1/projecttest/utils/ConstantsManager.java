@@ -36,6 +36,7 @@ public class ConstantsManager {
     final public static String SAVE_ISREDICTION_STATE = "is_reduct";
     final public static String SAVE_LOGIN_FOR_SIGN_UP = "save_login_for_sign_up";
     final public static String SAVE_PASSWORD_FOR_SIGN_UP = "save_password_for_sign_up";
+    final public static String SAVE_ID_FOR_SIGN_UP = "save_id_for_sign_up";
     final public static String SAVE_GROUP_ID = "save_group_id";
     final public static String SAVE_GROUP_NAME = "save_group_name";
     final public static String SAVE_KINDERGARTEN_ID = "save_kindergarten_id";

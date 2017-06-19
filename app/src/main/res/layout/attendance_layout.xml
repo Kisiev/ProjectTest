@@ -17,5 +17,6 @@
        android:id="@+id/kid_present_recycler_view">
 
    </com.jcodecraeer.xrecyclerview.XRecyclerView>
+    <include layout="@layout/loading_layout"/>
 
 </LinearLayout>

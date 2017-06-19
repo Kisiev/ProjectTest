@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.PositionSaveSession;
@@ -57,6 +58,7 @@ public class AttendanceFragment extends Fragment {
     Observable<GetStatusCode> getStatusCodeObservable;
     GetStatusCode getStatusCodeOn;
     EditText dateEdit;
+    ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +66,9 @@ public class AttendanceFragment extends Fragment {
         session = new UserLoginSession(getActivity());
         getGroupAttendance = new ArrayList<>();
         dateEdit = (EditText) view.findViewById(R.id.attendance_date_edit_text);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        dateEdit.setClickable(false);
+        progressBar.setVisibility(View.VISIBLE);
         textChange(dateEdit);
         recyclerView = (XRecyclerView) view.findViewById(R.id.kid_present_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -103,6 +108,7 @@ public class AttendanceFragment extends Fragment {
             }
         }));
         getAllKidByGroup();
+        dateEdit.setClickable(true);
         return view;
     }
     public void getAttendanceList(boolean isSeek, String date){
@@ -119,6 +125,7 @@ public class AttendanceFragment extends Fragment {
                         public void onCompleted() {
                             createAttendanceList();
                             recyclerView.setAdapter(new AttendanceAdapter(getActivity(), getGroupAttendance));
+                            progressBar.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -298,6 +305,7 @@ public class AttendanceFragment extends Fragment {
                             current = clean;
                             if (isEnd) {
                                 getAttendanceList(true, current);
+                                progressBar.setVisibility(View.VISIBLE);
                             }
                             editText.setText(current);
                             editText.setSelection(sel < current.length() ? sel : current.length());

@@ -125,7 +125,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         loginBT.setTypeface(typeface);
 
         loginTV.addTextChangedListener(textWatcher);
-        if ((!userLoginSession.getSaveLogin().isEmpty())&&(!userLoginSession.getSavePassword().isEmpty()))
+        if ((!userLoginSession.getSaveLogin().isEmpty())&&(!userLoginSession.getSavePassword().isEmpty()) && (!userLoginSession.getID().equals("")))
             getValidToken(userLoginSession.getSaveLogin(), userLoginSession.getSavePassword());
         else {
             userLoginSession.clear();
@@ -162,14 +162,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     @UiThread
-    public void gg(){
+    public void setLoading(){
         progressBar.setVisibility(View.VISIBLE);
     }
 
 
     public void getValidToken (final String login, final String password) {
         RestService restService = new RestService();
-        gg();
+        setLoading();
         try {
             observable = restService.getUserData(login, password);
             observable.subscribeOn(Schedulers.io())
@@ -192,7 +192,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 else if (getUserDataOn.getIsActivated().equals("1")) {
                                     UserLoginSession session = new UserLoginSession(getApplication());
                                     if (!session.getSaveLogin().equals(login) || (!session.getSavePassword().equals(password))){
-                                        StandardWindowDialog dialog = new StandardWindowDialog(login, password, getUserDataOn);
+                                        session.clearSavedPass();
+                                        StandardWindowDialog dialog = new StandardWindowDialog(login, password, getUserDataOn, LoginActivity.this);
                                         Bundle bundle = new Bundle();
                                         bundle.putString(ConstantsManager.LOGIN, login);
                                         bundle.putString(ConstantsManager.PASSWORD, password);
@@ -252,7 +253,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.rebenok:
                 startActivity(new Intent(this, ChildActivity_.class));
-                finish();
                 break;
             case R.id.roditel:
                 getValidToken("v.kisiev@asa.guru", "Wg9xsP8flq");

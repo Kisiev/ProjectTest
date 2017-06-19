@@ -13,6 +13,7 @@ import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetKinderGartensByCityCode;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
+import com.example.a1.projecttest.rest.Models.GetNotificationAddToParent;
 import com.example.a1.projecttest.rest.Models.GetScheduleByKidIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
@@ -173,4 +174,14 @@ public interface ProjectTestApi {
     @GET("/api/createAttendance.php")
     Observable<GetStatusCode> createAttendance (@Query("userId") String userId,
                                                         @Query("isPresent") String isPresent);
+    @POST("/api/addKidToParent.php")
+    Observable<String> addKidToParent (@Query("kidId") String kidId,
+                                       @Query("parentId") String parentId);
+
+    @GET("/api/getNotificationsAddKidToParent.php")
+    Observable<List<GetNotificationAddToParent>> getNotificationAddToParent (@Query("kidId") String kidId);
+
+    @POST("/api/addKidToParentFunction.php")
+    Observable<String> acceptToAddKid (@Query("url") String kidId);
+
 }

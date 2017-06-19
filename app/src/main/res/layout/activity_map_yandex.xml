@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ru.yandex.yandexmapkit.MapView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/map_yandex"
-    android:apiKey="lSftefJfwnMDddoEFstdf6xKZrAWgpveX6LBbQB3t5DzA3NksovfLdU~xErttdiuRtmODPVPqL5DAx-KOQmgs-V07Lw2CGawwmRc7VNAlVU="
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <ru.yandex.yandexmapkit.MapView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map_yandex"
+        android:apiKey="lSftefJfwnMDddoEFstdf6xKZrAWgpveX6LBbQB3t5DzA3NksovfLdU~xErttdiuRtmODPVPqL5DAx-KOQmgs-V07Lw2CGawwmRc7VNAlVU=">
 
-</ru.yandex.yandexmapkit.MapView>
+    </ru.yandex.yandexmapkit.MapView>
+
+</RelativeLayout>
+

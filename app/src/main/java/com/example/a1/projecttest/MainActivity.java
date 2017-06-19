@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     UserLoginSession session;
     List<GetAllKidsModel> getAllKidsModelsOn;
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
+    Observable<String> getStatusByKidAdd;
     GetScheduleByKidIdModel getScheduleByKidIdModel;
     GetListUsers getUserData;
     NotificationManager mNotificationManager;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Dialog dialog;
     TextView headerChildTextView;
     EditText idChildEditText;
+    EditText idParentEditText;
     Button cancelButton;
     Button sendButton;
     public void getAllKid(){
@@ -420,6 +422,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void postRequestToAdd(){
+        RestService restService = new RestService();
+        try {
+            getStatusByKidAdd = restService.addKidToParent(idChildEditText.getText().toString(), session.getID());
+            getStatusByKidAdd.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<String>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(String s) {
+                            Toast.makeText(getApplication(), s, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void showDialogAddChild(){
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.add_child_dialog);
@@ -444,6 +473,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dialog.dismiss();
                 break;
             case R.id.send_bt_dialog:
+                postRequestToAdd();
                 break;
         }
     }

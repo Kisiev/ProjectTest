@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
@@ -55,7 +56,7 @@ public class VospitannikFragment extends Fragment {
     List<GetScheduleListModel> getScheduleListModels;
     Observable<List<GetStatusKidModel>> getStatusKidObserver;
     Observable<List<GetScheduleListModel>> getScheduleListObserver;
-
+    ProgressBar progressBar;
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
         return String.valueOf(time);
@@ -71,10 +72,11 @@ public class VospitannikFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         recyclerView = (XRecyclerView) view.findViewById(R.id.vospit_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
+        progressBar.setVisibility(View.VISIBLE);
         getScheduleList();
 
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -196,6 +198,7 @@ public class VospitannikFragment extends Fragment {
                                                 @Override
                                                 public void onCompleted() {
                                                     recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getStatusKidModels, getActivity()));
+                                                    progressBar.setVisibility(View.GONE);
                                                 }
 
                                                 @Override
