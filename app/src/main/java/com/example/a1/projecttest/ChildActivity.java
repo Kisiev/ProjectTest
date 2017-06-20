@@ -103,7 +103,7 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
                             if (getNotificationAddToParentOn != null)
                                 if (getNotificationAddToParentOn.size() >= 1)
                                     showDialog();
-                                }
+                        }
 
                         @Override
                         public void onError(Throwable e) {

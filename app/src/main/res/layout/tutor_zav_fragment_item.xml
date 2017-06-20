@@ -22,6 +22,12 @@
                 android:textColor="@color/black"
                 android:textSize="8pt"
                 android:id="@+id/tutor_name_zav_text_view"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="8pt"
+                android:id="@+id/tutor_id_zav_text_view"/>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"

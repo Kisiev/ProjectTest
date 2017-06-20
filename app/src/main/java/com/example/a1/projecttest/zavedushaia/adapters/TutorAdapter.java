@@ -34,9 +34,11 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
     public void onBindViewHolder(TutorHolder holder, int position) {
         typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
         holder.name.setText("ФИО: " + getAllTutorses.get(position).getSurname()
-        + " " + getAllTutorses.get(position).getName().substring(0, 1)
-        + ". "+ getAllTutorses.get(position).getPatronymic().substring(0, 1) + ".");
+        + " " + getAllTutorses.get(position).getName()
+        + " "+ getAllTutorses.get(position).getPatronymic());
+        holder.id.setText("Идентификатор: " + getAllTutorses.get(position).getId());
         holder.name.setTypeface(typeface);
+        holder.id.setTypeface(typeface);
     }
 
     @Override
@@ -46,9 +48,11 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
 
     class TutorHolder extends RecyclerView.ViewHolder{
         TextView name;
+        TextView id;
         public TutorHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tutor_name_zav_text_view);
+            id = (TextView) itemView.findViewById(R.id.tutor_id_zav_text_view);
         }
     }
 }

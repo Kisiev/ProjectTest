@@ -184,4 +184,10 @@ public interface ProjectTestApi {
     @POST("/api/addKidToParentFunction.php")
     Observable<String> acceptToAddKid (@Query("url") String kidId);
 
+    @GET ("/api/getAllTutorsByKindergartenId.php")
+    Observable<List<GetAllTutors>> getAllTutorsObserver (@Query("kindergartenId") String kindergartenId);
+
+    @GET ("/api/getKindergartenByManagerId.php")
+    Observable<GetKinderGarten> getKinderGartenZavObserver (@Query("managerId") String managerId);
+
 }

@@ -237,4 +237,13 @@ public final class RestService {
     public Observable<String> acceptToAddKid (String url) throws IOException {
         return restClient.getProjectTestApiEdu().acceptToAddKid(url);
     }
+
+    public Observable<List<GetAllTutors>> getAllTutorsObserver (String kindergartenId) throws IOException{
+        return  restClient.getProjectTestApiEdu().getAllTutorsObserver(kindergartenId);
+    }
+
+    public Observable<GetKinderGarten> getKinderGartenTutorObserver (String managerId) throws IOException{
+        return restClient.getProjectTestApiEdu().getKinderGartenZavObserver(managerId);
+    }
+
 }

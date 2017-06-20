@@ -14,12 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1.projecttest.PositionSaveSession;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
+import com.example.a1.projecttest.adapters.SpinnerDialogDaysAdapter;
+import com.example.a1.projecttest.rest.Models.GetAllTutors;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.Models.GetKinderGartenGroup;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
@@ -28,6 +31,7 @@ import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 import com.example.a1.projecttest.zavedushaia.adapters.GroupsAdapter;
+import com.example.a1.projecttest.zavedushaia.adapters.TutorSpinnerAdapter;
 
 import org.androidannotations.annotations.EFragment;
 
@@ -35,6 +39,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinWorkerThread;
+
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 @EFragment
 public class GroupsFragment extends Fragment implements View.OnClickListener{
@@ -57,8 +66,10 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
     Dialog dialog;
     Dialog addKidDialog;
     EditText nameGroup;
-    EditText idTutor;
+    Spinner idTutor;
     GetStatusCode getStatusCode;
+    Observable<List<GetAllTutors>> getAllTutorObserver;
+    List<GetAllTutors> getAllTutorsOn;
     int pos = -1;
     @Nullable
     @Override
@@ -188,7 +199,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                 showDialog();
                 break;
             case R.id.save_group:
-                threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), idTutor.getText().toString());
+                threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), ((GetAllTutors) idTutor.getSelectedItem()).getId());
                 if (getStatusCodeSetGroup.getCode().equals("200")){
                     threadGetGroup();
                     recyclerView.setAdapter(new GroupsAdapter(getKinderGartenGroups, getActivity()));
@@ -211,13 +222,43 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                             getKinderGartenGroups.get(pos).getGroupId());
                 }
                 if (getStatusCode.getCode().equals("200")){
-                    Toast.makeText(getActivity(), R.string.successful, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
                 } else if (getStatusCode.getCode().equals("200")){
                     Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
+
+    public void getAllTutors(){
+        RestService restService = new RestService();
+        try {
+            getAllTutorObserver = restService.getAllTutorsObserver(getKinderGarten.getId());
+            getAllTutorObserver.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<List<GetAllTutors>>() {
+                        @Override
+                        public void onCompleted() {
+                            TutorSpinnerAdapter adapter = new TutorSpinnerAdapter(getActivity(), getAllTutorsOn);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            idTutor.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(List<GetAllTutors> getAllTutorses) {
+                            getAllTutorsOn = getAllTutorses;
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void showDialog() {
 
         dialog = new Dialog(getActivity());
@@ -228,7 +269,9 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         saveButton.setOnClickListener(this);
         cancel.setOnClickListener(this);
         nameGroup = (EditText) dialog.findViewById(R.id.name_group_add_groups_dialog);
-        idTutor = (EditText) dialog.findViewById(R.id.id_tutor_add_groups_dialog);
+        idTutor = (Spinner) dialog.findViewById(R.id.id_tutor_add_groups_dialog);
+        getAllTutors();
+
         dialog.show();
     }
 

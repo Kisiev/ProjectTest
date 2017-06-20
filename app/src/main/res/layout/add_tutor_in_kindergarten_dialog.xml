@@ -2,28 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_vertical_margin">
+    android:layout_margin="@dimen/activity_horizontal_margin">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_group_header"
+        android:id="@+id/header_add_tutor_in_kin_dialog"
+        android:text="@string/add_tutor_text"
         android:textAlignment="center"
-        android:textSize="10pt"
-        android:layout_marginBottom="8dp"
-        android:text="@string/add_group_header"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name_group"
-        android:inputType="textWebEditText"
-        android:layout_marginBottom="8dp"
-        android:id="@+id/name_group_add_groups_dialog"/>
+        android:textSize="11pt"
+        android:layout_marginBottom="@dimen/standard_margin"/>
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/id_tutor"
         android:layout_marginBottom="8dp"
-        android:id="@+id/id_tutor_add_groups_dialog"/>
+        android:id="@+id/tutor_without_kindergarten_spinner"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,14 +27,14 @@
             android:text="@string/cancel"
             android:textColor="@color/colorOrange"
             android:background="@color/colorAlphaNULL"
-            android:id="@+id/cancel_button_add_group"/>
+            android:id="@+id/cancel_button_add_tutor_in_kin"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAlphaNULL"
             android:textColor="@color/colorOrange"
-            android:text="@string/save_service"
+            android:text="@string/add_service"
             android:layout_weight="1"
-            android:id="@+id/save_group"/>
+            android:id="@+id/add_tutor_in_kin_button"/>
     </LinearLayout>
 </LinearLayout>
