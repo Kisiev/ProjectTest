@@ -6,12 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.cert.Extension;
 import java.util.List;
 
 
@@ -54,5 +58,7 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
             name = (TextView) itemView.findViewById(R.id.tutor_name_zav_text_view);
             id = (TextView) itemView.findViewById(R.id.tutor_id_zav_text_view);
         }
+
     }
+
 }

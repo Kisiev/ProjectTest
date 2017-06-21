@@ -1,19 +1,35 @@
 package com.example.a1.projecttest.zavedushaia.fragments;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
@@ -22,6 +38,8 @@ import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.zavedushaia.adapters.TutorAdapter;
 import com.example.a1.projecttest.zavedushaia.adapters.TutorSpinnerAdapter;
+import com.tubb.smrv.SwipeMenuLayout;
+import com.tubb.smrv.listener.SwipeSwitchListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +63,7 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
     TutorSpinnerAdapter spinnerAdapter;
     Observable<List<GetAllTutors>> getAllTutorObserverable;
     Observable<GetKinderGarten> getKinderGartenObservable;
-
+    private Paint p = new Paint();
 
     @Nullable
     @Override
@@ -58,6 +76,8 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
         addTutorButton.setOnClickListener(this);
         addTutorButton.setTypeface(typeface);
         getTutors();
+        setUpItemTouchHelper();
+
         return view;
     }
 
@@ -114,6 +134,105 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
     public void getTutorsWithoutGroups(){
 
     }
+
+    private void setUpItemTouchHelper() {
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+
+            Drawable background;
+            Drawable xMark;
+            ImageView imageView;
+            int xMarkMargin;
+            boolean initiated;
+
+            private void init() {
+                imageView = new ImageView(getActivity());
+                background = new ColorDrawable(Color.RED);
+                xMark = ContextCompat.getDrawable(getActivity(), R.drawable.ic_access_time_black_24dp);
+                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                xMarkMargin = (int) getActivity().getResources().getDimension(R.dimen.mr_controller_volume_group_list_item_icon_size);
+                imageView.setImageDrawable(xMark);
+
+                initiated = true;
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+
+
+            @Override
+            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+
+                int position = viewHolder.getAdapterPosition();
+                return super.getSwipeDirs(recyclerView, viewHolder);
+
+            }
+
+
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int swipedPosition = viewHolder.getAdapterPosition();
+                View view = viewHolder.itemView;
+            }
+
+
+
+            @Override
+
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                View itemView = viewHolder.itemView;
+                if (viewHolder.getAdapterPosition() == -1) {
+                    return;
+                }
+                if (!initiated) {
+                    init();
+                }
+
+                // draw red background
+                if (dX < -300) {
+                    dX = -300;
+                }
+                    background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                    background.draw(c);
+
+                    // draw x mark
+
+                    int itemHeight = itemView.getBottom() - itemView.getTop();
+                    int intrinsicWidth = xMark.getIntrinsicWidth();
+                    int intrinsicHeight = xMark.getIntrinsicWidth();
+
+                    int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
+                    int xMarkRight = itemView.getRight() - xMarkMargin;
+                    int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
+                    int xMarkBottom = xMarkTop + intrinsicHeight;
+
+                    xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+                    xMark.draw(c);
+
+
+
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+            }
+
+
+
+        };
+
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+    }
+
+
+
 
     public void showDialogAddTutor(){
         dialog = new Dialog(getActivity());
