@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.zavedushaia.fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.a1.projecttest.LoginActivity;
+import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
@@ -36,10 +39,10 @@ import com.example.a1.projecttest.rest.Models.GetAllTutors;
 import com.example.a1.projecttest.rest.Models.GetAttendanceModel;
 import com.example.a1.projecttest.rest.Models.GetKinderGarten;
 import com.example.a1.projecttest.rest.RestService;
+import com.example.a1.projecttest.utils.ClickListener;
+import com.example.a1.projecttest.utils.RecyclerTouchListener;
 import com.example.a1.projecttest.zavedushaia.adapters.TutorAdapter;
 import com.example.a1.projecttest.zavedushaia.adapters.TutorSpinnerAdapter;
-import com.tubb.smrv.SwipeMenuLayout;
-import com.tubb.smrv.listener.SwipeSwitchListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -76,9 +79,31 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
         addTutorButton.setOnClickListener(this);
         addTutorButton.setTypeface(typeface);
         getTutors();
-        setUpItemTouchHelper();
+       // setUpItemTouchHelper();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+                view.findViewById(R.id.edit_button_tutor).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("1111111", "click");
+                    }
+                });
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     public void getTutors(){
@@ -200,6 +225,9 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
                 }
                     background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
                     background.draw(c);
+                    Button button = new Button(getActivity());
+                    button.setBackground(background);
+                    button.setText("dasjfdklsfjdklsj");
 
                     // draw x mark
 

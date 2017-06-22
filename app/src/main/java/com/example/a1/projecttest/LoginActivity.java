@@ -15,6 +15,8 @@ import android.text.TextWatcher;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,16 +58,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     public UserLoginSession userLoginSession;
     public TextView loginTV, passwordTV;
-    public TextView header;
+   // public TextView header;
     public GetListUsers validUser;
     public GetUserData getUserDataOn;
     public Typeface typeface;
+    public Typeface typefaceSan;
     public ProgressBar progressBar;
     private RadioButton vospitatel;
     private RadioButton roditel;
     private RadioButton zav;
     private RadioButton rebenok;
     private Handler handler = new Handler();
+    View loadingView;
+    ImageView circleRotate;
     Observable<GetUserData> observable;
 
 
@@ -97,32 +102,43 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         vospitatel = (RadioButton) findViewById(R.id.vospitatel);
         rebenok = (RadioButton) findViewById(R.id.rebenok);
         roditel = (RadioButton) findViewById(R.id.roditel);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
         zav.setOnClickListener(this);
         vospitatel.setOnClickListener(this);
         rebenok.setOnClickListener(this);
         roditel.setOnClickListener(this);
         userLoginSession = new UserLoginSession(getApplicationContext());
+        loadingView = findViewById(R.id.loading_layout_rel);
+        circleRotate = (ImageView) findViewById(R.id.image_rotate_circle);
 
 
         ImageView imageView = (ImageView) findViewById(R.id.log_imageView);
-        createImage(R.mipmap.background, imageView);
+        ImageView headerImage = (ImageView) findViewById(R.id.header_image_view);
+        createImage(R.mipmap.backgroundlogin, imageView);
+        createImage(R.mipmap.headerlogin, headerImage);
 
         Button registrationBT = (Button) findViewById(R.id.registrationBT);
         Button loginBT = (Button) findViewById(R.id.signIn);
         registrationBT.setOnClickListener(this);
         loginBT.setOnClickListener(this);
 
-        header = (TextView) findViewById(R.id.header_login_layout);
+       // header = (TextView) findViewById(R.id.header_login_layout);
         loginTV = (TextView) findViewById(R.id.login_edit);
         passwordTV = (TextView) findViewById(R.id.pass_edit);
-
+        TextView andText = (TextView) findViewById(R.id.and_text);
+        andText.setTypeface(typefaceSan);
+        TextView signInDiary = (TextView) findViewById(R.id.signIn_daiery_text);
+        signInDiary.setTypeface(typefaceSan);
+        TextView forgot = (TextView) findViewById(R.id.forget_id);
+        forgot.setTypeface(typefaceSan);
         typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
-        header.setTypeface(typeface);
-        loginTV.setTypeface(typeface);
-        passwordTV.setTypeface(typeface);
-        registrationBT.setTypeface(typeface);
-        loginBT.setTypeface(typeface);
+        typefaceSan = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
+        registrationBT.setTypeface(typefaceSan);
+       // header.setTypeface(typeface);
+        loginTV.setTypeface(typefaceSan);
+        passwordTV.setTypeface(typefaceSan);
+        registrationBT.setTypeface(typefaceSan);
+        loginBT.setTypeface(typefaceSan);
 
         loginTV.addTextChangedListener(textWatcher);
         if ((!userLoginSession.getSaveLogin().isEmpty())&&(!userLoginSession.getSavePassword().isEmpty()) && (!userLoginSession.getID().equals("")))
@@ -163,7 +179,26 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     @UiThread
     public void setLoading(){
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        loadingView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_image);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                circleRotate.startAnimation(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        circleRotate.startAnimation(animation);
     }
 
 
@@ -202,6 +237,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                         dialog.show(getFragmentManager(), "dialog");
                                     } else {
                                         startActivityOnRole();
+
                                     }
                                 }
                                 getUserDataOn = null;

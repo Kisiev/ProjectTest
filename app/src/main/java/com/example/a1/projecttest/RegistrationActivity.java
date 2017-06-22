@@ -145,7 +145,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         LoginActivity loginActivity = new LoginActivity();
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
-        loginActivity.createImage(R.mipmap.background, imageView);
+        loginActivity.createImage(R.mipmap.backgroundlogin, imageView);
         TextView header = (TextView) findViewById(R.id.header_registration);
         regionSpinner = (Spinner) findViewById(R.id.region_spinner_registration);
         citySpinner = (Spinner) findViewById(R.id.city_spinner_registration);

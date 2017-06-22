@@ -9,7 +9,7 @@
     <string name="attendance_text">Посещаемость</string>
     <string name="myChild">Мой ребенок</string>
     <string name="registration_in">Зарегистрироваться</string>
-    <string name="signIn">Вход</string>
+    <string name="signIn">Войти</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
     <string name="password_confirm">Подтверждение пароля</string>
@@ -110,5 +110,6 @@
     <string name="request_on_add">Запрос на добавление</string>
     <string name="accept_text">Принять</string>
     <string name="add_tutor_text">Добавить воспитателя</string>
+    <string name="forget_pass_text">Забыли свои данные для входа?</string>
 
 </resources>

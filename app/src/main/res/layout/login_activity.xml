@@ -5,15 +5,26 @@
     android:textAlignment="center"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:id="@+id/log_imageView" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:id="@+id/header_image_view"
+        android:src="@mipmap/headerlogin" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/standard_margin"
+        android:layout_below="@+id/header_image_view"
+        android:id="@+id/layout_login_leaner"
         android:gravity="center_horizontal|center_vertical">
 
 
@@ -21,29 +32,32 @@
 
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_rect"
             android:id="@+id/imageView3"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_label"
-                android:id="@+id/header_login_layout"
-                android:textSize="12pt"
-                android:textColor="@color/whiteColor"
-                android:layout_gravity="center"/>
-            <cn.zhaiyifan.rememberedittext.RememberEditText
-                android:id="@+id/login_edit"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/whiteColor"
-                android:inputType="text"
-                android:theme="@style/Theme.App.Remember"
-                android:textColorHint="@color/whiteColor"
-                android:hint="@string/login"
-                app:rememberCount="3"
-                app:rememberId="username" />
+                android:background="@drawable/shape_rect">
+                <cn.zhaiyifan.rememberedittext.RememberEditText
+                    android:id="@+id/login_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/whiteColor"
+                    android:inputType="text"
+                    android:theme="@style/Theme.App.Remember"
+                    android:textColorHint="@color/whiteColor"
+                    android:hint="@string/login"
+                    app:rememberCount="3"
+                    app:rememberId="username" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:background="@drawable/shape_rect">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,36 +66,30 @@
                 android:theme="@style/Theme.App.Base"
                 android:inputType="textPassword"
                 android:textColorHint="@color/whiteColor"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
+
                 android:id="@+id/pass_edit"/>
+                </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/standard_margin"
                 android:orientation="horizontal">
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/registrationBT"
-                    android:text="@string/registration"
-                    android:background="@color/colorAlphaNULL"
-                    android:textColor="@color/whiteColor"
-                    android:layout_gravity="end" />
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/signIn"
                     android:text="@string/signIn"
-                    android:background="@color/colorAlphaNULL"
+                    android:background="@color/colorOrange"
                     android:textColor="@color/whiteColor"
                     android:layout_gravity="end" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -118,10 +126,74 @@
                 </RadioGroup>
 
             </LinearLayout>
+            <TextView
+                android:layout_marginTop="@dimen/standard_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/forget_id"
+                android:textColor="@color/whiteColor"
+                android:textAlignment="center"
+                android:text="@string/forget_pass_text"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/whiteColor"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/whiteColor"
+                    android:textAlignment="center"
+                    android:id="@+id/and_text"
+                    android:text="ИЛИ"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/whiteColor"
+                    android:layout_height="2dp"/>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Войти через Дневник.ру"
+                android:textAlignment="center"
+                android:id="@+id/signIn_daiery_text"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:textColor="@color/whiteColor"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:background="@color/whiteColor"
+                android:src="@mipmap/dayary"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:background="@color/whiteColor" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:id="@+id/registrationBT"
+                android:text="@string/registration"
+                android:background="@color/colorAlphaNULL"
+                android:textColor="@color/whiteColor"
+                android:layout_gravity="end" />
         </LinearLayout>
 
 </LinearLayout>
-    <RelativeLayout
+    <include layout="@layout/layout_loading"/>
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
@@ -132,5 +204,5 @@
             android:id="@+id/progressBar"
             android:visibility="gone"
             android:progressDrawable="@drawable/circular_progress_bar" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 </RelativeLayout>

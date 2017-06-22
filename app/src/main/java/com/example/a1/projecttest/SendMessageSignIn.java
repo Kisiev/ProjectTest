@@ -30,7 +30,7 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
         LoginActivity loginActivity = new LoginActivity();
         TextView header = (TextView) findViewById(R.id.header_send_message_layout);
         imageView = (ImageView) findViewById(R.id.mail_image_view_layout);
-        loginActivity.createImage(R.mipmap.background, imageView);
+        loginActivity.createImage(R.mipmap.backgroundlogin, imageView);
         mailEdit = (EditText) findViewById(R.id.mail_editET);
         sendMessageButton = (Button) findViewById(R.id.send_message_button);
         backButton = (Button) findViewById(R.id.back_press_button);

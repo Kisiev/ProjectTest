@@ -17,6 +17,7 @@
     <color name="color5">#007bff</color>
     <color name="color6">#ff00d0</color>
     <color name="black">#000000</color>
+    <color name="blackOpacity">#4b000000</color>
     <color name="colorForApacityNull">#00f330fa</color>
     <color name="color_for_table">#6530bafa</color>
     <color name="colorText">#ffffff</color>
@@ -37,5 +38,6 @@
     <color name="colorYellowOpacity">#14ffd10e</color>
     <color name="colorGreenOpacity">#14bed63a</color>
     <color name="colorLightBlueOpacity">#1444c2ea</color>
+    <color name="colorWhiteOpacity">#3bffffff</color>
 
 </resources>
