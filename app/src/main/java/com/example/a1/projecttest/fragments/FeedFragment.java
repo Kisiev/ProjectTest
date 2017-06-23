@@ -23,8 +23,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,12 +91,39 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
     Subscription subscription;
     ProgressBar progressBar;
+    View loadingView;
+    ImageView circleRotate;
     int pos = -1;
 
-    private void senPreLoader(boolean isRefresh){
-        if (isRefresh){
-            progressBar.setVisibility(View.GONE);
-        } else  progressBar.setVisibility(View.VISIBLE);
+
+    public void setLoading(final boolean isRefresh){
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                loadingView.setVisibility(!isRefresh ? View.VISIBLE : View.GONE);
+                if (!isRefresh) {
+                    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_image);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            circleRotate.startAnimation(animation);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    circleRotate.startAnimation(animation);
+                }
+            }
+        });
+
     }
 
     @Nullable
@@ -104,6 +134,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         progressBar = (ProgressBar) view.findViewById(R.id.feed_loading);
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
+        loadingView = view.findViewById(R.id.loading_layout_rel);
+        circleRotate = (ImageView) view.findViewById(R.id.image_rotate_circle);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
 
@@ -117,7 +149,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
             public void onCompleted() {
                 setRecyclerView();
                 recyclerViewFeed.refreshComplete();
-                progressBar.setVisibility(View.GONE);
+                setLoading(true);
             }
 
             @Override
@@ -221,7 +253,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         getAllKidStatuses = new ArrayList<>();
         getAllKidsModelsOn = null;
         getStatusKidModels = null;
-        senPreLoader(isRefresh);
+        setLoading(isRefresh);
         try {
 
             getAllKidsObserver = restService.getKidByParentId(userLoginSession.getID());

@@ -178,36 +178,50 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     @UiThread
-    public void setLoading(){
+    public void setLoading(final boolean isLoading){
         //progressBar.setVisibility(View.VISIBLE);
-        loadingView.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_image);
-        animation.setAnimationListener(new Animation.AnimationListener() {
+        new Handler().post(new Runnable() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void run() {
+                loadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+                if (isLoading) {
+                    Animation animation = AnimationUtils.loadAnimation(getApplication(), R.anim.rotate_image);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
 
-            }
+                        }
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                circleRotate.startAnimation(animation);
-            }
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            circleRotate.startAnimation(animation);
+                        }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
 
+                        }
+                    });
+                    circleRotate.startAnimation(animation);
+                }
             }
         });
-        circleRotate.startAnimation(animation);
+
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        setLoading(false);
+    }
 
     public void getValidToken (final String login, final String password) {
         RestService restService = new RestService();
-        setLoading();
+        setLoading(true);
         try {
             observable = restService.getUserData(login, password);
             observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<GetUserData>() {
                         @Override
                         public void onCompleted() {
@@ -237,7 +251,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                         dialog.show(getFragmentManager(), "dialog");
                                     } else {
                                         startActivityOnRole();
-
                                     }
                                 }
                                 getUserDataOn = null;
@@ -246,7 +259,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                         @Override
                         public void onError(Throwable e) {
-
+                            Toast.makeText(getApplicationContext(), getString(R.string.invalid_login), Toast.LENGTH_LONG).show();
+                            setLoading(false);
                         }
 
                         @Override

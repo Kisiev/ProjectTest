@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -56,7 +60,8 @@ public class VospitannikFragment extends Fragment {
     List<GetScheduleListModel> getScheduleListModels;
     Observable<List<GetStatusKidModel>> getStatusKidObserver;
     Observable<List<GetScheduleListModel>> getScheduleListObserver;
-    ProgressBar progressBar;
+    View loadingView;
+    ImageView circleRotate;
     public static String getDateString(int hours, int mins, int sec){
         Time time = new Time(hours, mins, sec);
         return String.valueOf(time);
@@ -68,15 +73,46 @@ public class VospitannikFragment extends Fragment {
         setRetainInstance(true);
     }
 
+    public void setLoading(final boolean isRefresh){
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                loadingView.setVisibility(!isRefresh ? View.VISIBLE : View.GONE);
+                if (!isRefresh) {
+                    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_image);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            circleRotate.startAnimation(animation);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    circleRotate.startAnimation(animation);
+                }
+            }
+        });
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.vospitanik_fragment, container, false);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         recyclerView = (XRecyclerView) view.findViewById(R.id.vospit_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        circleRotate = (ImageView) view.findViewById(R.id.image_rotate_circle);
+        loadingView = view.findViewById(R.id.loading_layout_rel);
         recyclerView.setLayoutManager(linearLayoutManager);
-        progressBar.setVisibility(View.VISIBLE);
+        setLoading(false);
         getScheduleList();
 
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -145,38 +181,6 @@ public class VospitannikFragment extends Fragment {
         return colors;
     }
 
-/*
-    @Background
-    public void loadEntity() {
-        getLoaderManager().restartLoader(ConstantsManager.ID_LOADER, null, new LoaderManager.LoaderCallbacks<List<ChildStatusEntity>>() {
-
-            @Override
-            public Loader<List<ChildStatusEntity>> onCreateLoader(int id, Bundle args) {
-                final AsyncTaskLoader<List<ChildStatusEntity>> loader = new AsyncTaskLoader<List<ChildStatusEntity>>(getActivity()) {
-                    @Override
-                    public List<ChildStatusEntity> loadInBackground() {
-                        return ChildStatusEntity.selectChilds();
-                    }
-                };
-                loader.forceLoad();
-                return loader;
-            }
-
-            @Override
-            public void onLoadFinished(Loader<List<ChildStatusEntity>> loader, List<ChildStatusEntity> data) {
-                VospitannikAdapter adapter = new VospitannikAdapter(data, getActivity());
-                adapter.notifyDataSetChanged();
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<List<ChildStatusEntity>> loader) {
-
-            }
-        });
-    }
-*/
-
     public void getScheduleList(){
         final RestService restService = new RestService();
         final UserLoginSession userLoginSession = new UserLoginSession(getActivity());
@@ -198,7 +202,7 @@ public class VospitannikFragment extends Fragment {
                                                 @Override
                                                 public void onCompleted() {
                                                     recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModels, getStatusKidModels, getActivity()));
-                                                    progressBar.setVisibility(View.GONE);
+                                                    setLoading(true);
                                                 }
 
                                                 @Override

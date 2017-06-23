@@ -28,7 +28,7 @@
                   android:id="@+id/recycler_feed_item">
               </com.jcodecraeer.xrecyclerview.XRecyclerView>
           </RelativeLayout>
-<include layout="@layout/progress_bar_layout"></include>
+<include layout="@layout/layout_loading"/>
 
 
     </RelativeLayout>

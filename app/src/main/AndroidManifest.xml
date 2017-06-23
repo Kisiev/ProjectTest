@@ -17,7 +17,9 @@
         <activity
             android:name=".LoginActivity_"
             android:label="@string/myChild"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,15 +27,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistrationActivity_"
-
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             />
         <service android:name=".utils.ChildService_">
 
         </service>
-        <activity android:name=".SendMessageSignIn_">
+        <activity android:name=".SendMessageSignIn_"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".YandexMapActivity_">
+        <activity android:name=".YandexMapActivity_"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
 
         </activity>
 
