@@ -45,7 +45,7 @@ public class RaspisanieGroupItemAdapter extends RecyclerView.Adapter<RaspisanieG
 
     @Override
     public void onBindViewHolder(final RaspisanieGroupItemHolder holder, int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         holder.name.setText(listNames.get(position));
         holder.name.setTextColor(Color.WHITE);
         holder.cardView.setBackgroundColor(color);

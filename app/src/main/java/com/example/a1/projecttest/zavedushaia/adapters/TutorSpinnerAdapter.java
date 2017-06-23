@@ -31,7 +31,7 @@ public class TutorSpinnerAdapter extends ArrayAdapter<GetAllTutors> implements S
     public View getView(int position, View convertView, ViewGroup parent) {
 
         GetAllTutors serviceListModel = (GetAllTutors) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
@@ -46,7 +46,7 @@ public class TutorSpinnerAdapter extends ArrayAdapter<GetAllTutors> implements S
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
         GetAllTutors servicesEntity = (GetAllTutors) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }

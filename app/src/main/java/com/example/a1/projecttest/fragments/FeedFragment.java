@@ -91,6 +91,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
     Subscription subscription;
     ProgressBar progressBar;
+    ImageView statusImage;
     View loadingView;
     ImageView circleRotate;
     int pos = -1;
@@ -138,7 +139,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         circleRotate = (ImageView) view.findViewById(R.id.image_rotate_circle);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
-
+        statusImage = (ImageView) view.findViewById(R.id.status_image_view);
         recyclerViewFeed = (XRecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);

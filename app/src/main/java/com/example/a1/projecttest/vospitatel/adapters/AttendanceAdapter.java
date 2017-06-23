@@ -61,7 +61,7 @@ public class AttendanceAdapter extends XRecyclerView.Adapter<AttendanceAdapter.A
         TextView time;
         public AttendanceHolder(View itemView) {
             super(itemView);
-            typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+            typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
             fioTextView = (TextView) itemView.findViewById(R.id.attendance_fio_text_view);
             isPresentButton = (Button) itemView.findViewById(R.id.present_in_button);
             isNotPresentButton = (Button) itemView.findViewById(R.id.present_out_button);

@@ -31,7 +31,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsHold
 
     @Override
     public void onBindViewHolder(GroupsHolder holder, int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         holder.nameGroup.setText("Группа: " + getKinderGartenGroups.get(position).getGroupName());
         holder.tutorName.setText("Воспитатель: " + getKinderGartenGroups.get(position).getTutorSurname()
         +" "+ getKinderGartenGroups.get(position).getTutorName().substring(0, 1)

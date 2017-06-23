@@ -32,7 +32,7 @@ public class ServiceByServiceTypeAdapter extends ArrayAdapter<GetServicesByServi
     public View getView(int position, View convertView, ViewGroup parent) {
 
         GetServicesByServiceTypeModel serviceListModel = (GetServicesByServiceTypeModel) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
@@ -47,7 +47,7 @@ public class ServiceByServiceTypeAdapter extends ArrayAdapter<GetServicesByServi
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
         GetServicesByServiceTypeModel servicesEntity = (GetServicesByServiceTypeModel) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.spinner_item, parent, false);
         }

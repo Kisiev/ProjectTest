@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -37,7 +38,6 @@ import static ru.yandex.core.CoreApplication.readRootForSharedFromGlobalSettings
 public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     Context context;
-    Typeface typeface;
     List<FeedEntity> getStatusKidModels;
     List<GetAllKidEntity> getAllKidsModels;
 
@@ -149,25 +149,22 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
 
     @Override
     public void onBindViewHolder(FeedHolder holder, int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
 
         for (int j = 0; j < getAllKidsModels.size(); j ++) {
             if (getStatusKidModels.get(position).getUserId().equals(getAllKidsModels.get(j).get_id())) {
                 holder.nameChildTV.setText(getAllKidsModels.get(j).getName());
-                holder.serviceNameTV.setText("Закончил ''" + getStatusKidModels.get(position).getScheduleName() + "'' со статусом ''" + getStatusKidModels.get(position).getName() + "''");
-                holder.nameChildTV.setTypeface(typeface);
-                holder.serviceNameTV.setTypeface(typeface);
+                holder.serviceNameTV.setText(getStatusKidModels.get(position).getScheduleName());
                 if (getStatusKidModels.get(position).getCompletion() != null)
                     holder.dateTV.setText(parserDate(getStatusKidModels.get(position).getCompletion()));
                 switch (getStatusKidModels.get(position).getStatusId()){
                     case "1":
-                        holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorRedOpacity));
+                        holder.statusImage.setImageResource(R.mipmap.lowstatus);
                         break;
                     case "2":
-                        holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorYellowOpacity));
+                        holder.statusImage.setImageResource(R.mipmap.mediumstatus);
                         break;
                     case "3":
-                        holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorGreenOpacity));
+                        holder.statusImage.setImageResource(R.mipmap.highstatus);
                         break;
                 }
 
@@ -185,18 +182,21 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
     class FeedHolder extends XRecyclerView.ViewHolder {
         TextView nameChildTV;
         TextView serviceNameTV;
+        ImageView statusImage;
         TextView dateTV;
         CardView cardView;
         public FeedHolder(View itemView, Context context) {
             super(itemView);
-            Typeface typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+            Typeface typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Bold.ttf");
+            Typeface typefaceReg = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
             nameChildTV = (TextView) itemView.findViewById(R.id.name_childTV);
             serviceNameTV = (TextView) itemView.findViewById(R.id.service_nameTV);
             cardView = (CardView) itemView.findViewById(R.id.card_feed_parent);
             dateTV = (TextView) itemView.findViewById(R.id.date_feed_add_tv);
-            dateTV.setTypeface(typeface);
+            statusImage = (ImageView) itemView.findViewById(R.id.status_image_view);
+            dateTV.setTypeface(typefaceReg);
             nameChildTV.setTypeface(typeface);
-            serviceNameTV.setTypeface(typeface);
+            serviceNameTV.setTypeface(typefaceReg);
         }
     }
 

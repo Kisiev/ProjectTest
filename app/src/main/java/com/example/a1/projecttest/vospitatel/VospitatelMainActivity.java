@@ -64,7 +64,7 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         setSupportActionBar(toolbar);
         session = new UserLoginSession(this);
         beginThread();
-        typeface = Typeface.createFromAsset(this.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

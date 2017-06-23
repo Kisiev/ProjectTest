@@ -90,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                android:id="@+id/admin_layout"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -173,6 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standard_margin"
+                android:id="@+id/diary_login_button"
                 android:background="@color/whiteColor"
                 android:src="@mipmap/dayary"/>
             <View

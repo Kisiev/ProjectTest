@@ -73,7 +73,7 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tutor_zav_fragment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_tutor);
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/OpenSans-Regular.ttf");
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         addTutorButton = (Button) view.findViewById(R.id.add_tutor_button);
         addTutorButton.setOnClickListener(this);

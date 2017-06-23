@@ -33,7 +33,7 @@ public class RegisterKidsAdapter extends RecyclerView.Adapter<RegisterKidsAdapte
 
     @Override
     public void onBindViewHolder(RegisterKidsHolder holder, int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Regular.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         holder.nameChild.setText("ФИО: " + getAllKidsModels.get(position).getSurname()
         +" " + getAllKidsModels.get(position).getName().substring(0, 1)
         + ". "+ getAllKidsModels.get(position).getPatronymic().substring(0, 1) + ".");

@@ -77,7 +77,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.groups_layout_fragment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_groups);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/OpenSans-Regular.ttf");
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         addGroupsButton = (Button) view.findViewById(R.id.add_groups_button);
         addGroupsButton.setOnClickListener(this);
         addGroupsButton.setTypeface(typeface);

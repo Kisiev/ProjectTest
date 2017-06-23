@@ -57,7 +57,7 @@ public class ChildAndParentFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.parent_and_child_fragment, container, false);
         listEdit = new ArrayList<>();
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         saveChildButton = (Button) view.findViewById(R.id.save_child_and_parent_button);
         addParentFab = (FloatingActionButton) view.findViewById(R.id.parent_add_action_button);
         addParentFab.setOnClickListener(this);

@@ -31,7 +31,7 @@ public class UpbringingAdapter extends ArrayAdapter<GetServiceType> implements S
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         GetServiceType upbringingEntity = (GetServiceType) getItem(position);
 
         if(convertView == null) {
@@ -48,7 +48,7 @@ public class UpbringingAdapter extends ArrayAdapter<GetServiceType> implements S
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
         GetServiceType upbringingEntity = (GetServiceType) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }

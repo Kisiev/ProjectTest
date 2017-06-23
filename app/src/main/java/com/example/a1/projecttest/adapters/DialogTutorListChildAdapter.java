@@ -45,7 +45,7 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
 
     @Override
     public void onBindViewHolder(final DialogTutorListChildHolder holder, int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         holder.nameChild.setText(users.get(position).getSurname()
                 +" "+ users.get(position).getName().substring(0, 1)
                 +". "+ users.get(position).getPatronymic().substring(0, 1));

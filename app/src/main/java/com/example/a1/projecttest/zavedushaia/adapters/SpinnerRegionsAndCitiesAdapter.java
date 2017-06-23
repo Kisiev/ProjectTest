@@ -33,7 +33,7 @@ public class SpinnerRegionsAndCitiesAdapter extends ArrayAdapter<GetAllRegionsMo
     public View getView(int position, View convertView, ViewGroup parent) {
 
         GetAllRegionsModel serviceListModel = (GetAllRegionsModel) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }
@@ -49,7 +49,7 @@ public class SpinnerRegionsAndCitiesAdapter extends ArrayAdapter<GetAllRegionsMo
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
         GetAllRegionsModel servicesEntity = (GetAllRegionsModel) getItem(position);
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
         }

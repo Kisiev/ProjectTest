@@ -26,7 +26,7 @@ public class SendMessageSignIn extends Activity implements View.OnClickListener{
     ImageView imageView;
     @AfterViews
     public void main(){
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
         LoginActivity loginActivity = new LoginActivity();
         TextView header = (TextView) findViewById(R.id.header_send_message_layout);
         imageView = (ImageView) findViewById(R.id.mail_image_view_layout);

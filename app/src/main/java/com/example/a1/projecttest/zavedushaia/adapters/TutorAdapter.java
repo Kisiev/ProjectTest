@@ -41,7 +41,7 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
 
     @Override
     public void onBindViewHolder(TutorHolder holder, final int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         holder.name.setText("ФИО: " + getAllTutorses.get(position).getSurname()
         + " " + getAllTutorses.get(position).getName()
         + " "+ getAllTutorses.get(position).getPatronymic());

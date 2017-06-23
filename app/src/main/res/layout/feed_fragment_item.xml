@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_weight="2"
     app:cardElevation="2dp"
+    android:layout_marginBottom="2dp"
     app:cardCornerRadius="2dp"
     android:id="@+id/card_feed_parent"
-    app:cardUseCompatPadding="true"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
@@ -23,29 +23,42 @@
             android:textSize="10pt"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:layout_marginBottom="@dimen/standard_margin"
             android:id="@+id/name_childTV"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="7pt"
             android:layout_weight="1"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@color/colorGrayDark"
             android:id="@+id/date_feed_add_tv"
             android:gravity="end"/>
     </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/standard_margin"
-            android:background="@color/black"
-            />
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="7pt"
-        android:textColor="@color/black"
-        android:id="@+id/service_nameTV"/>
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="7pt"
+            android:gravity="center|left"
+            android:layout_toLeftOf="@+id/status_layout_content"
+            android:textColor="@color/colorGrayDark"
+            android:id="@+id/service_nameTV"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/status_layout_content"
+            android:gravity="center"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:textAlignment="center"
+                android:id="@+id/status_image_view"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </LinearLayout>
 </android.support.v7.widget.CardView>

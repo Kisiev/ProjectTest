@@ -34,7 +34,7 @@ import java.util.List;
         public View getView(int position, View convertView, ViewGroup parent) {
 
             GetKinderGartenGroup serviceListModel = (GetKinderGartenGroup) getItem(position);
-            typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+            typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
             if(convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
             }
@@ -51,7 +51,7 @@ import java.util.List;
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
             GetKinderGartenGroup servicesEntity = (GetKinderGartenGroup) getItem(position);
-            typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+            typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
             if(convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item, parent, false);
             }

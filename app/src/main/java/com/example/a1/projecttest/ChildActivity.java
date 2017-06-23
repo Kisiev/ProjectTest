@@ -69,7 +69,7 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
 
     @AfterViews
     public void main (){
-        typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
         UserLoginSession session = new UserLoginSession(getApplication());
         Button button = (Button) findViewById(R.id.service_offBT);
         TextView idChild = (TextView) findViewById(R.id.id_child_text_view);

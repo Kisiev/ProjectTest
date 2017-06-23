@@ -68,7 +68,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private RadioButton roditel;
     private RadioButton zav;
     private RadioButton rebenok;
-    private Handler handler = new Handler();
+    ImageView diaryLoginButton;
+    View adminLayout;
     View loadingView;
     ImageView circleRotate;
     Observable<GetUserData> observable;
@@ -102,11 +103,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         vospitatel = (RadioButton) findViewById(R.id.vospitatel);
         rebenok = (RadioButton) findViewById(R.id.rebenok);
         roditel = (RadioButton) findViewById(R.id.roditel);
+        adminLayout = findViewById(R.id.admin_layout);
+        diaryLoginButton = (ImageView) findViewById(R.id.diary_login_button);
         //progressBar = (ProgressBar) findViewById(R.id.progressBar);
         zav.setOnClickListener(this);
         vospitatel.setOnClickListener(this);
         rebenok.setOnClickListener(this);
         roditel.setOnClickListener(this);
+        diaryLoginButton.setOnClickListener(this);
         userLoginSession = new UserLoginSession(getApplicationContext());
         loadingView = findViewById(R.id.loading_layout_rel);
         circleRotate = (ImageView) findViewById(R.id.image_rotate_circle);
@@ -302,10 +306,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 getValidToken("khaidurovdisk@yandex.ru", "dOAwkypR1J");
                 break;
             case R.id.rebenok:
-                startActivity(new Intent(this, ChildActivity_.class));
+                getValidToken("serjka@inbox.ru", "NpjfQnEbDQ");
                 break;
             case R.id.roditel:
-                getValidToken("v.kisiev@asa.guru", "Wg9xsP8flq");
+                getValidToken("v.kisiev@asa.guru", "I2YttCBpRw");
+                break;
+            case R.id.diary_login_button:
+                adminLayout.setVisibility(View.VISIBLE);
                 break;
         }
     }

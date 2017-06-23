@@ -147,7 +147,7 @@ public class VospitannikFragment extends Fragment {
                 showDialog();
             }
         });
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         button.setTypeface(typeface);
         return view;
     }

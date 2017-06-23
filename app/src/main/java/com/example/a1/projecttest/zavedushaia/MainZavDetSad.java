@@ -119,7 +119,7 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
     }
     @AfterViews
     void main () {
-        typeface = Typeface.createFromAsset(this.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

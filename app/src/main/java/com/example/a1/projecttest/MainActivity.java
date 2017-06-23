@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         clearSync();
-        typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

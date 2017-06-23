@@ -111,5 +111,7 @@
     <string name="accept_text">Принять</string>
     <string name="add_tutor_text">Добавить воспитателя</string>
     <string name="forget_pass_text">Забыли свои данные для входа?</string>
+    <string name="my_kids">Мои дети</string>
+    <string name="parents_text">Родители</string>
 
 </resources>

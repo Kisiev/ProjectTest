@@ -51,7 +51,7 @@ public class VospitannikAdapter extends XRecyclerView.Adapter<VospitannikAdapter
 
     @Override
     public void onBindViewHolder(final VospitannikHolder holder, final int position) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
         typefaceItalic = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Italic.ttf");
         holder.textView.setText(services.get(position).getName());
         holder.timeTv.setText((services.get(position).getTimeFrom().substring(0, 5))

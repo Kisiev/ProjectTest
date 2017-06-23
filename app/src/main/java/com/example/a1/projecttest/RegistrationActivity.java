@@ -143,7 +143,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     @AfterViews
     public void main () {
         LoginActivity loginActivity = new LoginActivity();
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/opensans.ttf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/SF-UI-Text-Regular.ttf");
         ImageView imageView = (ImageView) findViewById(R.id.reg_imageView);
         loginActivity.createImage(R.mipmap.backgroundlogin, imageView);
         TextView header = (TextView) findViewById(R.id.header_registration);

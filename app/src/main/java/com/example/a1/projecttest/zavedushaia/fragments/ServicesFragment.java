@@ -308,7 +308,7 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         }
 
         addButton = (Button) view.findViewById(R.id.add_serviceBT);
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/opensans.ttf");
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         addButton.setTypeface(typeface);
 
 
