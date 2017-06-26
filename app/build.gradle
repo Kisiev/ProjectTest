@@ -77,4 +77,6 @@ dependencies {
 
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
 
+    compile "com.daimajia.swipelayout:library:1.2.0"
+
 }

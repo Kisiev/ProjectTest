@@ -24,6 +24,12 @@
         android:hint="@string/id_tutor"
         android:layout_marginBottom="8dp"
         android:id="@+id/id_tutor_add_groups_dialog"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/id_tutor"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/id_tutor_add_groups_dialog_v"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -67,6 +67,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
     Dialog addKidDialog;
     EditText nameGroup;
     Spinner idTutor;
+    EditText idTutor_v;
     GetStatusCode getStatusCode;
     Observable<List<GetAllTutors>> getAllTutorObserver;
     List<GetAllTutors> getAllTutorsOn;
@@ -199,7 +200,8 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                 showDialog();
                 break;
             case R.id.save_group:
-                threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), ((GetAllTutors) idTutor.getSelectedItem()).getId());
+                //threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), ((GetAllTutors) idTutor.getSelectedItem()).getId());
+                threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), idTutor_v.getText().toString());
                 if (getStatusCodeSetGroup.getCode().equals("200")){
                     threadGetGroup();
                     recyclerView.setAdapter(new GroupsAdapter(getKinderGartenGroups, getActivity()));
@@ -270,6 +272,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         cancel.setOnClickListener(this);
         nameGroup = (EditText) dialog.findViewById(R.id.name_group_add_groups_dialog);
         idTutor = (Spinner) dialog.findViewById(R.id.id_tutor_add_groups_dialog);
+        idTutor_v = (EditText) dialog.findViewById(R.id.id_tutor_add_groups_dialog_v);
         getAllTutors();
 
         dialog.show();

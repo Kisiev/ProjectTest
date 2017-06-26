@@ -24,22 +24,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
                 app:srcCompat="@drawable/ic_sentiment_dissatisfied_black_24dp"
                 android:id="@+id/low_smile_image_dialog"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_sentiment_satisfied_black_24dp"
                 android:id="@+id/medium_smile_image_dialog"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_sentiment_very_satisfied_black_24dp"
                 android:id="@+id/high_smile_image_dialog"/>
             <ImageView
                 android:layout_width="wrap_content"
+                android:clickable="true"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_send_black_24dp"
                 android:layout_weight="1"

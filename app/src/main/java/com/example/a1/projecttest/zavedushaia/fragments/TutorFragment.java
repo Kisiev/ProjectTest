@@ -97,6 +97,19 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
                         Log.d("1111111", "click");
                     }
                 });
+                view.findViewById(R.id.delete_button_group).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("1111111", "delete");
+                    }
+                });
+                view.findViewById(R.id.edit_button_group).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("1111111", "edit");
+                    }
+                });
+
             }
 
             @Override

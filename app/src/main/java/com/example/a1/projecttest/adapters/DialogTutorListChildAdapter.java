@@ -29,7 +29,9 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
     List<GetKidsByGroupIdModel> users;
     Typeface typeface;
     Context context;
+    View itemView;
     List<GetScheduleStatusesByGroupIdModel> getScheduleStatusesByGroupIdModels;
+
     public DialogTutorListChildAdapter (List<GetKidsByGroupIdModel> users, List<GetScheduleStatusesByGroupIdModel> getScheduleStatusesByGroupIdModels, Context context){
         this.users = users;
         this.context = context;
@@ -40,7 +42,9 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
     public DialogTutorListChildHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.list_child_for_tutor_dialog_item, parent, false);
-        return new DialogTutorListChildHolder(view);
+        DialogTutorListChildHolder dialogTutorListChildHolder = new DialogTutorListChildHolder(view);
+        itemView = dialogTutorListChildHolder.getItemView();
+        return dialogTutorListChildHolder;
     }
 
     @Override
@@ -53,12 +57,7 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
         holder.mediumSmile.setImageResource(R.drawable.ic_sentiment_satisfied_black_24dp);
         holder.highSmile.setImageResource(R.drawable.ic_sentiment_very_satisfied_black_24dp);
         holder.nameChild.setTypeface(typeface);
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.colorBlueOpacity));
-            }
-        });
+
         if (getScheduleStatusesByGroupIdModels != null) {
             for (GetScheduleStatusesByGroupIdModel i : getScheduleStatusesByGroupIdModels) {
                 if (i.getUserId().equals(users.get(position).getId())){
@@ -84,6 +83,9 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
         return users.size();
     }
 
+    public View getItemView(){
+        return itemView;
+    }
     class DialogTutorListChildHolder extends RecyclerView.ViewHolder{
         TextView nameChild;
         ImageView lowSmile;
@@ -91,8 +93,10 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
         ImageView highSmile;
         ImageView sendMessageImage;
         RelativeLayout relativeLayout;
+        View itemView;
         public DialogTutorListChildHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             nameChild = (TextView) itemView.findViewById(R.id.name_child_text_dialog);
             lowSmile = (ImageView) itemView.findViewById(R.id.low_smile_image_dialog);
             mediumSmile = (ImageView) itemView.findViewById(R.id.medium_smile_image_dialog);
@@ -100,5 +104,9 @@ public class DialogTutorListChildAdapter extends RecyclerView.Adapter<DialogTuto
             sendMessageImage = (ImageView) itemView.findViewById(R.id.send_message_to_parent);
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relative_list_dialog_tutor);
         }
+        public View getItemView(){
+            return itemView;
+        }
     }
+
 }

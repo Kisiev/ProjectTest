@@ -2,6 +2,7 @@ package com.example.a1.projecttest.zavedushaia.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.rest.Models.GetAllTutors;
 
@@ -48,13 +50,13 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
         holder.id.setText("Идентификатор: " + getAllTutorses.get(position).getId());
         holder.name.setTypeface(typeface);
         holder.id.setTypeface(typeface);
-        binderHelper.bind(holder.swipeRevealLayout, getAllTutorses.get(position).getId());
-        holder.deleteLayout.setOnClickListener(new View.OnClickListener() {
+       // binderHelper.bind(holder.swipeRevealLayout, getAllTutorses.get(position).getId());
+       /* holder.deleteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -65,14 +67,19 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
     class TutorHolder extends RecyclerView.ViewHolder{
         TextView name;
         TextView id;
-        SwipeRevealLayout swipeRevealLayout;
-        View deleteLayout;
+        SwipeLayout swipeRevealLayout;
+        CardView cardView;
+        Button deleteLayout;
+        Button editLayout;
         public TutorHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tutor_name_zav_text_view);
             id = (TextView) itemView.findViewById(R.id.tutor_id_zav_text_view);
-            swipeRevealLayout = (SwipeRevealLayout) itemView.findViewById(R.id.swipe_layout);
-            deleteLayout = itemView.findViewById(R.id.delete_layout);
+            swipeRevealLayout = (SwipeLayout) itemView.findViewById(R.id.swipe_layout);
+            cardView = (CardView) itemView.findViewById(R.id.card_group_list_fragment);
+            deleteLayout = (Button) itemView.findViewById(R.id.delete_button_group);
+           // deleteLayout = itemView.findViewById(R.id.delete_layout);
+            editLayout = (Button) itemView.findViewById(R.id.edit_button_group);
         }
 
 

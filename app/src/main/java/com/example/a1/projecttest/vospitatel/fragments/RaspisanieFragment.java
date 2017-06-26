@@ -1,12 +1,14 @@
 package com.example.a1.projecttest.vospitatel.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +63,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     List<GetStatusKidModel> getStatusKidModels;
     List<GetScheduleStatusesByGroupIdModel> getStatusesGroup;
     int positionSchedule = 0;
+    DialogTutorListChildAdapter dialogTutorListChildAdapter;
     UserLoginSession userLoginSession;
     private Thread thread = new Thread(new Runnable() {
         @Override
@@ -75,7 +78,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         userLoginSession = new UserLoginSession(getActivity());
         dialog = new Dialog(getActivity());
         session = new PositionSaveSession(getActivity());
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/OpenSans-Regular.ttf");
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         thread.start();
         dialog.setContentView(R.layout.list_child_for_tutor_dialog);
         recyclerView = (RecyclerView) view.findViewById(R.id.raspisanie_RV);
@@ -165,7 +168,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
 
     }
 
-  /*  @Background
+    /*  @Background
     public void loadServicesForTutor () {
         getLoaderManager().restartLoader(ConstantsManager.ID_LOADER, null, new LoaderManager.LoaderCallbacks<List<ChildStatusEntity>>() {
 
@@ -214,7 +217,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
 
         RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recycler_list_child_for_tutor);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new DialogTutorListChildAdapter(getKidsByGroupIdModels, getStatusesGroup, getActivity()));
+        dialogTutorListChildAdapter = new DialogTutorListChildAdapter(getKidsByGroupIdModels, getStatusesGroup, getActivity());
+        recyclerView.setAdapter(dialogTutorListChildAdapter);
+
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(final View view, final int position) {
@@ -343,4 +348,5 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
             }
         });
     }
+
 }
