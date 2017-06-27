@@ -17,8 +17,8 @@ public class ConstantsManager {
     final public static String UPBRINGING_STATE = "upbringing_state";
     final public static String TIME_IN = "time_in";
     final public static String TIME_OUT = "time_out";
-    final public static int TYPE_PHOTO = 1;
-    final public static int TYPE_VIDEO = 2;
+    final public static int TYPE_PHOTO = 1242;
+    final public static int TAKE_PHOTO = 22312;
     final public static int REQUEST_CODE_PHOTO = 1;
     final public static int REQUEST_CODE_VIDEO = 2;
     final public static int REDICTION_CONTEXT_ITEM = 15;

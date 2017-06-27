@@ -2,8 +2,13 @@ package com.example.a1.projecttest.vospitatel.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,17 +37,25 @@ import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 
 import org.androidannotations.annotations.EFragment;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observable;
 import rx.Observer;
+import rx.android.plugins.RxAndroidPlugins;
+
+import static android.app.Activity.RESULT_OK;
 
 @EFragment
 public class RaspisanieFragment extends Fragment implements View.OnClickListener{
@@ -57,9 +70,11 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     ImageView low;
     ImageView medium;
     ImageView high;
+    Uri selectedImage;
     ImageView commentImageSend;
     Typeface typeface;
     String statusForComment;
+    ImageView imadeDelete;
     List<GetStatusKidModel> getStatusKidModels;
     List<GetScheduleStatusesByGroupIdModel> getStatusesGroup;
     int positionSchedule = 0;
@@ -282,10 +297,48 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case ConstantsManager.TYPE_PHOTO:
+                if(resultCode == RESULT_OK){
+                    selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+                    cursor.close();
+
+                }
+            case ConstantsManager.TAKE_PHOTO:
+                   if (requestCode == ConstantsManager.TAKE_PHOTO){
+                       if (resultCode != 0) {
+                           Bitmap photo = (Bitmap) data.getExtras().get("data");
+                           imadeDelete.setImageBitmap(photo);
+
+                       }
+                   }
+                break;
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.back_button_dialog:
                 dialog.dismiss();
+                break;
+            case R.id.choice_photo_buttonBT:
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                startActivityForResult(i, ConstantsManager.TYPE_PHOTO);
+                break;
+            case R.id.add_photo_buttonBT:
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, ConstantsManager.TAKE_PHOTO);
                 break;
         }
     }
@@ -320,13 +373,17 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         commentDialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         Button okButton = (Button) commentDialog.findViewById(R.id.ok_button_comment);
         Button cancelButton = (Button) commentDialog.findViewById(R.id.cancel_comment_dialog);
+        Button addPhotoButton = (Button) commentDialog.findViewById(R.id.add_photo_buttonBT);
+        Button choicePhotoButton = (Button) commentDialog.findViewById(R.id.choice_photo_buttonBT);
+        imadeDelete = (ImageView) commentDialog.findViewById(R.id.image_delete);
         final EditText commentEdit = (EditText) commentDialog.findViewById(R.id.comment_edit);
         TextView header = (TextView) commentDialog.findViewById(R.id.header_comments_status);
         okButton.setTypeface(typeface);
         cancelButton.setTypeface(typeface);
         commentEdit.setTypeface(typeface);
         header.setTypeface(typeface);
-
+        addPhotoButton.setOnClickListener(this);
+        choicePhotoButton.setOnClickListener(this);
         commentDialog.show();
         dialog.dismiss();
 

@@ -134,15 +134,16 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         getAllKidStatuses = new ArrayList<>();
         progressBar = (ProgressBar) view.findViewById(R.id.feed_loading);
         navigationView = (NavigationView) getActivity().findViewById(R.id.navigation_view);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_circle_item);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_request_add_in_family);
         loadingView = view.findViewById(R.id.loading_layout_rel);
         circleRotate = (ImageView) view.findViewById(R.id.image_rotate_circle);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManagaer);
+
         statusImage = (ImageView) view.findViewById(R.id.status_image_view);
         recyclerViewFeed = (XRecyclerView) view.findViewById(R.id.recycler_feed_item);
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getFeed(false);
         getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification()).observeOn(AndroidSchedulers.mainThread());
         observer = new Observer<FeedEntity>() {
@@ -175,22 +176,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
            }
        });
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
-            @Override
-            public void onClick(final View view, final int position) {
-                switch (view.getId()){
-                    case R.id.liner_circle_item:
-                        registerForContextMenu(view);
-                        pos = position;
-                        break;
-                }
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
 
         return view;
     }
