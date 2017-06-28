@@ -1,13 +1,12 @@
 package com.example.a1.projecttest.vospitatel.fragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,37 +27,47 @@ import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.adapters.DialogTutorListChildAdapter;
 import com.example.a1.projecttest.adapters.VospitannikAdapter;
-import com.example.a1.projecttest.fragments.ShcolnilFragment;
 import com.example.a1.projecttest.rest.Models.GetKidsByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 
 import com.example.a1.projecttest.rest.Models.GetScheduleStatusesByGroupIdModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.example.a1.projecttest.rest.Models.GetStatusUploadModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.utils.FileUtils;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
 
 import org.androidannotations.annotations.EFragment;
+
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import rx.Observable;
 import rx.Observer;
-import rx.android.plugins.RxAndroidPlugins;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
 @EFragment
-public class RaspisanieFragment extends Fragment implements View.OnClickListener{
+public class RaspisanieFragment extends Fragment implements View.OnClickListener {
 
     RecyclerView recyclerView;
     Dialog dialog;
@@ -75,7 +84,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     Typeface typeface;
     String statusForComment;
     ImageView imadeDelete;
-    List<GetStatusKidModel> getStatusKidModels;
+    File imageFile;
+    MultipartBody.Part fileToUpload ;
+    RequestBody filename;
     List<GetScheduleStatusesByGroupIdModel> getStatusesGroup;
     int positionSchedule = 0;
     DialogTutorListChildAdapter dialogTutorListChildAdapter;
@@ -310,19 +321,46 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
 
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String filePath = cursor.getString(columnIndex);
+
+                    String spliter[] = filePath.split("/");
+                    String fileNameReal = spliter[spliter.length - 1];
+                  //  filePath = filePath.replace(spliter[spliter.length - 1], "");
+                    File file = new File(filePath);
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), filePath);
+                    fileToUpload = MultipartBody.Part.createFormData("file", fileNameReal, requestBody);
+                    filename = RequestBody.create(MediaType.parse("*/*"), fileNameReal);
+                    final RestService restService = new RestService();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                restService.upload(fileToUpload, filename);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
                     cursor.close();
 
                 }
             case ConstantsManager.TAKE_PHOTO:
                    if (requestCode == ConstantsManager.TAKE_PHOTO){
                        if (resultCode != 0) {
-                           Bitmap photo = (Bitmap) data.getExtras().get("data");
-                           imadeDelete.setImageBitmap(photo);
+
+                           /*Bitmap photo = (Bitmap) data.getExtras().get("data");
+                           imadeDelete.setImageBitmap(photo);*/
 
                        }
                    }
                 break;
         }
+    }
+
+    public String getPictureName(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH);
+        String timeTamp = sdf.format(new Date());
+        return "Image_" + timeTamp + ".jpg";
     }
 
     @Override
@@ -338,6 +376,12 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.add_photo_buttonBT:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String fileName = getPictureName();
+                File pictureDirectori = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                imageFile = new File(pictureDirectori, fileName);
+
+                Uri uriPicture = Uri.fromFile(imageFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPicture);
                 startActivityForResult(intent, ConstantsManager.TAKE_PHOTO);
                 break;
         }

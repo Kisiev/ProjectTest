@@ -23,11 +23,17 @@ import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.example.a1.projecttest.rest.Models.GetStatusUploadModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Query;
 import rx.Observable;
 import rx.Observer;
@@ -246,4 +252,7 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().getKinderGartenZavObserver(managerId);
     }
 
+    public ResponseBody upload (MultipartBody.Part file, RequestBody name) throws IOException{
+        return restClient.getProjectTestApiEdu().upload(file, name).execute().body();
+    }
 }

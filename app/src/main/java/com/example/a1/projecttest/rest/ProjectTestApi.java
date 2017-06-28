@@ -22,12 +22,22 @@ import com.example.a1.projecttest.rest.Models.GetServiceType;
 import com.example.a1.projecttest.rest.Models.GetServicesByServiceTypeModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.example.a1.projecttest.rest.Models.GetStatusUploadModel;
 import com.example.a1.projecttest.rest.Models.GetUserData;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
         import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import rx.Observable;
 import rx.Observer;
@@ -189,5 +199,10 @@ public interface ProjectTestApi {
 
     @GET ("/api/getKindergartenByManagerId.php")
     Observable<GetKinderGarten> getKinderGartenZavObserver (@Query("managerId") String managerId);
+
+    @Multipart
+    @POST ("/api/upload_image.php")
+    Call<ResponseBody> upload (@Part MultipartBody.Part file,
+                                             @Part("name") RequestBody name);
 
 }
