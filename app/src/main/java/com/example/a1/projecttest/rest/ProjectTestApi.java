@@ -202,7 +202,7 @@ public interface ProjectTestApi {
 
     @Multipart
     @POST ("/api/upload_image.php")
-    Call<ResponseBody> upload (@Part MultipartBody.Part file,
-                                             @Part("name") RequestBody name);
+    Observable<ResponseBody> uploadFile(@Part MultipartBody.Part file, @Part("name") RequestBody name);
+
 
 }

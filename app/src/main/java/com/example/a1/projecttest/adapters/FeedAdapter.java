@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.entities.FeedEntity;
 import com.example.a1.projecttest.entities.GetAllKidEntity;
+import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -154,6 +155,7 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
             if (getStatusKidModels.get(position).getUserId().equals(getAllKidsModels.get(j).get_id())) {
                 holder.nameChildTV.setText(getAllKidsModels.get(j).getName());
                 holder.serviceNameTV.setText(getStatusKidModels.get(position).getScheduleName());
+
                 if (getStatusKidModels.get(position).getCompletion() != null)
                     holder.dateTV.setText(parserDate(getStatusKidModels.get(position).getCompletion()));
                 switch (getStatusKidModels.get(position).getStatusId()){
@@ -185,6 +187,7 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
         ImageView statusImage;
         TextView dateTV;
         CardView cardView;
+        ImageView imageComment;
         public FeedHolder(View itemView, Context context) {
             super(itemView);
             Typeface typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Bold.ttf");
@@ -194,6 +197,7 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
             cardView = (CardView) itemView.findViewById(R.id.card_feed_parent);
             dateTV = (TextView) itemView.findViewById(R.id.date_feed_add_tv);
             statusImage = (ImageView) itemView.findViewById(R.id.status_image_view);
+            imageComment = (ImageView) itemView.findViewById(R.id.image_comment);
             dateTV.setTypeface(typefaceReg);
             nameChildTV.setTypeface(typeface);
             serviceNameTV.setTypeface(typefaceReg);

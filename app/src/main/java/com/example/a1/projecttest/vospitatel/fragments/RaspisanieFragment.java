@@ -1,13 +1,17 @@
 package com.example.a1.projecttest.vospitatel.fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +62,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import okhttp3.ResponseBody;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import rx.Observable;
 import rx.Observer;
@@ -67,8 +72,8 @@ import rx.schedulers.Schedulers;
 import static android.app.Activity.RESULT_OK;
 
 @EFragment
-public class RaspisanieFragment extends Fragment implements View.OnClickListener {
-
+public class RaspisanieFragment extends Fragment implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
+    Uri uriPicture;
     RecyclerView recyclerView;
     Dialog dialog;
     GetStatusCode getStatusCode;
@@ -79,6 +84,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     ImageView low;
     ImageView medium;
     ImageView high;
+    private static final int READ_REQUEST_CODE = 300;
     Uri selectedImage;
     ImageView commentImageSend;
     Typeface typeface;
@@ -314,46 +320,66 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
             case ConstantsManager.TYPE_PHOTO:
                 if(resultCode == RESULT_OK){
                     selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String filePath = cursor.getString(columnIndex);
-
-                    String spliter[] = filePath.split("/");
-                    String fileNameReal = spliter[spliter.length - 1];
-                  //  filePath = filePath.replace(spliter[spliter.length - 1], "");
-                    File file = new File(filePath);
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), filePath);
-                    fileToUpload = MultipartBody.Part.createFormData("file", fileNameReal, requestBody);
-                    filename = RequestBody.create(MediaType.parse("*/*"), fileNameReal);
-                    final RestService restService = new RestService();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                restService.upload(fileToUpload, filename);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-
-                    cursor.close();
+                        selectedImage = data.getData();
+                    if(EasyPermissions.hasPermissions(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        uploadFile(selectedImage);
+                    } else {
+                        EasyPermissions.requestPermissions(this, getString(R.string.signIn), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
+                    }
+                    //cursor.close();
 
                 }
             case ConstantsManager.TAKE_PHOTO:
                    if (requestCode == ConstantsManager.TAKE_PHOTO){
-                       if (resultCode != 0) {
-
-                           /*Bitmap photo = (Bitmap) data.getExtras().get("data");
-                           imadeDelete.setImageBitmap(photo);*/
-
+                       if (resultCode == RESULT_OK) {
+                           //Bitmap photo = (Bitmap) data.getExtras().get("data");
+                           //imadeDelete.setImageBitmap(photo);
+                            uploadFile(uriPicture);
                        }
                    }
                 break;
+        }
+    }
+
+    private void uploadFile (Uri selectedImage){
+        String filePath = getRealPathFromURIPath(selectedImage, getActivity());
+        File file = new File(filePath);
+        final RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+        final MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+        final RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+        final RestService restService = new RestService();
+        try {
+            Observable<ResponseBody> getStatusUploadFile = restService.upload(fileToUpload, filename);
+            getStatusUploadFile.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            Toast.makeText(getActivity(), responseBody.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
+        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
         }
     }
 
@@ -380,12 +406,19 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                 File pictureDirectori = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 imageFile = new File(pictureDirectori, fileName);
 
-                Uri uriPicture = Uri.fromFile(imageFile);
+                uriPicture = Uri.fromFile(imageFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPicture);
                 startActivityForResult(intent, ConstantsManager.TAKE_PHOTO);
                 break;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, getActivity());
+    }
+
 
     public void threadStatus(final String scheduleId, final String statusId, final String userId, final String comment){
         Thread statusThread = new Thread(new Runnable() {
@@ -450,4 +483,33 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         });
     }
 
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        if(selectedImage != null){
+            String filePath = getRealPathFromURIPath(selectedImage, getActivity());
+            File file = new File(filePath);
+            RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+            final MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+            final RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+            final RestService restService = new RestService();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        restService.upload(fileToUpload, filename);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.signIn), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Log.d("asdas", "Permission has been denied");
+    }
 }

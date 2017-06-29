@@ -252,7 +252,7 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().getKinderGartenZavObserver(managerId);
     }
 
-    public ResponseBody upload (MultipartBody.Part file, RequestBody name) throws IOException{
-        return restClient.getProjectTestApiEdu().upload(file, name).execute().body();
+    public Observable<ResponseBody> upload (MultipartBody.Part file, RequestBody name) throws IOException{
+        return restClient.getProjectTestApiEdu().uploadFile(file, name);
     }
 }

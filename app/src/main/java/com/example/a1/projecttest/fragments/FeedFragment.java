@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -96,6 +97,12 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     ImageView circleRotate;
     int pos = -1;
 
+    public static void getPhotoFeed(Context context, ImageView imageView){
+        Glide.with(context)
+                .load("http://e-d-u.ru/comment_img/8310864.jpg")
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(new BitmapImageViewTarget(imageView).getView());
+    }
 
     public void setLoading(final boolean isRefresh){
         new Handler().post(new Runnable() {
@@ -232,6 +239,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                 }
         }
     }
+
 
     public void getFeed(boolean isRefresh){
         final RestService restService = new RestService();

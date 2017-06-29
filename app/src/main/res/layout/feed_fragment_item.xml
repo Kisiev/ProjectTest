@@ -57,7 +57,11 @@
                 android:textAlignment="center"
                 android:id="@+id/status_image_view"/>
         </LinearLayout>
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/status_layout_content"
+            android:id="@+id/image_comment"/>
     </RelativeLayout>
 
 </LinearLayout>

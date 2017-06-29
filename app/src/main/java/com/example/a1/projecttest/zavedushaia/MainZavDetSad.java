@@ -27,6 +27,7 @@ import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.EventFragmentZav;
 import com.example.a1.projecttest.zavedushaia.fragments.GroupsFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.RegisterChildFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
@@ -65,6 +66,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             setTitle(getString(R.string.tutor_tab_header));
         } else if (fragmentClassName.equals(RegisterChildFragment.class.getName())){
             setTitle(getString(R.string.registry_child_menu_item));
+        }else if (fragmentClassName.equals(EventFragmentZav.class.getName())){
+            setTitle(getString(R.string.calendar_tab_header));
         }
     }
 
@@ -83,6 +86,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         directoryMenu.getItem(2).setIcon(R.drawable.ic_assignment_black_24dp);
         directoryMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 4, getString(R.string.calendar_tab_header));
         directoryMenu.getItem(3).setIcon(R.drawable.ic_perm_contact_calendar_black_24dp);
+        directoryMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 15, getString(R.string.foot_menu));
+        directoryMenu.getItem(4).setIcon(R.drawable.ic_local_pizza_black_24dp);
 
         Menu registryMenu = navigationView.getMenu();
         registryMenu = registryMenu.addSubMenu(R.string.registry_menu_group);
@@ -201,7 +206,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
                 loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 4:
-
+                EventFragmentZav eventFragmentZav = new EventFragmentZav();
+                replaceFragment(eventFragmentZav, R.id.content_main);
+                updateToolbarTitle(eventFragmentZav);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
             case 5:
                 RegisterChildFragment registerChildFragment = new RegisterChildFragment();

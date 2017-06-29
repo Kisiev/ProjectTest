@@ -41,7 +41,7 @@
     <string name="group_tab_header">Группы</string>
     <string name="tutor_tab_header">Воспитатели</string>
     <string name="services_tab_header">Деятельность</string>
-    <string name="calendar_tab_header">Календари</string>
+    <string name="calendar_tab_header">Мероприятия</string>
     <string name="directory_menu_group">Справочники</string>
     <string name="registry_menu_group">Реестры</string>
     <string name="registry_child_menu_item">Реестры детей</string>
@@ -113,5 +113,6 @@
     <string name="forget_pass_text">Забыли свои данные для входа?</string>
     <string name="my_kids">Мои дети</string>
     <string name="parents_text">Родители</string>
+    <string name="foot_menu">Меню питания</string>
 
 </resources>
