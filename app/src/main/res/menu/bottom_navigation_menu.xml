@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/feed_item_nav_bottom"
+        android:icon="@drawable/ic_event_note_black_24dp"
+        android:title="@string/life_feed_l"/>
+    <item
+        android:id="@+id/event_calendar_nav_bottom"
+        android:icon="@drawable/ic_av_timer_black_24dp"
+        android:title="@string/calendar_tab_header" />
+    <item
+        android:id="@+id/event_nav_bottom"
+        android:icon="@drawable/ic_announcement_black_24dp"
+        android:title="@string/ads_text" />
+ </menu>

@@ -23,11 +23,14 @@ import com.example.a1.projecttest.LoginActivity_;
 import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
+import com.example.a1.projecttest.fragments.AdsFragmentParent;
 import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.fragments.AttendanceFragment;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.AdsFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.EventFragmentZav;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -55,7 +58,8 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
             setTitle(getString(R.string.list_rasp));
         } else if (fragmentClassName.equals(AttendanceFragment.class.getName())){
             setTitle(getString(R.string.attendance_text));
-        }
+        } else if (fragmentClassName.equals(AdsFragment.class.getName()))
+            setTitle(getString(R.string.ads_text));
     }
 
     @AfterViews
@@ -111,12 +115,14 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         menu.add(Menu.NONE, ConstantsManager.MENU_ID, 0, getString(R.string.attendance_text));
         menu.getItem(0).setIcon(R.drawable.ic_transfer_within_a_station_black_24dp);
         menu.add(Menu.NONE, ConstantsManager.MENU_ID, 1, getString(R.string.list_services_menu_item));
-        menu.getItem(1).setIcon(R.drawable.ic_format_list_numbered_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 2, getString(R.string.orders_menu_group));
-        menu.getItem(2).setIcon(R.drawable.ic_assignment_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 3, R.string.communic_text);
-        menu.getItem(3).setIcon(R.drawable.ic_mail_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 4, R.string.exit);
+        menu.getItem(1).setIcon(R.drawable.ic_perm_contact_calendar_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 2, getString(R.string.ads_text));
+        menu.getItem(2).setIcon(R.drawable.ic_format_list_numbered_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 3, getString(R.string.orders_menu_group));
+        menu.getItem(3).setIcon(R.drawable.ic_assignment_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 4, R.string.communic_text);
+        menu.getItem(4).setIcon(R.drawable.ic_mail_black_24dp);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 5, R.string.exit);
     }
 
     public VospitatelMainActivity () {
@@ -152,7 +158,7 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         String backStackName = fragment.getClass().getName();
         FragmentManager manager = this.getSupportFragmentManager();
         boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
-        if (!fragmentPopped && manager.findFragmentByTag(backStackName) == null) {
+        if (!fragmentPopped) {
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(id, fragment, backStackName);
             ft.addToBackStack(backStackName);
@@ -178,12 +184,17 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
                 updateToolbarTitle(raspisanieFragment);
                 break;
             case 2:
-
+                AdsFragment adsFragment = new AdsFragment();
+                replaceFragment(adsFragment, R.id.content_main);
+                updateToolbarTitle(adsFragment);
                 break;
             case 3:
 
                 break;
             case 4:
+
+                break;
+            case 5:
                 UserLoginSession session = new UserLoginSession(this);
                 session.clear();
                 startActivity(new Intent(this, LoginActivity_.class));

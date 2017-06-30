@@ -29,7 +29,16 @@ public class FeedEntity extends BaseModel {
     private String comment;
     @Column()
     private String completion;
+    @Column()
+    private String imageUrl;
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String get_id() {
         return _id;
@@ -108,9 +117,9 @@ public class FeedEntity extends BaseModel {
         return SQLite.select().from(FeedEntity.class).queryList();
     }
 
-    public static void insertIn(String _id, String scheduleId, String statusId, String userId, String name, String scheduleName, String comment, String completion){
-        SQLite.insert(FeedEntity.class).columns("_id", "scheduleId", "statusId", "userId", "name", "scheduleName", "comment", "completion")
-                .values(_id, scheduleId, statusId, userId, name, scheduleName, comment, completion)
+    public static void insertIn(String _id, String scheduleId, String statusId, String userId, String name, String scheduleName, String comment, String completion, String imageUrl){
+        SQLite.insert(FeedEntity.class).columns("_id", "scheduleId", "statusId", "userId", "name", "scheduleName", "comment", "completion", "imageUrl")
+                .values(_id, scheduleId, statusId, userId, name, scheduleName, comment, completion, imageUrl)
                 .execute();
     }
 

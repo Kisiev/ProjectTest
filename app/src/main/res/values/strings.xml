@@ -19,7 +19,8 @@
     <string name="provider_gps">GPS</string>
     <string name="provider_network">Network</string>
     <string name="location_settings">Location settings</string>
-    <string name="life_feed">Живая лента</string>
+    <string name="life_feed">Новости</string>
+    <string name="life_feed_l">Живая лента</string>
     <string name="status_child">Статус ребенка</string>
     <string name="child_title">Дети</string>
     <string name="parent_item">Родители</string>
@@ -51,6 +52,7 @@
     <string name="list_orders_time_menu_item">Табель учета времени воспитателей</string>
     <string name="orders_menu_group">Отчеты</string>
     <string name="payment_item_menu">Оплата</string>
+    <string name="event_not_calendar">События</string>
     <string name="list_child_arr_item_menu">Посещаемость детей</string>
     <string name="list_enployee_item_menu">Учет сотрудников</string>
     <string name="communication_menu_group">Коммуникация</string>
@@ -114,5 +116,6 @@
     <string name="my_kids">Мои дети</string>
     <string name="parents_text">Родители</string>
     <string name="foot_menu">Меню питания</string>
+    <string name="ads_text">Объявления</string>
 
 </resources>

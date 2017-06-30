@@ -87,6 +87,9 @@ public interface ProjectTestApi {
     @GET("/api/getServicesByServiceTypeId.php")
     Call<List<GetServicesByServiceTypeModel>> getServicesByServiceType(@Query("serviceTypeId") String id);
 
+    @GET("/api/getServicesByServiceTypeId.php")
+    Observable<List<GetServicesByServiceTypeModel>> getServicesByServiceTypeObservable(@Query("serviceTypeId") String id);
+
     @GET("/api/createSchedule.php")
     Call<GetStatusCode> setSchedule(@Query("serviceId") String serviceId,
                                     @Query("dayId") String day,
@@ -166,8 +169,19 @@ public interface ProjectTestApi {
     @GET ("/api/getAllScheduleStatusesByKidId.php")
     Call<List<GetStatusKidModel>> getStatusKidForFeed(@Query("KidId") String kidId);
 
-    @GET ("/api/createScheduleStatus.php")
+    @Multipart
+    @POST ("/api/createScheduleStatus.php")
     Call<GetStatusCode> setStatusForKid(@Query("scheduleId") String scheduleId,
+                                        @Query("statusId") String statusId,
+                                        @Query("userId") String userId,
+                                        @Query("comment") String comment,
+                                        @Query("completion") String data,
+                                        @Part MultipartBody.Part file,
+                                        @Part("name") RequestBody name);
+
+
+    @GET ("/api/createScheduleStatus.php")
+    Call<GetStatusCode> setStatusForKidWithoutPhoto(@Query("scheduleId") String scheduleId,
                                         @Query("statusId") String statusId,
                                         @Query("userId") String userId,
                                         @Query("comment") String comment,

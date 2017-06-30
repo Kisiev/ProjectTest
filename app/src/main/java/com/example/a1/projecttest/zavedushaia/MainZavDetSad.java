@@ -26,8 +26,10 @@ import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.zavedushaia.fragments.AdsFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.ChildAndParentFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.EventFragmentZav;
+import com.example.a1.projecttest.zavedushaia.fragments.FoodMenuFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.GroupsFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.RegisterChildFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.ServicesFragment;
@@ -68,6 +70,10 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             setTitle(getString(R.string.registry_child_menu_item));
         }else if (fragmentClassName.equals(EventFragmentZav.class.getName())){
             setTitle(getString(R.string.calendar_tab_header));
+        }else if (fragmentClassName.equals(FoodMenuFragment.class.getName())){
+            setTitle(getString(R.string.foot_menu));
+        }else if (fragmentClassName.equals(AdsFragment.class.getName())){
+            setTitle(getString(R.string.ads_text));
         }
     }
 
@@ -88,6 +94,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         directoryMenu.getItem(3).setIcon(R.drawable.ic_perm_contact_calendar_black_24dp);
         directoryMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 15, getString(R.string.foot_menu));
         directoryMenu.getItem(4).setIcon(R.drawable.ic_local_pizza_black_24dp);
+        directoryMenu.add(Menu.NONE, ConstantsManager.MENU_ID, 16, R.string.ads_text);
+        directoryMenu.getItem(5).setIcon(R.drawable.ic_featured_play_list_black_24dp);
 
         Menu registryMenu = navigationView.getMenu();
         registryMenu = registryMenu.addSubMenu(R.string.registry_menu_group);
@@ -249,6 +257,18 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
                 replaceFragment(cp, R.id.content_main);
                 updateToolbarTitle(cp);
                 loginActivity.createImage(R.mipmap.background, backgroundImage);
+                break;
+            case 15:
+                FoodMenuFragment foodMenuFragment = new FoodMenuFragment();
+                replaceFragment(foodMenuFragment, R.id.content_main);
+                updateToolbarTitle(foodMenuFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
+                break;
+            case 16:
+                AdsFragment adsFragment = new AdsFragment();
+                replaceFragment(adsFragment, R.id.content_main);
+                updateToolbarTitle(adsFragment);
+                loginActivity.createImage(R.color.cardview_light_background, backgroundImage);
                 break;
 
         }

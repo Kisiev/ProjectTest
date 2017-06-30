@@ -1,5 +1,7 @@
 package com.example.a1.projecttest.rest;
 
+import com.example.a1.projecttest.utils.ConstantsManager;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -9,7 +11,7 @@ import rx.schedulers.Schedulers;
 
 public class RestClient {
     public final static String BASE_NAME = "http://agamidzk.beget.tech";
-    public final static String BASE_NAME_EDU = "http://e-d-u.ru";
+
 
     private ProjectTestApi projectTestApi;
     private ProjectTestApi projectTestApiEdu;
@@ -30,7 +32,7 @@ public class RestClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         Retrofit retrofit1 = new Retrofit.Builder()
-                .baseUrl(BASE_NAME_EDU)
+                .baseUrl(ConstantsManager.BASE_NAME_EDU)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)

@@ -128,6 +128,11 @@ public final class RestService {
                 .execute().body();
     }
 
+    public Observable<List<GetServicesByServiceTypeModel>> getServicesByServiceTypeObservableModels (String id) throws IOException{
+        return restClient.getProjectTestApiEdu()
+                .getServicesByServiceTypeObservable(id);
+    }
+
     public GetStatusCode setSchedule(String serviceId, String day, String timeFrom, String timeTo, String groupId) throws IOException {
         return restClient.getProjectTestApiEdu().setSchedule(serviceId, day, timeFrom, timeTo, groupId).execute().body();
     }
@@ -219,8 +224,12 @@ public final class RestService {
     public List<GetStatusKidModel> getStatusKidForFeedModels (String kidId) throws IOException {
         return restClient.getProjectTestApiEdu().getStatusKidForFeed(kidId).execute().body();
     }
-    public GetStatusCode getStatusForSetStatus(String scheduleId, String statusId, String userId, String comment, String date) throws IOException{
-        return restClient.getProjectTestApiEdu().setStatusForKid(scheduleId, statusId, userId, comment, date).execute().body();
+    public GetStatusCode getStatusForSetStatus(String scheduleId, String statusId, String userId, String comment, String date, MultipartBody.Part file, RequestBody name) throws IOException{
+        return restClient.getProjectTestApiEdu().setStatusForKid(scheduleId, statusId, userId, comment, date, file, name).execute().body();
+    }
+
+    public GetStatusCode getStatusForSetStatusWithoutPhoto(String scheduleId, String statusId, String userId, String comment, String date) throws IOException{
+        return restClient.getProjectTestApiEdu().setStatusForKidWithoutPhoto(scheduleId, statusId, userId, comment, date).execute().body();
     }
 
     public List<GetScheduleStatusesByGroupIdModel> getGroupStatuses(String groupId, String schedule) throws IOException{

@@ -300,16 +300,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.zaveduushi:
-                getValidToken("kisivaleri@gmail.com", "PGGObJuCso");
+                getValidToken("a.gamidi@asa.guru", "WJY4HZ3k2S");
                 break;
             case R.id.vospitatel:
-                getValidToken("v_stronger@mail.ru", "wkWgzQlF4u");
+                getValidToken("v_stronger@mail.ru", "92SUfNLg7z");
                 break;
             case R.id.rebenok:
                 getValidToken("serjka@inbox.ru", "NpjfQnEbDQ");
                 break;
             case R.id.roditel:
-                getValidToken("v.kisiev@asa.guru", "R9tOoG1Zib");
+                getValidToken("v.kisiev@asa.guru", "A4xGQ92A81");
                 break;
             case R.id.diary_login_button:
                 adminLayout.setVisibility(View.VISIBLE);

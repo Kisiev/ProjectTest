@@ -92,17 +92,13 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     ImageView imadeDelete;
     File imageFile;
     MultipartBody.Part fileToUpload ;
-    RequestBody filename;
     List<GetScheduleStatusesByGroupIdModel> getStatusesGroup;
     int positionSchedule = 0;
     DialogTutorListChildAdapter dialogTutorListChildAdapter;
     UserLoginSession userLoginSession;
-    private Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            loadUsersByRole();
-        }
-    });
+    RequestBody filename;
+    RestService restService;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,6 +107,12 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         dialog = new Dialog(getActivity());
         session = new PositionSaveSession(getActivity());
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loadUsersByRole();
+            }
+        });
         thread.start();
         dialog.setContentView(R.layout.list_child_for_tutor_dialog);
         recyclerView = (RecyclerView) view.findViewById(R.id.raspisanie_RV);
@@ -120,6 +122,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         recyclerView.setAdapter(new VospitannikAdapter(getScheduleListModelsOn, null, getActivity()));
         // loadServicesForTutor();
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
@@ -231,11 +234,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     }*/
 
     public void showDialog() {
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy hh:mm");
         String d = sdf.format(calendar.getTimeInMillis());
@@ -319,9 +318,9 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
         switch(requestCode) {
             case ConstantsManager.TYPE_PHOTO:
                 if(resultCode == RESULT_OK){
-                    selectedImage = data.getData();
-                        selectedImage = data.getData();
+
                     if(EasyPermissions.hasPermissions(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        selectedImage = data.getData();
                         uploadFile(selectedImage);
                     } else {
                         EasyPermissions.requestPermissions(this, getString(R.string.signIn), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -332,9 +331,7 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
             case ConstantsManager.TAKE_PHOTO:
                    if (requestCode == ConstantsManager.TAKE_PHOTO){
                        if (resultCode == RESULT_OK) {
-                           //Bitmap photo = (Bitmap) data.getExtras().get("data");
-                           //imadeDelete.setImageBitmap(photo);
-                            uploadFile(uriPicture);
+                            uploadFile(selectedImage);
                        }
                    }
                 break;
@@ -344,33 +341,10 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     private void uploadFile (Uri selectedImage){
         String filePath = getRealPathFromURIPath(selectedImage, getActivity());
         File file = new File(filePath);
-        final RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-        final MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
-        final RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-        final RestService restService = new RestService();
-        try {
-            Observable<ResponseBody> getStatusUploadFile = restService.upload(fileToUpload, filename);
-            getStatusUploadFile.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<ResponseBody>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(ResponseBody responseBody) {
-                            Toast.makeText(getActivity(), responseBody.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+        fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+        filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+        restService = new RestService();
     }
     private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
         Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
@@ -406,8 +380,8 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
                 File pictureDirectori = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 imageFile = new File(pictureDirectori, fileName);
 
-                uriPicture = Uri.fromFile(imageFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPicture);
+                selectedImage = Uri.fromFile(imageFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, selectedImage);
                 startActivityForResult(intent, ConstantsManager.TAKE_PHOTO);
                 break;
         }
@@ -438,7 +412,12 @@ public class RaspisanieFragment extends Fragment implements View.OnClickListener
     public void getStatus(String scheduleId, String statusId, String userId, String comment){
         RestService restService = new RestService();
         try {
-            getStatusCode = restService.getStatusForSetStatus(scheduleId, statusId, userId, comment, "");
+            if (filename == null || fileToUpload == null)
+                getStatusCode = restService.getStatusForSetStatusWithoutPhoto(scheduleId, statusId, userId, comment, "");
+            else
+                getStatusCode = restService.getStatusForSetStatus(scheduleId, statusId, userId, comment, "", fileToUpload, filename);
+            fileToUpload = null;
+            filename = null;
         } catch (IOException e) {
             e.printStackTrace();
         }

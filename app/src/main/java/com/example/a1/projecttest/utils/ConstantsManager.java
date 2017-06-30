@@ -1,6 +1,7 @@
 package com.example.a1.projecttest.utils;
 
 public class ConstantsManager {
+    public final static String BASE_NAME_EDU = "http://e-d-u.ru";
     final public static String ID = "id";
     final public static int ID_LOADER = 1;
     final public static String LOGIN = "login";

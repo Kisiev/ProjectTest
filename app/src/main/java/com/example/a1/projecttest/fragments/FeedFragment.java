@@ -12,10 +12,14 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,6 +40,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.a1.projecttest.MainActivity;
 import com.example.a1.projecttest.entities.FeedEntity;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
@@ -49,6 +54,8 @@ import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ClickListener;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.example.a1.projecttest.zavedushaia.fragments.AdsFragment;
+import com.example.a1.projecttest.zavedushaia.fragments.EventFragmentZav;
 import com.jcodecraeer.xrecyclerview.ArrowRefreshHeader;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.mindorks.placeholderview.SmoothLinearLayoutManager;
@@ -59,6 +66,7 @@ import org.androidannotations.annotations.UiThread;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -91,15 +99,16 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
     Observer<FeedEntity> observer;
     Observable<List<GetAllKidsModel>> getAllKidsObserver;
     Subscription subscription;
+    BottomNavigationView bottomNavigationView;
     ProgressBar progressBar;
     ImageView statusImage;
     View loadingView;
     ImageView circleRotate;
     int pos = -1;
 
-    public static void getPhotoFeed(Context context, ImageView imageView){
+    public static void getPhotoFeed(Context context, ImageView imageView, String uri){
         Glide.with(context)
-                .load("http://e-d-u.ru/comment_img/8310864.jpg")
+                .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(new BitmapImageViewTarget(imageView).getView());
     }
@@ -329,7 +338,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         FeedEntity.deleteAll();
         GetAllKidEntity.deleteAll();
         for (GetStatusKidModel i : getAllKidStatuses)
-            FeedEntity.insertIn(i.getId(), i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment(), i.getCompletion());
+            FeedEntity.insertIn(i.getId(), i.getScheduleId(), i.getStatusId(), i.getUserId(), i.getName(), i.getScheduleName(), i.getComment(), i.getCompletion(), i.getImageUrl());
         for (GetAllKidsModel i: getAllKidsModelsOn)
             GetAllKidEntity.insertIn(i.getId(), i.getName(), i.getSurname(), i.getPatronymic());
 
@@ -368,6 +377,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         dialog.show();
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -378,5 +388,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
+
 
 }

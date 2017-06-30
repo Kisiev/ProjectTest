@@ -20,6 +20,7 @@ import com.example.a1.projecttest.entities.GetAllKidEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetStatusKidModel;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.sql.Time;
@@ -155,7 +156,7 @@ public class FeedAdapter extends XRecyclerView.Adapter<FeedAdapter.FeedHolder> {
             if (getStatusKidModels.get(position).getUserId().equals(getAllKidsModels.get(j).get_id())) {
                 holder.nameChildTV.setText(getAllKidsModels.get(j).getName());
                 holder.serviceNameTV.setText(getStatusKidModels.get(position).getScheduleName());
-
+                FeedFragment.getPhotoFeed(context, holder.imageComment, ConstantsManager.BASE_NAME_EDU + getStatusKidModels.get(position).getImageUrl());
                 if (getStatusKidModels.get(position).getCompletion() != null)
                     holder.dateTV.setText(parserDate(getStatusKidModels.get(position).getCompletion()));
                 switch (getStatusKidModels.get(position).getStatusId()){

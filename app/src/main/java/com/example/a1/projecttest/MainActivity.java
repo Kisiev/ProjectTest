@@ -46,6 +46,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.a1.projecttest.entities.GetAllKidEntity;
 import com.example.a1.projecttest.fragments.FeedFragment;
+import com.example.a1.projecttest.fragments.FoodMenuParent;
+import com.example.a1.projecttest.fragments.NewsFragment;
 import com.example.a1.projecttest.fragments.VospitannikFragment;
 import com.example.a1.projecttest.rest.Models.GetAllKidsModel;
 import com.example.a1.projecttest.rest.Models.GetListUsers;
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else finish();
             }
         });
-        replaceFragment(new FeedFragment(), R.id.content_main);
+        replaceFragment(new NewsFragment(), R.id.content_main);
         setTitle(getString(R.string.life_feed));
         getAllKid();
     }
@@ -249,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setTitle(getString(R.string.life_feed));
         } else if (fragmentClassName.equals(VospitannikFragment.class.getName())) {
             setTitle(getAllKidsModelsOn.get(fragmentName).getName());
+        } else if (fragmentClassName.equals(FoodMenuParent.class.getName())) {
+            setTitle(getString(R.string.foot_menu));
         }
     }
 
@@ -256,8 +260,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setMenu(NavigationView navigationView){
         Menu menu = navigationView.getMenu();
         menu.clear();
-        menu.add(Menu.NONE, 223, 0, "Живая лента");
+        menu.add(Menu.NONE, 223, 0, "Новости");
         menu.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
+        menu.add(Menu.NONE, 223, 1, "Меню питания");
+        menu.getItem(1).setIcon(R.drawable.ic_local_pizza_black_24dp);
         menu = menu.addSubMenu("Дети");
         for (int i = 0; i < getAllKidsModelsOn.size(); i ++){
             menu.add(Menu.NONE, Integer.parseInt(getAllKidsModelsOn.get(i).getId()), ConstantsManager.ID_MENU_ITEM, getAllKidsModelsOn.get(i).getName());
@@ -334,9 +340,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getOrder();
         switch (id){
             case 0:
-               FeedFragment feedFragment = new FeedFragment();
-                replaceFragment(feedFragment, R.id.content_main);
-                updateToolbarTitle(feedFragment);
+                NewsFragment newsFragment = new NewsFragment();
+                replaceFragment(newsFragment, R.id.content_main);
+                updateToolbarTitle(newsFragment);
                 break;
             case ConstantsManager.ID_MENU_ITEM:
                 takeKidFragment();
@@ -353,13 +359,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case 3:
-                startActivity(new Intent(this, ChatActivity_.class));
+                //startActivity(new Intent(this, ChatActivity_.class));
               break;
             case 4:
                 UserLoginSession session = new UserLoginSession(this);
                 session.clear();
                 startActivity(new Intent(this, LoginActivity_.class));
-                finish();
+                finish();break;
+            case 1:
+                FoodMenuParent foodMenuParent = new FoodMenuParent();
+                replaceFragment(foodMenuParent, R.id.content_main);
+                updateToolbarTitle(foodMenuParent);
+                break;
         }
 
         switch (item.getItemId()){
