@@ -96,14 +96,16 @@ public final class RestService {
                                         String surname,
                                         String name,
                                         String role,
-                                        String kindergartenId) throws IOException {
+                                        String kindergartenId,
+                                        String birthDay) throws IOException {
         return restClient.getProjectTestApiEdu()
                 .setUserData(id,
                         patronymic,
                         surname,
                         name,
                         role,
-                        kindergartenId)
+                        kindergartenId,
+                        birthDay)
                 .execute().body();
     }
 

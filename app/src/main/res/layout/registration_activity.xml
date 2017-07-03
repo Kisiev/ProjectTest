@@ -41,14 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/whiteColor"
-            android:textColorHint="@color/whiteColor"
-            android:theme="@style/Theme.App.Base"
-            android:hint="Имя"
-            android:id="@+id/name_user_edit"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whiteColor"
             android:theme="@style/Theme.App.Base"
             android:textColorHint="@color/whiteColor"
             android:hint="Фамилия"
@@ -59,8 +51,26 @@
             android:textColor="@color/whiteColor"
             android:textColorHint="@color/whiteColor"
             android:theme="@style/Theme.App.Base"
+            android:hint="Имя"
+            android:id="@+id/name_user_edit"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:textColorHint="@color/whiteColor"
+            android:theme="@style/Theme.App.Base"
             android:hint="Отчество"
             android:id="@+id/lastname_user_edit"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whiteColor"
+            android:textColorHint="@color/whiteColor"
+            android:theme="@style/Theme.App.Base"
+            android:hint="Дата рождения"
+            android:inputType="date"
+            android:id="@+id/birth_day_edit_text_reg"/>
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

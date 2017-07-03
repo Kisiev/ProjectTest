@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -32,6 +34,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 @EActivity(R.layout.registration_activity)
@@ -47,6 +50,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     EditText userName;
     EditText userSurname;
     EditText patronumicUser;
+    EditText birthDayEdit;
     Spinner regionSpinner;
     Spinner citySpinner;
     Spinner kinderGartenSpinner;
@@ -63,6 +67,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                 userSurname.getText().toString(),
                 patronumicUser.getText().toString(),
                 roleId, 1);
+        userLoginSession.savePassword(userLoginSession.getLogin(), userLoginSession.getPassword());
     }
 
     public void getCitiesByRegionId(){
@@ -108,7 +113,8 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                     userSurname.getText().toString(),
                     userName.getText().toString(),
                     String.valueOf(roleId),
-                    roleId == 2 ?((GetKinderGartensByCityCode)kinderGartenSpinner.getSelectedItem()).getId():"");
+                    roleId == 2 ?((GetKinderGartensByCityCode)kinderGartenSpinner.getSelectedItem()).getId():"",
+                    getEditDateFormat(birthDayEdit));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -150,7 +156,8 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
         regionSpinner = (Spinner) findViewById(R.id.region_spinner_registration);
         citySpinner = (Spinner) findViewById(R.id.city_spinner_registration);
         kinderGartenSpinner = (Spinner) findViewById(R.id.kinder_garten_spinner_registration);
-
+        birthDayEdit = (EditText) findViewById(R.id.birth_day_edit_text_reg);
+        textChange(birthDayEdit);
         regionSpinner.setOnItemSelectedListener(this);
         citySpinner.setOnItemSelectedListener(this);
         kinderGartenSpinner.setOnItemSelectedListener(this);
@@ -198,7 +205,11 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
             }
         });
     }
-
+    public static String getEditDateFormat(EditText editText){
+        return editText.getText().toString().substring(6, 10) +
+                "-" + editText.getText().toString().substring(3, 5) +
+                "-" + editText.getText().toString().substring(0, 2);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -249,5 +260,91 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void textChange(final EditText editText){
+
+        TextWatcher textWatcher = new TextWatcher() {
+            private String current = "";
+            private String yyyymmdd = "ДДММГГГГ";
+            private Calendar cal = Calendar.getInstance();
+            boolean isEnd = false;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (editText.getId() == R.id.birth_day_edit_text_reg) {
+                    if (isEnd)
+                        isEnd = false;
+                    else {
+                        if (!s.toString().equals(current)) {
+                            String clean = s.toString().replaceAll("[^\\d.]", "");
+                            String cleanC = current.replaceAll("[^\\d.]", "");
+                            int year = 0;
+                            int month = 0;
+                            int day = 0;
+                            int cl = clean.length();
+                            int sel = cl;
+                            for (int i = 2; i <= cl && i < 6; i += 2) {
+                                sel++;
+                            }
+                            //Fix for pressing delete next to a forward slash
+                            if (clean.equals(cleanC)) sel--;
+
+                            if (clean.length() < 8) {
+                                clean = clean + yyyymmdd.substring(clean.length());
+                            } else {
+                                //This part makes sure that when we finish entering numbers
+                                //the date is correct, fixing it otherwise
+                                year = Integer.parseInt(clean.substring(4, 8));
+                                month = Integer.parseInt(clean.substring(2, 4));
+                                day = Integer.parseInt(clean.substring(0, 2));
+                                if (year > cal.get(Calendar.YEAR) || year < 1800) {
+                                    clean = clean.replace(clean.substring(4, 8), String.valueOf(cal.get(Calendar.YEAR)));
+                                    year = cal.get(Calendar.YEAR);
+                                }
+                                if (month > 12 || month < 0) {
+                                    if (cal.get(Calendar.MONTH) > 10)
+                                        clean = clean.replace(clean.substring(2, 4), String.valueOf(cal.get(Calendar.MONTH)));
+                                    else
+                                        clean = clean.replace(clean.substring(2, 4), String.valueOf("0" + cal.get(Calendar.MONTH)));
+                                    month = cal.get(Calendar.MONTH);
+                                }
+                                if (day > cal.getActualMaximum(Calendar.DAY_OF_MONTH) || day < 0) {
+                                    clean = clean.replace(clean.substring(0, 2), String.valueOf(cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
+                                    day = cal.get(Calendar.DAY_OF_MONTH);
+                                }
+                                cal.set(Calendar.YEAR, year);
+                                cal.set(Calendar.MONTH, month);
+                                cal.set(Calendar.DAY_OF_MONTH, day);
+
+                                clean = String.format("%02d%02d%02d", day, month, year);
+                                isEnd = true;
+                            }
+
+                            clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                                    clean.substring(2, 4), clean.substring(4, 8));
+
+                            sel = sel < 0 ? 0 : sel;
+                            current = clean;
+
+                            editText.setText(current);
+                            editText.setSelection(sel < current.length() ? sel : current.length());
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        editText.addTextChangedListener(textWatcher);
     }
 }

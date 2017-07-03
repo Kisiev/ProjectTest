@@ -260,19 +260,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setMenu(NavigationView navigationView){
         Menu menu = navigationView.getMenu();
         menu.clear();
-        menu.add(Menu.NONE, 223, 0, "Новости");
-        menu.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
-        menu.add(Menu.NONE, 223, 1, "Меню питания");
-        menu.getItem(1).setIcon(R.drawable.ic_local_pizza_black_24dp);
-        menu = menu.addSubMenu("Дети");
+        Menu main = navigationView.getMenu();
+        main = main.addSubMenu("Раздел новостей");
+        main.add(Menu.NONE, 223, 0, "Новости");
+        main.getItem(0).setIcon(R.drawable.ic_event_note_black_24dp);
+        main.add(Menu.NONE, 223, 1, "Меню питания");
+        main.getItem(1).setIcon(R.drawable.ic_local_pizza_black_24dp);
+
+        Menu childMenu = navigationView.getMenu();
+        childMenu = childMenu.addSubMenu("Дети");
         for (int i = 0; i < getAllKidsModelsOn.size(); i ++){
-            menu.add(Menu.NONE, Integer.parseInt(getAllKidsModelsOn.get(i).getId()), ConstantsManager.ID_MENU_ITEM, getAllKidsModelsOn.get(i).getName());
-            menu.getItem(i).setIcon(R.drawable.ic_person_black_24dp);
+            childMenu.add(Menu.NONE, Integer.parseInt(getAllKidsModelsOn.get(i).getId()), ConstantsManager.ID_MENU_ITEM, getAllKidsModelsOn.get(i).getName());
+            childMenu.getItem(i).setIcon(R.drawable.ic_person_black_24dp);
         }
-        Menu chatParentsMenu = navigationView.getMenu();
-        chatParentsMenu = chatParentsMenu.addSubMenu("Родители");
-        chatParentsMenu.add(Menu.NONE, 123, 3, "Иванов Иван");
-        chatParentsMenu.getItem(0).setIcon(R.drawable.ic_receipt_black_24dp);
+
         Menu exitMenu = navigationView.getMenu();
         exitMenu.add(Menu.NONE, 123, 4, "Выход");
     }
@@ -281,13 +282,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String backStackName = fragment.getClass().getName();
         refreshingFragment = fragment.getClass().getName();
         FragmentManager manager = getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
-        if (!fragmentPopped) {
+        //boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(id, fragment, backStackName);
             ft.addToBackStack(backStackName);
             ft.commit();
-        }
 
     }
 
@@ -447,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         @Override
                         public void onError(Throwable e) {
-
+                            e.printStackTrace();
                         }
 
                         @Override

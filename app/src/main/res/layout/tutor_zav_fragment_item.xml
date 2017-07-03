@@ -8,7 +8,7 @@
     swipe:leftEdgeSwipeOffset="0dp"
     swipe:rightEdgeSwipeOffset="0dp">
 
-    <include layout="@layout/frame"/>
+    <include layout="@layout/option_layout"/>
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

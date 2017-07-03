@@ -77,9 +77,9 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
             id = (TextView) itemView.findViewById(R.id.tutor_id_zav_text_view);
             swipeRevealLayout = (SwipeLayout) itemView.findViewById(R.id.swipe_layout);
             cardView = (CardView) itemView.findViewById(R.id.card_group_list_fragment);
-            deleteLayout = (Button) itemView.findViewById(R.id.delete_button_group);
+           // deleteLayout = (Button) itemView.findViewById(R.id.delete_button_group);
            // deleteLayout = itemView.findViewById(R.id.delete_layout);
-            editLayout = (Button) itemView.findViewById(R.id.edit_button_group);
+           // editLayout = (Button) itemView.findViewById(R.id.edit_button_group);
         }
 
 

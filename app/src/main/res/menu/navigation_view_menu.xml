@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
-        <item
-            android:id="@+id/feed_item_menu"
-            android:icon="@android:drawable/ic_dialog_map"
-            android:title="@string/life_feed"/>
-    </group>
-    <group>
+
+            <item
+                android:id="@+id/feed_item_menu"
+                android:title="@string/life_feed">
+            </item>
+
         <item
             android:id="@+id/my_kids_item_menu"
-            android:icon="@android:drawable/ic_dialog_dialer"
-            android:title="@string/my_kids" />
-    </group>
-    <group>
+            android:title="@string/my_kids" >
+
+        </item>
+
+
         <item
+            android:menuCategory="secondary"
             android:id="@+id/parents_item_menu"
-            android:icon="@android:drawable/ic_dialog_email"
             android:title="@string/parents_text" />
-    </group>
-    <group>
         <item
             android:id="@+id/setting_item_menu"
-            android:icon="@android:drawable/ic_dialog_email"
-            android:title="@string/parents_text" />
-    </group>
+            android:title="@string/setting" />
 
 </menu>

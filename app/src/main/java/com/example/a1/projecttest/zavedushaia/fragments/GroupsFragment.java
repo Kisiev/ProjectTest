@@ -88,17 +88,11 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                view.findViewById(R.id.edit_button_group).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity(), "РЕДАКТОР", Toast.LENGTH_SHORT).show();
-                    }
-                });
                 view.findViewById(R.id.card_group_list_fragment).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pos = position;
-                        showDialogAddKid();
+                        //pos = position;
+                        //showDialogAddKid();
                     }
                 });
 

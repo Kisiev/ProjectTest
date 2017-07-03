@@ -70,7 +70,8 @@ public interface ProjectTestApi {
                                      @Query("surname") String surname,
                                      @Query("name") String name,
                                      @Query("roleId") String role,
-                                     @Query("kindergartenId") String kindergartenId);
+                                     @Query("kindergartenId") String kindergartenId,
+                                     @Query("birthday") String birthDay);
 
     @GET("/api/getUserByRoleId.php")
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);

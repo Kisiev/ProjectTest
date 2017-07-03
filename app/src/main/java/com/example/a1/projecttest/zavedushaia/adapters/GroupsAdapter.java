@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.R;
@@ -18,6 +19,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsHold
     List<GetKinderGartenGroup> getKinderGartenGroups;
     Context context;
     Typeface typeface;
+    Typeface typefaceBold;
     public GroupsAdapter(List<GetKinderGartenGroup> getKinderGartenGroups, Context context){
         this.getKinderGartenGroups = getKinderGartenGroups;
         this.context = context;
@@ -32,12 +34,13 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsHold
     @Override
     public void onBindViewHolder(GroupsHolder holder, int position) {
         typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
-        holder.nameGroup.setText("Группа: " + getKinderGartenGroups.get(position).getGroupName());
-        holder.tutorName.setText("Воспитатель: " + getKinderGartenGroups.get(position).getTutorSurname()
+        typefaceBold = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Bold.ttf");
+        holder.nameGroup.setText(getKinderGartenGroups.get(position).getGroupName());
+        holder.tutorName.setText(getKinderGartenGroups.get(position).getTutorSurname()
         +" "+ getKinderGartenGroups.get(position).getTutorName().substring(0, 1)
         +". "+ getKinderGartenGroups.get(position).getTutorPatronymic().substring(0, 1)
         +".");
-        holder.nameGroup.setTypeface(typeface);
+        holder.nameGroup.setTypeface(typefaceBold);
         holder.tutorName.setTypeface(typeface);
     }
 
@@ -49,10 +52,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupsHold
     class GroupsHolder extends RecyclerView.ViewHolder{
         TextView nameGroup;
         TextView tutorName;
+        ImageView editItem;
+        ImageView deleteItem;
         public GroupsHolder(View itemView) {
             super(itemView);
             nameGroup = (TextView) itemView.findViewById(R.id.name_group_text_view);
             tutorName = (TextView) itemView.findViewById(R.id.tutor_name_text_view);
+            editItem = (ImageView) itemView.findViewById(R.id.image_edit_option);
+            deleteItem = (ImageView) itemView.findViewById(R.id.image_delete_option);
         }
     }
 }
