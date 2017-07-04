@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.example.a1.projecttest.R;
 import com.example.a1.projecttest.UserLoginSession;
 import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
@@ -67,15 +68,13 @@ public class VospitannikAdapter extends XRecyclerView.Adapter<VospitannikAdapter
 */
         holder.textView.setTypeface(typeface);
         holder.timeTv.setTypeface(typeface);
-        holder.editButton.setTypeface(typeface);
-        holder.deleteButton.setTypeface(typeface);
+        //holder.editButton.setTypeface(typeface);
+       // holder.deleteButton.setTypeface(typeface);
         holder.false_tv.setTypeface(typefaceItalic);
         if (userLoginSession.getRoleId() == 2){
-            holder.editButton.setVisibility(View.VISIBLE);
-            holder.deleteButton.setVisibility(View.VISIBLE);
+            holder.view.setSwipeEnabled(true);
         } else {
-            holder.editButton.setVisibility(View.GONE);
-            holder.deleteButton.setVisibility(View.GONE);
+            holder.view.setSwipeEnabled(false);
         }
 
         if (userLoginSession.getRoleId() == 1){
@@ -142,8 +141,9 @@ public class VospitannikAdapter extends XRecyclerView.Adapter<VospitannikAdapter
         TextView false_tv;
         ImageView imageTime;
         ImageView imageView;
-        Button editButton;
-        Button deleteButton;
+        ImageView editButton;
+        ImageView deleteButton;
+        SwipeLayout view;
         public VospitannikHolder(View itemView, Context context) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.name_service);
@@ -153,16 +153,16 @@ public class VospitannikAdapter extends XRecyclerView.Adapter<VospitannikAdapter
             imageTime = (ImageView) itemView.findViewById(R.id.image_time);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.vospit_recycler);
-            editButton = (Button) itemView.findViewById(R.id.edit_button_raspisanie);
-            deleteButton = (Button) itemView.findViewById(R.id.delete_button_raspisanie);
-
+            editButton = (ImageView) itemView.findViewById(R.id.image_edit_option);
+            deleteButton = (ImageView) itemView.findViewById(R.id.image_delete_option);
+            view = (SwipeLayout)itemView.findViewById(R.id.swipe_layout_vospit);
             Typeface typefaceBold = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Bold.ttf");
             Typeface typefaceItalic = Typeface.createFromAsset(context.getAssets(), "font/OpenSans-Italic.ttf");
             textView.setTypeface(typefaceBold);
             timeTv.setTypeface(typefaceItalic);
             false_tv.setTypeface(typefaceItalic);
-            editButton.setTypeface(typefaceBold);
-            deleteButton.setTypeface(typefaceBold);
+            //editButton.setTypeface(typefaceBold);
+            //deleteButton.setTypeface(typefaceBold);
         }
 
     }

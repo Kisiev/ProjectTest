@@ -336,13 +336,13 @@ public class ServicesFragment extends Fragment implements Dialog.OnDismissListen
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, final int position) {
-                view.findViewById(R.id.edit_button_raspisanie).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.image_edit_option).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showDialog(true, position);
                     }
                 });
-                view.findViewById(R.id.delete_button_raspisanie).setOnClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.image_delete_option).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         deleteSchedule(getScheduleListModels.get(position).getId());

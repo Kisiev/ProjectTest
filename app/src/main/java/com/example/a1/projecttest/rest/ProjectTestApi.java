@@ -149,6 +149,12 @@ public interface ProjectTestApi {
                                       @Query("surname") String surname,
                                       @Query("patronymic") String patronymic,
                                       @Query("groupId") String groupId);
+    @GET("/api/addKid.php")
+    Observable<GetStatusCode> addKidInGroupObserver(@Query("parentId") String parentId,
+                                      @Query("name") String name,
+                                      @Query("surname") String surname,
+                                      @Query("patronymic") String patronymic,
+                                      @Query("groupId") String groupId);
     @GET("/api/getAllKidsByParentId.php")
     Observable<List<GetAllKidsModel>> getKidByParentId(@Query("parentId") String parentId);
 

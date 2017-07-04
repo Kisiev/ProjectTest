@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
     List<GetAllTutors> getAllTutorses;
     Context context;
     Typeface typeface;
+    Typeface typefaceBold;
     private final ViewBinderHelper binderHelper = new ViewBinderHelper();
     public TutorAdapter (List<GetAllTutors> getAllTutorses, Context context){
         this.getAllTutorses = getAllTutorses;
@@ -44,11 +46,12 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
     @Override
     public void onBindViewHolder(TutorHolder holder, final int position) {
         typeface = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Regular.ttf");
-        holder.name.setText("ФИО: " + getAllTutorses.get(position).getSurname()
+        typefaceBold = Typeface.createFromAsset(context.getAssets(), "font/SF-UI-Text-Bold.ttf");
+        holder.name.setText(getAllTutorses.get(position).getSurname()
         + " " + getAllTutorses.get(position).getName()
         + " "+ getAllTutorses.get(position).getPatronymic());
         holder.id.setText("Идентификатор: " + getAllTutorses.get(position).getId());
-        holder.name.setTypeface(typeface);
+        holder.name.setTypeface(typefaceBold);
         holder.id.setTypeface(typeface);
        // binderHelper.bind(holder.swipeRevealLayout, getAllTutorses.get(position).getId());
        /* holder.deleteLayout.setOnClickListener(new View.OnClickListener() {
@@ -69,14 +72,16 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.TutorHolder>
         TextView id;
         SwipeLayout swipeRevealLayout;
         CardView cardView;
-        Button deleteLayout;
-        Button editLayout;
+        ImageView editItem;
+        ImageView deleteItem;
         public TutorHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tutor_name_zav_text_view);
             id = (TextView) itemView.findViewById(R.id.tutor_id_zav_text_view);
             swipeRevealLayout = (SwipeLayout) itemView.findViewById(R.id.swipe_layout);
             cardView = (CardView) itemView.findViewById(R.id.card_group_list_fragment);
+            editItem = (ImageView) itemView.findViewById(R.id.image_edit_option);
+            deleteItem = (ImageView) itemView.findViewById(R.id.image_delete_option);
            // deleteLayout = (Button) itemView.findViewById(R.id.delete_button_group);
            // deleteLayout = itemView.findViewById(R.id.delete_layout);
            // editLayout = (Button) itemView.findViewById(R.id.edit_button_group);

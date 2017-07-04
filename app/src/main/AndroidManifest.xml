@@ -44,7 +44,7 @@
             android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".zavedushaia.ChildListActivity"
+        <activity android:name=".zavedushaia.ChildListActivity_"
             android:configChanges="orientation"
             android:parentActivityName=".zavedushaia.MainZavDetSad"
             android:screenOrientation="portrait">

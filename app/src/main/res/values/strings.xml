@@ -118,5 +118,6 @@
     <string name="foot_menu">Меню питания</string>
     <string name="ads_text">Объявления</string>
     <string name="setting">Настройки</string>
+    <string name="identificator">Идентификатор:</string>
 
 </resources>

@@ -51,5 +51,7 @@ public class ConstantsManager {
     final public static String FEED_ALL_KID= "feed_all_kid";
     final public static String FEED_ALL_STATUSES= "feed_all_statuses";
     final public static String USER_ROLE= "user_role";
+    final public static String GROUP_INTENT= "group_intent_child_list";
+    final public static String GROUP_NAME_INTENT= "group_name_intent_child_list";
 
 }

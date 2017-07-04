@@ -199,6 +199,14 @@ public final class RestService {
         return restClient.getProjectTestApiEdu().addKidInGroup(parentId, name, surname, patronymic, groupId).execute().body();
     }
 
+    public Observable<GetStatusCode> setKidInGroupObserver(String parentId,
+                                       String name,
+                                       String surname,
+                                       String patronymic,
+                                       String groupId) throws IOException{
+        return restClient.getProjectTestApiEdu().addKidInGroupObserver(parentId, name, surname, patronymic, groupId);
+    }
+
     public Observable<List<GetAllKidsModel>> getKidByParentId(String parentId)throws IOException{
         return restClient.getProjectTestApiEdu().getKidByParentId(parentId);
     }

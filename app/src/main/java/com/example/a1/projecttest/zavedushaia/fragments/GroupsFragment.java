@@ -2,6 +2,7 @@ package com.example.a1.projecttest.zavedushaia.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,7 +34,10 @@ import com.example.a1.projecttest.rest.Models.GetScheduleListModel;
 import com.example.a1.projecttest.rest.Models.GetStatusCode;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ClickListener;
+import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.utils.RecyclerTouchListener;
+import com.example.a1.projecttest.zavedushaia.ChildListActivity;
+import com.example.a1.projecttest.zavedushaia.ChildListActivity_;
 import com.example.a1.projecttest.zavedushaia.adapters.GroupsAdapter;
 import com.example.a1.projecttest.zavedushaia.adapters.TutorSpinnerAdapter;
 
@@ -47,14 +55,8 @@ import rx.schedulers.Schedulers;
 
 @EFragment
 public class GroupsFragment extends Fragment implements View.OnClickListener{
-    TextView nameGroupTv;
-    TextView tutorNameTv;
 
-    TextView header;
-    EditText nameEdit;
-    EditText surnameEdit;
-    EditText patronymicEdit;
-    EditText idParentEdit;
+
 
 
     List<GetKinderGartenGroup> getKinderGartenGroups;
@@ -74,14 +76,13 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
     int pos = -1;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.groups_layout_fragment, container, false);
+        setHasOptionsMenu(true);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_groups);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
-        addGroupsButton = (Button) view.findViewById(R.id.add_groups_button);
-        addGroupsButton.setOnClickListener(this);
-        addGroupsButton.setTypeface(typeface);
+
         threadGetGroup();
         GroupsAdapter groupsAdapter = new GroupsAdapter(getKinderGartenGroups, getActivity());
         recyclerView.setAdapter(groupsAdapter);
@@ -93,6 +94,10 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
                     public void onClick(View v) {
                         //pos = position;
                         //showDialogAddKid();
+                        Intent intent = new Intent(getActivity(), ChildListActivity_.class);
+                        intent.putExtra(ConstantsManager.GROUP_INTENT, getKinderGartenGroups.get(position).getGroupId());
+                        intent.putExtra(ConstantsManager.GROUP_NAME_INTENT, getKinderGartenGroups.get(position).getGroupName());
+                        startActivity(intent);
                     }
                 });
 
@@ -104,6 +109,21 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
             }
         }));
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.add_item_in_list_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_item_menu:
+                showDialog();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void setGroup(String name, String kinderGartenId, String tutorId){
@@ -190,9 +210,6 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.add_groups_button:
-                showDialog();
-                break;
             case R.id.save_group:
                 //threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), ((GetAllTutors) idTutor.getSelectedItem()).getId());
                 threadInsertGroup(nameGroup.getText().toString(), getKinderGarten.getId(), idTutor_v.getText().toString());
@@ -209,20 +226,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
             case R.id.cancel_button_child_in_group:
                 addKidDialog.dismiss();
                 break;
-            case R.id.add_button_child_in_group:
-                if (pos != -1){
-                    addKidThread(idParentEdit.getText().toString(),
-                            nameEdit.getText().toString(),
-                            surnameEdit.getText().toString(),
-                            patronymicEdit.getText().toString(),
-                            getKinderGartenGroups.get(pos).getGroupId());
-                }
-                if (getStatusCode.getCode().equals("200")){
-                    Toast.makeText(getActivity(), "Успешно", Toast.LENGTH_SHORT).show();
-                } else if (getStatusCode.getCode().equals("200")){
-                    Toast.makeText(getActivity(), getStatusCode.getStatus(), Toast.LENGTH_SHORT).show();
-                }
-                break;
+
         }
     }
 
@@ -270,38 +274,6 @@ public class GroupsFragment extends Fragment implements View.OnClickListener{
         getAllTutors();
 
         dialog.show();
-    }
-
-    public void showDialogAddKid(){
-        addKidDialog = new Dialog(getActivity());
-        addKidDialog.setContentView(R.layout.add_kids_in_group_dialog);
-        addKidDialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-        header = (TextView) addKidDialog.findViewById(R.id.header_dialog_add_kid);
-        nameEdit = (EditText) addKidDialog.findViewById(R.id.name_child_add_kid_dialog);
-        surnameEdit = (EditText) addKidDialog.findViewById(R.id.surname_child_add_kid_dialog);
-        patronymicEdit = (EditText) addKidDialog.findViewById(R.id.patronimic_child_add_kid_dialog);
-        idParentEdit = (EditText) addKidDialog.findViewById(R.id.id_parent_child_add_kid_dialog);
-        Button addKidButton = (Button) addKidDialog.findViewById(R.id.add_button_child_in_group);
-        Button cancelButton = (Button) addKidDialog.findViewById(R.id.cancel_button_child_in_group);
-        addKidButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
-        header.setTypeface(typeface);
-        nameEdit.setTypeface(typeface);
-        surnameEdit.setTypeface(typeface);
-        patronymicEdit.setTypeface(typeface);
-        addKidButton.setTypeface(typeface);
-        cancelButton.setTypeface(typeface);
-
-        header.setText(header.getText() +" "+ getKinderGartenGroups.get(pos).getGroupName());
-
-
-        addKidDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                pos = -1;
-            }
-        });
-        addKidDialog.show();
     }
 
 }

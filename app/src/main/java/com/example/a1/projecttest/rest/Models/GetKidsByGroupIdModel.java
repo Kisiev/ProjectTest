@@ -19,6 +19,17 @@ public class GetKidsByGroupIdModel implements Serializable {
     @SerializedName("patronymic")
     @Expose
     private String patronymic;
+    @SerializedName("birthday")
+    @Expose
+    private String birthday;
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     public String getId() {
         return id;

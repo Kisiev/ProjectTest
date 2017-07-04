@@ -22,6 +22,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -72,12 +75,11 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tutor_zav_fragment, container, false);
+        setHasOptionsMenu(true);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_tutor);
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/SF-UI-Text-Regular.ttf");
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        addTutorButton = (Button) view.findViewById(R.id.add_tutor_button);
-        addTutorButton.setOnClickListener(this);
-        addTutorButton.setTypeface(typeface);
+
         getTutors();
        // setUpItemTouchHelper();
 
@@ -91,12 +93,7 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onClick(View view, int position) {
-                view.findViewById(R.id.edit_button_tutor).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("1111111", "click");
-                    }
-                });
+
             }
 
             @Override
@@ -104,6 +101,21 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
 
             }
         }));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.add_item_in_list_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_item_menu:
+                showDialogAddTutor();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void getTutors(){
@@ -288,9 +300,7 @@ public class TutorFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.add_tutor_button:
-                showDialogAddTutor();
-                break;
+
             case R.id.cancel_button_add_tutor_in_kin:
                 dialog.dismiss();
                 break;

@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:id="@+id/card_child_list_fragment"
+        app:cardCornerRadius="2dp"
         app:cardUseCompatPadding="true"
         app:cardElevation="2dp">
         <RelativeLayout
@@ -32,7 +33,7 @@
                     android:textColor="@color/black"
                     android:textSize="10pt"
                     android:layout_marginBottom="@dimen/standard_margin"
-                    android:id="@+id/name_child_text_view"/>
+                    android:id="@+id/name_child_list_text_view"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
