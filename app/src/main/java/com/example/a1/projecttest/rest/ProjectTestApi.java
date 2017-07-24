@@ -43,28 +43,28 @@ import rx.Observable;
 import rx.Observer;
 
 public interface ProjectTestApi {
-    @GET("/api/getUserById.php")
+    @GET("/mychild/api/getUserById.php")
     Call<GetListUsers> getUserById (@Query("id") String id);
 
-    @GET("/api/Authentication.php")
+    @GET("/mychild/api/Authentication.php")
     Call<GetListUsers> validUser (@Query("login") String login,
                                   @Query("password") String password);
 
-    @POST("/api/updateCoordinatesByUserId.php")
+    @POST("/mychild/api/updateCoordinatesByUserId.php")
     Call<String> setCoordinates (@Query("userId") int id,
                                @Query("coordinateX") String coordinateX,
                                @Query("coordinateY") String coordinateY);
 
-    @GET("/api/getServiceTypesByServiceListId.php")
+    @GET("/mychild/api/getServiceTypesByServiceListId.php")
     Call<List<GetServiceType>> getServiceTypeCall (@Query("id") String id);
 
-    @GET("/api/emailRegistration.php")
+    @GET("/mychild/api/emailRegistration.php")
     Call<String> getPassByEmail (@Query("email") String email);
 
-    @GET("/api/signing_in.php")
+    @GET("/mychild/api/signing_in.php")
     Observable<GetUserData> getUserData (@Query("email") String email,
                                          @Query("password") String password);
-    @POST("/api/activation.php")
+    @POST("/mychild/api/activation.php")
     Call<GetStatusCode> setUserData (@Query("id") String id,
                                      @Query("patronymic") String patronymic,
                                      @Query("surname") String surname,
@@ -73,32 +73,32 @@ public interface ProjectTestApi {
                                      @Query("kindergartenId") String kindergartenId,
                                      @Query("birthday") String birthDay);
 
-    @GET("/api/getUserByRoleId.php")
+    @GET("/mychild/api/getUserByRoleId.php")
     Call<List<GetUserData>> getUsersByRole (@Query("roleId") String id);
 
-    @GET("/api/getScheduleByGroupIdAndDayId.php")
+    @GET("/mychild/api/getScheduleByGroupIdAndDayId.php")
     Observable<List<GetScheduleListModel>> getSchedule (@Query("groupId") String id,
                                                       @Query("dayId") String dayId);
-    @GET("/api/getScheduleByGroupIdAndDayId.php")
+    @GET("/mychild/api/getScheduleByGroupIdAndDayId.php")
     Call<List<GetScheduleListModel>> getScheduleWithoutRx (@Query("groupId") String id,
                                                         @Query("dayId") String dayId);
-    @GET("/api/getServiceList.php")
+    @GET("/mychild/api/getServiceList.php")
     Call<List<GetServiceListModel>> getServiceList();
 
-    @GET("/api/getServicesByServiceTypeId.php")
+    @GET("/mychild/api/getServicesByServiceTypeId.php")
     Call<List<GetServicesByServiceTypeModel>> getServicesByServiceType(@Query("serviceTypeId") String id);
 
-    @GET("/api/getServicesByServiceTypeId.php")
+    @GET("/mychild/api/getServicesByServiceTypeId.php")
     Observable<List<GetServicesByServiceTypeModel>> getServicesByServiceTypeObservable(@Query("serviceTypeId") String id);
 
-    @GET("/api/createSchedule.php")
+    @GET("/mychild/api/createSchedule.php")
     Call<GetStatusCode> setSchedule(@Query("serviceId") String serviceId,
                                     @Query("dayId") String day,
                                     @Query("timeFrom") String timeFrom,
                                     @Query("timeTo") String timeTo,
                                     @Query("groupId") String groupId);
 
-    @GET ("/api/updateScheduleById.php")
+    @GET ("/mychild/api/updateScheduleById.php")
     Call<GetStatusCode> updateSchedule(@Query("id") String id,
                                        @Query("serviceId") String serviceId,
                                        @Query("dayId") String day,
@@ -106,78 +106,78 @@ public interface ProjectTestApi {
                                        @Query("timeTo") String timeTo,
                                        @Query("groupId") String groupId);
 
-    @GET ("/api/deleteScheduleById.php")
+    @GET ("/mychild/api/deleteScheduleById.php")
     Call<GetStatusCode> deleteSchedule(@Query("id") String id);
 
-    @GET ("/api/getKindergartenGroupsByKindergartenId.php")
+    @GET ("/mychild/api/getKindergartenGroupsByKindergartenId.php")
     Call<List<GetKinderGartenGroup>> getGroups (@Query("kindergartenId") String kindergartenId);
 
-    @GET ("/api/getKindergartenByManagerId.php")
+    @GET ("/mychild/api/getKindergartenByManagerId.php")
     Call<GetKinderGarten> getKinderGartenZav (@Query("managerId") String managerId);
 
-    @GET ("/api/getKindergartenByTutorId.php")
+    @GET ("/mychild/api/getKindergartenByTutorId.php")
     Call<GetKinderGarten> getKinderGartenTutor (@Query("tutorId") String managerId);
 
-    @GET ("/api/getAllTutorsByKindergartenId.php")
+    @GET ("/mychild/api/getAllTutorsByKindergartenId.php")
     Call<List<GetAllTutors>> getAllTutors (@Query("kindergartenId") String kindergartenId);
 
-    @GET ("/api/getAllKidsByKindergartenId.php")
+    @GET ("/mychild/api/getAllKidsByKindergartenId.php")
     Call<List<GetAllKidsModel>> getAlLKids (@Query("kindergartenId") String kindergartenId);
 
-    @GET ("/api/getAllKidsByGroupId.php")
+    @GET ("/mychild/api/getAllKidsByGroupId.php")
     Call<List<GetKidsByGroupIdModel>> getKidsByGroup (@Query("groupId") String groupId);
 
-    @GET ("/api/getAllKidsByGroupId.php")
+    @GET ("/mychild/api/getAllKidsByGroupId.php")
     Observable<List<GetKidsByGroupIdModel>> getKidsByGroupObserver (@Query("groupId") String groupId);
 
-    @GET ("/api/getAllRegions.php")
+    @GET ("/mychild/api/getAllRegions.php")
     Call<List<GetAllRegionsModel>> getAllRegions ();
 
-    @GET ("/api/GetAllCitiesByRegionCode.php")
+    @GET ("/mychild/api/GetAllCitiesByRegionCode.php")
     Call<List<GetAllRegionsModel>> getAllCitiesByRegionCode (@Query("code") String code);
 
-    @GET ("/api/GetAllKindergartensByCityCode.php")
+    @GET ("/mychild/api/GetAllKindergartensByCityCode.php")
     Call<List<GetKinderGartensByCityCode>> getKinderGartenByCityCode(@Query("cityCode") String cityCode);
 
-    @GET ("/api/addGroup.php")
+    @GET ("/mychild/api/addGroup.php")
     Call<GetStatusCode> setGroup (@Query("name") String name,
                                        @Query("kindergartenId") String kindergartenId,
                                        @Query("tutorId") String tutorId);
-    @GET("/api/addKid.php")
+    @GET("/mychild/api/addKid.php")
     Call<GetStatusCode> addKidInGroup(@Query("parentId") String parentId,
                                       @Query("name") String name,
                                       @Query("surname") String surname,
                                       @Query("patronymic") String patronymic,
                                       @Query("groupId") String groupId);
-    @GET("/api/addKid.php")
+    @GET("/mychild/api/addKid.php")
     Observable<GetStatusCode> addKidInGroupObserver(@Query("parentId") String parentId,
                                       @Query("name") String name,
                                       @Query("surname") String surname,
                                       @Query("patronymic") String patronymic,
                                       @Query("groupId") String groupId);
-    @GET("/api/getAllKidsByParentId.php")
+    @GET("/mychild/api/getAllKidsByParentId.php")
     Observable<List<GetAllKidsModel>> getKidByParentId(@Query("parentId") String parentId);
 
-    @GET("/api/getKindergartenGroupByTutorId.php")
+    @GET("/mychild/api/getKindergartenGroupByTutorId.php")
     Call<GetGroupByTutorModel> getTutorGroup(@Query("tutorId") String tutorId);
 
-    @GET("/api/getGroupIdByKidId.php")
+    @GET("/mychild/api/getGroupIdByKidId.php")
     Call<GetScheduleByKidIdModel> getScheduleByKidId(@Query("KidId") String kid);
 
-    @GET ("/api/getAllDays.php")
+    @GET ("/mychild/api/getAllDays.php")
     Call<List<GetAllDaysModel>> getAllDay();
 
-    @GET ("/api/getCoordinatesByUserId.php")
+    @GET ("/mychild/api/getCoordinatesByUserId.php")
     Call<GetCoordinatesByUserIdModel> getCoordinates (@Query("userId") String id);
 
-    @GET ("/api/getScheduleStatusesByKidId.php")
+    @GET ("/mychild/api/getScheduleStatusesByKidId.php")
     Observable<List<GetStatusKidModel>> getStatusKid(@Query("KidId") String kidId);
 
-    @GET ("/api/getAllScheduleStatusesByKidId.php")
+    @GET ("/mychild/api/getAllScheduleStatusesByKidId.php")
     Call<List<GetStatusKidModel>> getStatusKidForFeed(@Query("KidId") String kidId);
 
     @Multipart
-    @POST ("/api/createScheduleStatus.php")
+    @POST ("/mychild/api/createScheduleStatus.php")
     Call<GetStatusCode> setStatusForKid(@Query("scheduleId") String scheduleId,
                                         @Query("statusId") String statusId,
                                         @Query("userId") String userId,
@@ -187,42 +187,42 @@ public interface ProjectTestApi {
                                         @Part("name") RequestBody name);
 
 
-    @GET ("/api/createScheduleStatus.php")
+    @GET ("/mychild/api/createScheduleStatus.php")
     Call<GetStatusCode> setStatusForKidWithoutPhoto(@Query("scheduleId") String scheduleId,
                                         @Query("statusId") String statusId,
                                         @Query("userId") String userId,
                                         @Query("comment") String comment,
                                         @Query("completion") String data);
 
-    @GET ("/api/getScheduleStatusesByGroupIdAndScheduleId.php")
+    @GET ("/mychild/api/getScheduleStatusesByGroupIdAndScheduleId.php")
     Call<List<GetScheduleStatusesByGroupIdModel>> getGroupStatuses(@Query("groupId") String groupId,
                                                                    @Query("scheduleId") String schedule);
 
-    @GET("/api/getAttendanceByGroupId.php")
+    @GET("/mychild/api/getAttendanceByGroupId.php")
     Observable<List<GetAttendanceModel>> getAttendance (@Query("groupId") String groupId,
                                                         @Query("date") String date);
 
-    @GET("/api/createAttendance.php")
+    @GET("/mychild/api/createAttendance.php")
     Observable<GetStatusCode> createAttendance (@Query("userId") String userId,
                                                         @Query("isPresent") String isPresent);
-    @POST("/api/addKidToParent.php")
+    @POST("/mychild/api/addKidToParent.php")
     Observable<String> addKidToParent (@Query("kidId") String kidId,
                                        @Query("parentId") String parentId);
 
-    @GET("/api/getNotificationsAddKidToParent.php")
+    @GET("/mychild/api/getNotificationsAddKidToParent.php")
     Observable<List<GetNotificationAddToParent>> getNotificationAddToParent (@Query("kidId") String kidId);
 
-    @POST("/api/addKidToParentFunction.php")
+    @POST("/mychild/api/addKidToParentFunction.php")
     Observable<String> acceptToAddKid (@Query("url") String kidId);
 
-    @GET ("/api/getAllTutorsByKindergartenId.php")
+    @GET ("/mychild/api/getAllTutorsByKindergartenId.php")
     Observable<List<GetAllTutors>> getAllTutorsObserver (@Query("kindergartenId") String kindergartenId);
 
-    @GET ("/api/getKindergartenByManagerId.php")
+    @GET ("/mychild/api/getKindergartenByManagerId.php")
     Observable<GetKinderGarten> getKinderGartenZavObserver (@Query("managerId") String managerId);
 
     @Multipart
-    @POST ("/api/upload_image.php")
+    @POST ("/mychild/api/upload_image.php")
     Observable<ResponseBody> uploadFile(@Part MultipartBody.Part file, @Part("name") RequestBody name);
 
 

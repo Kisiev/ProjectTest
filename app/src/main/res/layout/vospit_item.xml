@@ -5,6 +5,7 @@
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
     swipe:leftEdgeSwipeOffset="0dp"
     android:id="@+id/swipe_layout_vospit"
+    swipe:show_mode="pull_out"
     swipe:rightEdgeSwipeOffset="0dp">
     <include layout="@layout/option_layout"/>
 
