@@ -2,8 +2,10 @@ package com.example.a1.projecttest.vospitatel;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,11 +14,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.example.a1.projecttest.LoginActivity_;
@@ -28,6 +35,7 @@ import com.example.a1.projecttest.rest.Models.GetGroupByTutorModel;
 import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.utils.ConstantsManager;
 import com.example.a1.projecttest.vospitatel.fragments.AttendanceFragment;
+import com.example.a1.projecttest.vospitatel.fragments.MyGroupsTutorFragment;
 import com.example.a1.projecttest.vospitatel.fragments.RaspisanieFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.AdsFragment;
 import com.example.a1.projecttest.zavedushaia.fragments.EventFragmentZav;
@@ -44,11 +52,14 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
     NavigationView navigationView;
     ImageView imageView;
     TextView nameTextNavView;
-    TextView emailTextNavView;
-    TextView idTextNavView;
+ /*   TextView emailTextNavView;
+    TextView idTextNavView;*/
     Typeface typeface;
     UserLoginSession session;
+    Toolbar toolbar;
+    SpinnerAdapter spinnerAdapter;
     GetGroupByTutorModel getGroupByTutorModel;
+    Spinner navigationSpinner;
 
 
     private void updateToolbarTitle(Fragment fragment) {
@@ -64,7 +75,7 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
 
     @AfterViews
     void main(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         session = new UserLoginSession(this);
         beginThread();
@@ -80,12 +91,12 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         View headerView = navigationView.getHeaderView(0);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
-        emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
-        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+       /* emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
+        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);*/
 
         nameTextNavView.setTypeface(typeface);
-        emailTextNavView.setTypeface(typeface);
-        idTextNavView.setTypeface(typeface);
+      /*  emailTextNavView.setTypeface(typeface);
+        idTextNavView.setTypeface(typeface);*/
 
         MainActivity.saveGlideParam(imageView, this, null, R.mipmap.avatar);
         setNavigationViewItem();
@@ -100,30 +111,44 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         });
         replaceFragment(new AttendanceFragment(), R.id.content_main);
         updateToolbarTitle(new AttendanceFragment());
+        spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.group_spinner, android.R.layout.simple_spinner_dropdown_item);
         //ArrivingFragment arrivingFragment = new ArrivingFragment();
         //replaceFragment(arrivingFragment, R.id.content_main);
     }
 
     private void setNavigationViewItem() {
         nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
-        emailTextNavView.setText(session.getLogin());
-        idTextNavView.setText("Идентификатор: " + session.getID());
+        navigationView.setBackgroundColor(getResources().getColor(R.color.colorDrawer));
+        navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.whiteColor)));
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+        navMenuView.addItemDecoration(new DividerItemDecoration(VospitatelMainActivity.this,DividerItemDecoration.VERTICAL));
+
+        /*emailTextNavView.setText(session.getLogin());
+        idTextNavView.setText("Идентификатор: " + session.getID());*/
     }
 
     private void setMenu(){
         Menu menu = navigationView.getMenu();
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 0, getString(R.string.attendance_text));
-        menu.getItem(0).setIcon(R.drawable.ic_transfer_within_a_station_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 1, getString(R.string.list_services_menu_item));
-        menu.getItem(1).setIcon(R.drawable.ic_perm_contact_calendar_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 2, getString(R.string.ads_text));
-        menu.getItem(2).setIcon(R.drawable.ic_format_list_numbered_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 3, getString(R.string.orders_menu_group));
-        menu.getItem(3).setIcon(R.drawable.ic_assignment_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 4, R.string.communic_text);
-        menu.getItem(4).setIcon(R.drawable.ic_mail_black_24dp);
-        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 5, R.string.exit);
+        menu.add(Menu.NONE, ConstantsManager.MENU_ID, 0, getString(R.string.messages));
+       // menu.getItem(0).setIcon(R.drawable.ic_transfer_within_a_station_black_24dp);
+        Menu menu_2 = navigationView.getMenu();
+        menu_2.add(Menu.NONE, ConstantsManager.MENU_ID, 1, getString(R.string.life_feed_l));
+       // menu_2.getItem(1).setIcon(R.drawable.ic_perm_contact_calendar_black_24dp);
+        Menu menu_3 = navigationView.getMenu();
+        menu_3.add(Menu.NONE, ConstantsManager.MENU_ID, 2, getString(R.string.my_group));
+        //menu_3.getItem(2).setIcon(R.drawable.ic_format_list_numbered_black_24dp);
+        Menu menu_4 = navigationView.getMenu();
+        menu_4.add(Menu.NONE, ConstantsManager.MENU_ID, 3, getString(R.string.calendar));
+        //menu_4.getItem(3).setIcon(R.drawable.ic_assignment_black_24dp);
+        Menu menu_5 = navigationView.getMenu();
+        menu_5.add(Menu.NONE, ConstantsManager.MENU_ID, 4, R.string.notification);
+        //menu_5.getItem(4).setIcon(R.drawable.ic_mail_black_24dp);
+        Menu menu_6 = navigationView.getMenu();
+        menu_6.add(Menu.NONE, ConstantsManager.MENU_ID, 5, R.string.exit);
+
     }
+
 
     public VospitatelMainActivity () {
 
@@ -177,16 +202,23 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
                 AttendanceFragment attendanceFragment = new AttendanceFragment();
                 replaceFragment(attendanceFragment, R.id.content_main);
                 updateToolbarTitle(attendanceFragment);
+                toolbar.removeView(navigationSpinner);
                 break;
             case 1:
                 RaspisanieFragment raspisanieFragment = new RaspisanieFragment();
                 replaceFragment(raspisanieFragment, R.id.content_main);
                 updateToolbarTitle(raspisanieFragment);
+                toolbar.removeView(navigationSpinner);
                 break;
             case 2:
-                AdsFragment adsFragment = new AdsFragment();
+                MyGroupsTutorFragment mg = new MyGroupsTutorFragment();
+                replaceFragment(mg, R.id.content_main);
+                navigationSpinner = new Spinner(this);
+                navigationSpinner.setAdapter(spinnerAdapter);
+                toolbar.addView(navigationSpinner, 0);
+              /*  AdsFragment adsFragment = new AdsFragment();
                 replaceFragment(adsFragment, R.id.content_main);
-                updateToolbarTitle(adsFragment);
+                updateToolbarTitle(adsFragment);*/
                 break;
             case 3:
 

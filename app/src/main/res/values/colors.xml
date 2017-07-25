@@ -25,13 +25,16 @@
     <color name="colorText">#ffffff</color>
     <color name="colorSecondaryText">#d4d4d4</color>
 
-    <color name="colorBlue">#0273B2</color>
+    <color name="colorBlue">#56CCF2</color>
+    <color name="colorDarkBlue">#2D9CDB</color>
     <color name="colorYellowWithoutOpacity">#470273b2</color>
-    <color name="colorViolet">#BC75B0</color>
-    <color name="colorOrange">#F6921E</color>
-    <color name="colorYellow">#FFD10E</color>
-    <color name="colorGreen">#BED63A</color>
+    <color name="colorViolet">#EBB7FF</color>
+    <color name="colorOrange">#EE9D9D</color>
+    <color name="colorYellow">#FFC000</color>
+    <color name="colorGreen">#59C952</color>
     <color name="colorLightBlue">#44C2EA</color>
+
+    <color name="colorDrawer">#175063</color>
 
     <color name="colorBlueOpacity">#140273b2</color>
     <color name="colorRedOpacity">#14b2020e</color>
@@ -41,5 +44,7 @@
     <color name="colorGreenOpacity">#14bed63a</color>
     <color name="colorLightBlueOpacity">#1444c2ea</color>
     <color name="colorWhiteOpacity">#3bffffff</color>
+
+
 
 </resources>

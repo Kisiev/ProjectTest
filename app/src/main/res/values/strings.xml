@@ -120,4 +120,17 @@
     <string name="setting">Настройки</string>
     <string name="identificator">Идентификатор:</string>
 
+    <string name="messages">Сообщения</string>
+    <string name="my_group">Мои группы</string>
+    <string name="notification">Заявки</string>
+    <string name="calendar">Календарь</string>
+
+        <string-array name="group_spinner">
+            <item>Расписание</item>
+            <item>Распорядок на текущий день</item>
+            <item>Календарь мероприятий</item>
+            <item>Список детей</item>
+       
+        </string-array>
+
 </resources>

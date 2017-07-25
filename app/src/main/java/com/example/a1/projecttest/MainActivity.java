@@ -207,11 +207,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getResources().getColor(R.color.colorViolet));*/
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
-        emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
-        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+        /*emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
+        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);*/
         nameTextNavView.setTypeface(typeface);
-        emailTextNavView.setTypeface(typeface);
-        idTextNavView.setTypeface(typeface);
+        /*emailTextNavView.setTypeface(typeface);
+        idTextNavView.setTypeface(typeface);*/
         setNavigationViewItem();
         saveGlideParam(imageView, MainActivity.this, null, R.mipmap.avatar);
 
@@ -235,8 +235,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setNavigationViewItem(){
         nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
-        emailTextNavView.setText(session.getLogin());
-        idTextNavView.setText("Идентификатор: " + session.getID());
+       /* emailTextNavView.setText(session.getLogin());
+        idTextNavView.setText("Идентификатор: " + session.getID());*/
     }
 
     private void initStetho(){

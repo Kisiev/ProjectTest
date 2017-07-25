@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -149,8 +150,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
         session = new UserLoginSession(getApplicationContext());
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         nameTextNavView = (TextView) headerView.findViewById(R.id.name_text_view);
-        emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
-        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);
+       /* emailTextNavView = (TextView) headerView.findViewById(R.id.email_text_view);
+        idTextNavView = (TextView) headerView.findViewById(R.id.id_user_text_view);*/
         setNavigationViewItem();
         backgroundImage = (ImageView) findViewById(R.id.background_image_view_zav);
         MainActivity.saveGlideParam(imageView, this, null, R.mipmap.avatar);
@@ -164,8 +165,8 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             }
         });
         nameTextNavView.setTypeface(typeface);
-        emailTextNavView.setTypeface(typeface);
-        idTextNavView.setTypeface(typeface);
+        /*emailTextNavView.setTypeface(typeface);
+        idTextNavView.setTypeface(typeface);*/
     }
     public void replaceFragment(Fragment fragment, int id) {
         String backStackName = fragment.getClass().getName();
@@ -177,12 +178,13 @@ public class MainZavDetSad extends AppCompatActivity implements NavigationView.O
             ft.addToBackStack(backStackName);
             ft.commit();
         }
+
     }
 
     private void setNavigationViewItem(){
         nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
-        emailTextNavView.setText(session.getLogin());
-        idTextNavView.setText("Идентификатор: " + session.getID());
+       /* emailTextNavView.setText(session.getLogin());
+        idTextNavView.setText("Идентификатор: " + session.getID());*/
     }
 
     @Override

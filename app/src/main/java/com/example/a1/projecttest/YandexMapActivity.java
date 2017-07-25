@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -175,6 +176,7 @@ public class YandexMapActivity extends Activity implements OnBalloonListener{
             overlay = new Overlay(mapController);
 
             Drawable bitmap = AppCompatDrawableManager.get().getDrawable(getApplication(), R.drawable.ic_person_pin_circle_black_24dp);
+
 
             overlayItem = new OverlayItem(new GeoPoint(Double.valueOf(getCoordinatesByUserIdModel.getCoordinateX()), Double.valueOf( getCoordinatesByUserIdModel.getCoordinateY())), bitmap);
             BalloonItem balloonItem = new BalloonItem(this, overlayItem.getGeoPoint());

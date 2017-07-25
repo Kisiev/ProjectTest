@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item android:title="">
+        <menu>
             <item
-                android:id="@+id/feed_item_menu"
-                android:title="@string/life_feed">
+                android:id="@+id/messages_menu"
+                android:title="@string/messages">
             </item>
+        </menu>
+    </item>
+
 
         <item
-            android:id="@+id/my_kids_item_menu"
-            android:title="@string/my_kids" >
+            android:id="@+id/life_feed_menu"
+            android:title="@string/life_feed" >
 
         </item>
-
-
         <item
-            android:menuCategory="secondary"
-            android:id="@+id/parents_item_menu"
-            android:title="@string/parents_text" />
+            android:id="@+id/my_group_menu"
+            android:title="@string/my_group" />
         <item
-            android:id="@+id/setting_item_menu"
-            android:title="@string/setting" />
+            android:id="@+id/calendar_menu"
+            android:title="@string/calendar" />
+    <item
+        android:id="@+id/notification_menu"
+        android:title="@string/notification" />
 
 </menu>
