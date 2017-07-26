@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.LocationManager;
@@ -16,6 +17,7 @@ import android.provider.Settings;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -28,6 +30,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -56,6 +59,7 @@ import com.example.a1.projecttest.rest.RestService;
 import com.example.a1.projecttest.sync.MyChildSyncJob;
 import com.example.a1.projecttest.utils.CircleTransform;
 import com.example.a1.projecttest.utils.ConstantsManager;
+import com.example.a1.projecttest.vospitatel.VospitatelMainActivity;
 import com.facebook.stetho.Stetho;
 import com.google.gson.JsonSyntaxException;
 
@@ -235,6 +239,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setNavigationViewItem(){
         nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
+        navigationView.setBackgroundColor(getResources().getColor(R.color.colorDrawer));
+        navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.whiteColor)));
+        NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+        navMenuView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
        /* emailTextNavView.setText(session.getLogin());
         idTextNavView.setText("Идентификатор: " + session.getID());*/
     }

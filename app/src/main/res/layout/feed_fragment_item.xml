@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_weight="2"
     app:cardElevation="2dp"
-    android:layout_marginBottom="2dp"
-    app:cardCornerRadius="2dp"
     android:id="@+id/card_feed_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">

@@ -120,9 +120,10 @@ public class VospitatelMainActivity extends AppCompatActivity implements Navigat
         nameTextNavView.setText(session.getUserName() + " " + session.getUserSurname());
         navigationView.setBackgroundColor(getResources().getColor(R.color.colorDrawer));
         navigationView.setItemTextColor(ColorStateList.valueOf(getResources().getColor(R.color.whiteColor)));
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
-        navMenuView.addItemDecoration(new DividerItemDecoration(VospitatelMainActivity.this,DividerItemDecoration.VERTICAL));
+        navMenuView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+
+
 
         /*emailTextNavView.setText(session.getLogin());
         idTextNavView.setText("Идентификатор: " + session.getID());*/

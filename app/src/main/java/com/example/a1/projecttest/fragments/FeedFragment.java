@@ -20,6 +20,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -160,6 +161,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener{
         final LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewFeed.setLayoutManager(verticalLayoutManager);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewFeed.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         getFeed(false);
         getStatusKidModelObservable =  Observable.from(FeedEntity.selectAllNotification()).observeOn(AndroidSchedulers.mainThread());
         observer = new Observer<FeedEntity>() {
